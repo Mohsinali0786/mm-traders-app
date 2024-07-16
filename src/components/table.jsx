@@ -109,9 +109,11 @@ export default function DataTable() {
       },
     });
     let res = await response.json();
-    console.log("Get Data from api", res);
-    setRows(res?.data);
-    calUsers(res?.data);
+    if(res && res.success){
+      console.log("Get Data from api", res);
+      setRows(res?.data);
+      calUsers(res?.data);
+    }
   };
 
   const calUsers = (data) => {

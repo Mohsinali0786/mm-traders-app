@@ -9,7 +9,7 @@ const getUser = async (req,res)=>{
     }
     catch(err){
         console.log('Err',err)
-        res.send({success:false})
+        res.send({success:false , message : 'No record found'})
     }
 }
 

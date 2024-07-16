@@ -74,3 +74,53 @@
   justify-content: center;
   align-items: center;
 }
+.productImage{
+  max-height: 90px;
+}
+.fs-13{
+  font-size: 13px !important; 
+}
+.bg-image{
+  background-image: url('./assets/contactus.jpg');
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+.iconCircle{
+  width: 100px;
+  /* background-color: green; */
+  height: 100px;
+  color: white;
+  border-radius: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: larger;
+}
+.iconCircle > svg{
+  font-size: 60px;
+}
+.iconCircle >  div > p{
+  margin: 0px !important;
+}
+
+fieldset {
+  border: thick solid #000;
+  }
+  legend {
+  color: #FFF;
+  background: #000;
+  font-size: 1.5em;
+  padding: 5px;
+  }
+
+/* .tableCellBorder{
+  border: 1px solid black;
+  padding: 10px;
+}
+table {
+  border-spacing: 30px;
+} */
+

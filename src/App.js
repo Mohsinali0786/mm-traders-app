@@ -3,6 +3,9 @@ import Login from './screens/login';
 import SignUp from './screens/signUp';
 import Home from './screens/Home';
 import Dashboard from './screens/dashboard';
+import About from './screens/about';
+import ContactUs from './screens/contactUs'
+import Costing from './screens/costings'
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,6 +17,8 @@ import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'
 import '../node_modules/bootstrap/js/src/carousel'
 import '../node_modules/bootstrap/js/src/base-component'
 import { useEffect } from 'react';
+import Navbar from './components/Navbar';
+import ProductForms from './screens/productForm';
 // const ProtectedRoute = ({
 //   user,
 //   redirectPath = '/',
@@ -31,11 +36,19 @@ function App() {
   // useEffect(()=>{},[])
   return (
     <Router>
+      <Navbar/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<SignUp />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="about" element={<About />} />
+        <Route path="p-form" element={<ProductForms />} />
+        <Route path="/contactus" element={<ContactUs/>} />
+        <Route path="/costings" element={<Costing/>} />
+        {/* <Route path="/addProductCat" element={<ProductCatForm/>} /> */}
+
+
         {/* <Route element={<ProtectedRoute user={user} />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route> */}

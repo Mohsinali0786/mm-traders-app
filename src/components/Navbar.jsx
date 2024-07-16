@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { HashLink } from "react-router-hash-link";
+
 export default function Navbar() {
   let user = JSON.parse(localStorage.getItem("loginData"));
   const [loginBtn, setLoginBtn] = useState(true);
@@ -11,7 +13,7 @@ export default function Navbar() {
   const logOut = () => {
     localStorage.clear();
     user = JSON.parse(localStorage.getItem("loginData"));
-    navigate('/login')
+    navigate("/login");
     setLoginBtn(false);
   };
   return (
@@ -54,18 +56,34 @@ export default function Navbar() {
                 Dashboard
               </Link>
             ) : null}
+            {user && user.role && user.role == "admin" ? (
+              <Link className="nav-link" to="/p-form">
+                Add Product
+              </Link>
+            ) : null}
+            <Link className="nav-link" to="/costings">
+              Costings
+            </Link>
+            <Link className="nav-link" to="/about">
+              About Us
+            </Link>
+            <Link className="nav-link" to="/contactus">
+              Contact Us
+            </Link>
+            
+            {/* <HashLink className="nav-link" to="/#contactus"  smooth>Contact Us</HashLink> */}
           </div>
           <div className="d-flex align-items-center">
             {user ? (
               <div className="d-flex align-items-center">
-              <div>
-                <Button
-                  variant="text"
-                  className="text-white bg-dark border border-dark"
-                  onClick={() => logOut()}
-                >
-                  Logout
-                </Button>
+                <div>
+                  <Button
+                    variant="text"
+                    className="text-white bg-dark border border-dark"
+                    onClick={() => logOut()}
+                  >
+                    Logout
+                  </Button>
                 </div>
                 <div className="m-2">
                   <p className="m-0">
