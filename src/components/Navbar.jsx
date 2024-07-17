@@ -64,6 +64,7 @@ export default function Navbar() {
             <Link className="nav-link" to="/costings">
               Costings
             </Link>
+            
             <Link className="nav-link" to="/about">
               About Us
             </Link>
@@ -86,7 +87,7 @@ export default function Navbar() {
                   </Button>
                 </div>
                 <div className="m-2">
-                  <p className="m-0">
+                  <p className="m-0 text-white">
                     <i>Welcome</i>
                     <b> {user?.name.toUpperCase()} !!! </b>
                   </p>

@@ -1,6 +1,13 @@
 import React from "react";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button } from "@mui/material";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import ClearIcon from '@mui/icons-material/Clear';
 function Card({ product, imageURL }) {
+  const deleteProduct = async ()=>{
+    await deleteDoc(doc(db, "products", JSON.stringify(product?.id)));
+  }
   console.log(product, "products");
   return (
     <div>
@@ -9,6 +16,11 @@ function Card({ product, imageURL }) {
           <div className="d-flex flex-column gap-1 text-align-end">
             <span class="badge badge-pill bg-success">{product.type}</span>
           </div>
+          {/* <div> */}
+            <div className="cancelBtn-pos">
+              <ClearIcon sx={{ color: "white" }}  onClick = {deleteProduct} />
+            </div>
+          {/* </div> */}
           <div className="d-flex justify-content-between m-2">
             <span class="badge badge-pill bg-success">
               Quantity {product.quantity} Pcs
@@ -41,14 +53,13 @@ function Card({ product, imageURL }) {
             {/* <div className="d-inline h-100 fs-12"> {product.price}</div> */}
           </div>
           <p className="card-text">
-            <span >
+            <span>
               <b>Description</b>
               <br />
             </span>
-            <span className="fs-13">
-            {product.description}
-            </span>
+            <span className="fs-13">{product.description}</span>
           </p>
+
           {/* <div className="container w-100">
             Select Quantity
             <select name="" id="" className="m-2 h-100  bg-success rounded">

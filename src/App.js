@@ -6,6 +6,7 @@ import Dashboard from './screens/dashboard';
 import About from './screens/about';
 import ContactUs from './screens/contactUs'
 import Costing from './screens/costings'
+import { CurrencyRates } from './screens/currencyRates';
 import {
   BrowserRouter as Router,
   Routes,
@@ -46,6 +47,8 @@ function App() {
         <Route path="p-form" element={<ProductForms />} />
         <Route path="/contactus" element={<ContactUs/>} />
         <Route path="/costings" element={<Costing/>} />
+        {/* <Route path="/currencyRates" element={<CurrencyRates/>} /> */}
+
         {/* <Route path="/addProductCat" element={<ProductCatForm/>} /> */}
 
 

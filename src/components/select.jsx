@@ -1,20 +1,25 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-export default function BasicSelect({label}) {
-  const [age, setAge] = React.useState('');
+export default function BasicSelect({ label, options, values }) {
+  const [age, setAge] = React.useState("");
+  const [currVal, setCurrVal] = React.useState("");
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
-
+  React.useEffect(()=>{
+    const findRes= values?.find((x)=>x?.code == age)
+    setCurrVal(findRes)
+  },[age])
+  console.log("Options", options);
   return (
-    <Box >
-      <FormControl >
+    <Box>
+      <FormControl>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -23,10 +28,12 @@ export default function BasicSelect({label}) {
           label="Age"
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {options?.map((opt , i) => {
+            return <MenuItem key = {i} value={opt}>{opt}</MenuItem>
+         
+          })}
         </Select>
+        {currVal?.value}
       </FormControl>
     </Box>
   );

@@ -3,6 +3,9 @@ import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { useState } from "react";
 import { ProductTypes } from "../enums/enums";
 import { Link } from "react-router-dom";
+import ClearIcon from "@mui/icons-material/Clear";
+import { deleteDoc } from "firebase/firestore";
+
 import {
   getStorage,
   ref,
@@ -31,6 +34,7 @@ function ProductForms() {
   const [inputValue, setInputValue] = useState("");
   const [hideSize, setHideSize] = useState(false);
   const [imageUpload, setImageUpload] = useState(null);
+  const [showCategory, setShowCategory] = useState(false);
 
   const imagesListRef = ref(storage, "images/");
 
@@ -139,13 +143,17 @@ function ProductForms() {
   const addProduct = () => {
     console.log("Finaal Pro", selectedProduct);
     const id = Math.round(Math.random() * 1000);
+    // setselectedProduct({...selectedProduct,id:id})
+    let obj = { ...selectedProduct, id: id };
+
     const cityRef = doc(db, "products", JSON.stringify(id));
-    setDoc(cityRef, selectedProduct);
+    setDoc(cityRef, obj);
   };
   const addProductCat = () => {
     const id = Math.round(Math.random() * 1000);
+    let obj = { ...productCat, id: id };
     const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
-    setDoc(productCatRef, productCat);
+    setDoc(productCatRef, obj);
   };
   const getProductCategory = async () => {
     setProductCatArr([]);
@@ -157,6 +165,9 @@ function ProductForms() {
       });
       setProductCatArr(productsCatArray);
     }
+  };
+  const deleteCategory = async (id) => {
+    await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
   };
   return (
     <>
@@ -179,7 +190,38 @@ function ProductForms() {
           <Button variant="outlined" color="success" onClick={addProductCat}>
             Add Category
           </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={()=>{showCategory ? setShowCategory(false) : setShowCategory(true)}}
+          >
+            {showCategory ? 'Hide' : 'Show'} All Category
+          </Button>
         </div>
+        {showCategory ? (
+          <div className="maxWidthCat">
+            <ul className="list-group">
+              {productCatArr.map((category) => {
+                return (
+                  // d-flex align-items-center justify-content-between maxWidthCat
+                  <div >
+                    <li className="list-group-item d-flex align-items-center justify-content-between">
+                      {category?.CategoryName.slice(0, 1).toUpperCase() +
+                        category?.CategoryName.slice(1)}
+                      <Button
+                        onClick={() => {
+                          deleteCategory(category?.id);
+                        }}
+                      >
+                        <ClearIcon />
+                      </Button>
+                    </li>
+                  </div>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
         <hr
           id="hr-success"
           style={{

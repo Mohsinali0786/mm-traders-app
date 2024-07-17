@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BasicSelect from "../components/select";
 import { RatioCostings } from "../components/ratioCosting";
+import { CurrencyRates } from "./currencyRates";
 import {
   TextField,
   Checkbox,
@@ -16,6 +17,7 @@ export default function Costing() {
 
   const [showFabricGSM, setShowFabricGSM] = useState(true);
   const [showFabricRatio, setShowFabricRatio] = useState(false);
+  const [showCurrencies, setShowCurrencies] = useState(false);
   const [showLabel, setShowLabel] = useState("Fabric GSM Calculator");
 
   const onChange = (e) => {
@@ -49,10 +51,17 @@ export default function Costing() {
       case "Fabric GSM Calculator":
         setShowFabricGSM(true);
         setShowFabricRatio(false);
+        setShowCurrencies(false);
         break;
       case "Fabric Ratio":
         setShowFabricGSM(false);
         setShowFabricRatio(true);
+        setShowCurrencies(false);
+        break;
+      case "Currencies":
+        setShowFabricGSM(false);
+        setShowFabricRatio(false);
+        setShowCurrencies(true);
         break;
     }
   };
@@ -76,7 +85,13 @@ export default function Costing() {
           clickable={true}
           onClick={(e) => showCaluclationTabs("Fabric Ratio")}
         />
-        <Chip label="success" color="success" />
+        <Chip
+          label="Currencies"
+          color="success"
+          value="currencies"
+          clickable={true}
+          onClick={(e) => showCaluclationTabs("Currencies")}
+        />
         <Chip label="success" color="success" />
         <Chip label="success" color="success" />
         <Chip label="success" color="success" />
@@ -214,15 +229,14 @@ export default function Costing() {
           </div>
         ) : showFabricRatio ? (
           <>
-          <RatioCostings/>
+            <RatioCostings />
           </>
         ) : null}
+        {showCurrencies ? <CurrencyRates /> : null}
       </fieldset>
     </div>
   );
 }
-const addRow = ()=>{
-  return (
-    <tr></tr>
-  )
-}
+const addRow = () => {
+  return <tr></tr>;
+};
