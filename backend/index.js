@@ -17,7 +17,13 @@ app.use((req, res, next) => {
   );
   next();
 })
-app.use(cors());
+app.use(cors(
+  {
+    origin:"https://mm-trader-app.vercel.app",
+    methods:["POST","GET"],
+    credentials:true
+  }
+));
 app.use("/api", userRoutes)
 // app.use("/api",require("./routes/loginUser"))
 
