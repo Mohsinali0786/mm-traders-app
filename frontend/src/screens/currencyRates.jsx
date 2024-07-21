@@ -11,7 +11,7 @@ export function CurrencyRates() {
   
   const getAllCurraencyUpdates = async () => {
     await axios
-      .get(`http://localhost:5000/api/getCurrencies`)
+      .get(`https://mm-trader-app.vercel.app/api/getCurrencies`)
       .then((response) => {
         console.log("Dtaa", Object.keys(response?.data?.data));
         console.log("Dtaa", Object.values(response?.data?.data));

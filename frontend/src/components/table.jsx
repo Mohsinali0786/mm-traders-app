@@ -89,7 +89,7 @@ export default function DataTable() {
   const updateUser = async (rowId) => {
     console.log(rowId, "selectedRowId");
     console.log(role, "Role Updated");
-    const response = await fetch(`http://localhost:5000/api/updateRole/${rowId}`, {
+    const response = await fetch(`https://mm-trader-app.vercel.app/api/updateRole/${rowId}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -102,7 +102,7 @@ export default function DataTable() {
     console.log("Get Data");
   }, []);
   const getData = async (e) => {
-    const response = await fetch("http://localhost:5000/api/getUser", {
+    const response = await fetch("https://mm-trader-app.vercel.app/api/getUser", {
       method: "GET",
       headers: {
         "content-type": "application/json",
