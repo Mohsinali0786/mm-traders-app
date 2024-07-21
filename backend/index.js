@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 })
 app.use(cors(
   {
-    origin:"https://mm-trader-app.vercel.app",
+    origin:"https://mm-traders-app-frontend.vercel.app",
     methods:["POST","GET"],
     credentials:true
   }
