@@ -71,31 +71,29 @@ export default function Costing() {
   }, [gsmCalParams, gsm]);
   return (
     <div>
-      <Stack className="m-4" direction="row" spacing={1}>
-        <Chip
-          label="Fabric GSM Calculator"
-          color="success"
-          clickable={true}
-          onClick={(e) => showCaluclationTabs("Fabric GSM Calculator")}
-        />
-        <Chip
-          label="Fabric Ratio"
-          color="success"
-          value="FabricRatio"
-          clickable={true}
-          onClick={(e) => showCaluclationTabs("Fabric Ratio")}
-        />
-        <Chip
-          label="Currencies"
-          color="success"
-          value="currencies"
-          clickable={true}
-          onClick={(e) => showCaluclationTabs("Currencies")}
-        />
-        <Chip label="success" color="success" />
-        <Chip label="success" color="success" />
-        <Chip label="success" color="success" />
-      </Stack>
+      <div className="d-flex justify-content-between">
+        <Stack className="m-4" direction="row" spacing={1}>
+          <Chip
+            label="Fabric GSM Calculator"
+            color="success"
+            clickable={true}
+            onClick={(e) => showCaluclationTabs("Fabric GSM Calculator")}
+          />
+          <Chip
+            label="Fabric Ratio"
+            color="success"
+            value="FabricRatio"
+            clickable={true}
+            onClick={(e) => showCaluclationTabs("Fabric Ratio")}
+          />
+        </Stack>
+        <div className="d-flex justify-content-end">
+          <div className="currenciesBox text-center">
+            <span >Dollar Rate</span>
+            <CurrencyRates />
+          </div>
+        </div>
+      </div>
       <fieldset>
         <legend>{showLabel}</legend>
         {showFabricGSM ? (
@@ -232,7 +230,7 @@ export default function Costing() {
             <RatioCostings />
           </>
         ) : null}
-        {showCurrencies ? <CurrencyRates /> : null}
+        {/* {showCurrencies ? <CurrencyRates /> : null} */}
       </fieldset>
     </div>
   );

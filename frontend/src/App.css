@@ -132,3 +132,10 @@ table {
 .maxWidthCat{
   max-width: 300px;
 }
+.currenciesBox{
+  width: 250px;
+  border: 1px solid;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+}
