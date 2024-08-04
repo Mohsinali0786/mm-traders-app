@@ -5,9 +5,10 @@ import Footer from "../components/Footer";
 // import {products} from '../data'
 import EnhancedTable from "../components/table";
 import ContactUs from "./contactUs";
-import slider1 from '../logos/slider1.jpeg'
-import slider2 from '../logos/slider2.jpg'
-import slider3 from '../logos/slider3.jpeg'
+import slider1 from "../logos/slider1.jpeg";
+import slider2 from "../logos/slider2.jpg";
+import slider3 from "../logos/slider3.jpeg";
+import SearchIcon from "@mui/icons-material/Search";
 // =============================================
 import { listAll, getDownloadURL, ref } from "firebase/storage";
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
@@ -18,7 +19,7 @@ function Home() {
   const imagesListRef = ref(storage, "productImages/");
   const [allProducts, setAllProducts] = useState([]);
   const [productCatArr, setProductCatArr] = useState([]);
-  const [searchProduct, setSearchProduct] = useState('');
+  const [searchProduct, setSearchProduct] = useState("");
 
   useEffect(() => {
     const getData = async () => {
@@ -50,8 +51,14 @@ function Home() {
   const sizes = ["small", "medium", "large", "x-large"];
   // console.log('======>' , imageUrls)
   const getImageUrl = (product) => {
-    let reqImagesUrl = imageUrls.find((x) => x?.location == product?.imageURL);
-    return reqImagesUrl?.url;
+    // let imageURLSARR= []
+    let reqImagesUrl = product?.imageURL?.map((y)=>(
+      imageUrls.find((x) => x?.location == y)))
+      // console.log('reqImagesUrl',reqImagesUrl)
+      // imageURLSARR.push(reqImagesUrl)
+      return reqImagesUrl 
+    // console.log('imageURLSARR',imageURLSARR)
+    // return imageURLSARR;
   };
   const getProductCategory = async () => {
     setProductCatArr([]);
@@ -73,8 +80,8 @@ function Home() {
         {/* <Carousel /> */}
         {/* Carousel Start */}
         <div
-          id="carouselExampleCaptions"
-          className="carousel slide"
+          id="carouselExampleCaptions "
+          className="carousel slide carouselHide"
           data-bs-ride="false"
           style={{ objectFit: "contain" }}
         >
@@ -101,14 +108,14 @@ function Home() {
             ></button>
           </div>
           <div className="carousel-inner" id="carousel">
-            <div className="carousel-caption" style={{ zIndex: 10 }}>
+            <div className="carousel-caption d-none d-sm-inline" style={{ zIndex: 10 }}>
               <form className="d-flex">
                 <input
                   className="form-control mr-sm-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
-                  onChange={(e)=>setSearchProduct(e.target.value)}
+                  onChange={(e) => setSearchProduct(e.target.value)}
                 />
                 <button
                   className="btn btn-outline-success my-2 my-sm-0 text-white bg-success"
@@ -168,8 +175,14 @@ function Home() {
 
         {/* Carousel End */}
       </div>
-      <div className="m-2">
+      <div className="m-2 mobView-card-mainDiv">
+        <div className="d-flex justify-content-between w-100">
         <h4>All Products</h4>
+        <div className="d-sm-none border w-50 d-flex align-items-center">
+          <input className="mb-searchInp  border-0 w-100" placeholder="Search"/>
+          <SearchIcon/>
+        </div>
+        </div>
         <div className="container m-0">
           {productCatArr?.map((data) => {
             return (
@@ -191,7 +204,11 @@ function Home() {
                 ) : null}
 
                 {allProducts
-                  .filter((e, i) => e?.type == data?.CategoryName && (e.Name.toLowerCase().includes(searchProduct.toLowerCase())))
+                  .filter(
+                    (e, i) =>
+                      e?.type == data?.CategoryName &&
+                      e.Name.toLowerCase().includes(searchProduct.toLowerCase())
+                  )
                   .map((product) => {
                     {
                       return (

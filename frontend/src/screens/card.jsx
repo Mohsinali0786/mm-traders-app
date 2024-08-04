@@ -1,25 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
+// import ImageListComponent from "../components/imageList";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+
 function Card({ product, imageURL }) {
-  const deleteProduct = async ()=>{
+  console.log('imageURL',imageURL)
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
+  const deleteProduct = async () => {
     await deleteDoc(doc(db, "products", JSON.stringify(product?.id)));
-  }
+  };
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("loginData"));
+    if (user?.role == "admin") {
+      setIsUserAdmin(true);
+    }
+  }, []);
   console.log(product, "products");
   return (
-    <div>
+    <div className="mobView-card-InnerMainDiv">
       <div className="card mt-3" style={{ width: "18rem", height: "300px" }}>
         <div className="w-100">
-          <div className="d-flex flex-column gap-1 text-align-end">
-            <span class="badge badge-pill bg-success">{product.type}</span>
-          </div>
-          {/* <div> */}
-            <div className="cancelBtn-pos">
-              <ClearIcon sx={{ color: "white" }}  onClick = {deleteProduct} />
+          {isUserAdmin ? (
+            <div className="text-end">
+              <span class="badge badge-pill bg-success">
+                <ClearIcon sx={{ color: "whiite" }} onClick={deleteProduct} />
+              </span>
             </div>
+          ) : null}
+          {/* <div> */}
+          {/* <div className="cancelBtn-pos">
+              <ClearIcon sx={{ color: "white" }}  onClick = {deleteProduct} />
+            </div> */}
           {/* </div> */}
           <div className="d-flex justify-content-between m-2">
             <span class="badge badge-pill bg-success">
@@ -31,11 +47,31 @@ function Card({ product, imageURL }) {
           </div>
         </div>
         <div className="text-center">
-          <img
+          {/* <img
             className="card-img-top w-50 productImage"
             src={imageURL}
             alt="Card image cap"
-          />
+          /> */}
+          {/* <ImageListComponent imageURLS={product?.imageURL}/> */}
+          <ImageList  cols={4} rowHeight={50}>
+            {imageURL?.map((item) =>            {
+              // console.log('item?.url',item)
+             return(
+               <ImageListItem key={item?.url}>
+                <img
+                  srcSet={`${item?.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${item?.url}?w=164&h=164&fit=crop&auto=format`}
+                  // alt={item.title}
+                  loading="lazy"
+                  className="btn h50"
+                  onClick={()=> window.open(`${item?.url}`, '_blank')}
+                />
+              </ImageListItem>
+             )
+
+            } 
+            )}
+          </ImageList>
         </div>
         <div className="card-body">
           <div className="d-flex align-items-center justify-content-center">
@@ -52,7 +88,7 @@ function Card({ product, imageURL }) {
             </div> */}
             {/* <div className="d-inline h-100 fs-12"> {product.price}</div> */}
           </div>
-          <p className="card-text">
+          <p className="card-text descriptionHeight">
             <span>
               <b>Description</b>
               <br />

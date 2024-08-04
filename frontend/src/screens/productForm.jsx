@@ -33,8 +33,10 @@ import { v4 } from "uuid";
 function ProductForms() {
   const [inputValue, setInputValue] = useState("");
   const [hideSize, setHideSize] = useState(false);
-  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUpload, setImageUpload] = useState([]);
   const [showCategory, setShowCategory] = useState(false);
+  const [fileUpload, setFileUpload] = useState(false);
+
 
   const imagesListRef = ref(storage, "images/");
 
@@ -44,7 +46,7 @@ function ProductForms() {
     price: 0,
     description: "",
     sizes: [],
-    imageURL: "",
+    imageURL: [],
     type: "",
   });
   const [productCat, setProductCat] = useState({});
@@ -62,6 +64,18 @@ function ProductForms() {
         [e.target.name]: e.target.value,
       });
     }
+  }
+  const onSelectImage = (e) =>{
+    if(e.target.files.length  > 4)
+      {
+        alert('Only 4 file Can be uplaoded')
+        setImageUpload([])
+        e.target.value=''
+        return
+      } 
+      else{
+        setImageUpload(e.target.files)
+      }
   }
   const onSelecteProduct = (e) => {
     switch (e.target.value) {
@@ -89,22 +103,35 @@ function ProductForms() {
     }
     setHideSize(true);
   };
-  const uploadFile = (e) => {
+  const uploadFile = async  (e) => {
     e.preventDefault();
     if (imageUpload === null) {
       //   toastifyError("Please select an image");
       return;
     }
     // const imageRef = ref(storage, `${selectedProduct?.name}/${imageUpload.name + v4()}`);
-    const imageRef = ref(storage, `productImages/${imageUpload?.name}`);
+    console.log('Image Upload' , imageUpload)
+    let imageURLs=[]
+    for(let i=0; i<imageUpload.length; i++){
+      const imageRef = ref(storage, `productImages/${imageUpload[i]?.name}`);
 
-    uploadBytes(imageRef, imageUpload)
-      .then((snapshot) => {
-        console.log(snapshot, "snapshot.ref");
-        setselectedProduct({
-          ...selectedProduct,
-          imageURL: snapshot.ref?._location?.path_,
+      await uploadBytes(imageRef, imageUpload[i])
+        .then((snapshot) => {
+          imageURLs.push(snapshot.ref?._location?.path_)
+          // console.log(snapshot, "snapshot.ref");
+          // console.log(imageURLs, "imageURLs");
+          setselectedProduct({
+            ...selectedProduct,
+            imageURL: imageURLs,
+          });
+      
+        })
+        .catch((error) => {
+          console.log(error, "error");
+          // toastifyError(error.message);
         });
+    }
+    setFileUpload(true)
         // listAll(imagesListRef).then((response) => {
         //   response.items.forEach((item) => {
         //     getDownloadURL(item).then((url) => {
@@ -112,11 +139,6 @@ function ProductForms() {
         //     });
         //   });
         // });
-      })
-      .catch((error) => {
-        console.log(error, "error");
-        // toastifyError(error.message);
-      });
   };
   useEffect(() => {
     getProductCategory();
@@ -304,16 +326,16 @@ function ProductForms() {
                 }
               />
             </FormControl>
-
-            <Input
+<div>
+  
+            <input
               label="Image"
               placeholder="Choose image"
               accept="image/png,image/jpeg"
               type="file"
               className="m-2"
-              onChange={(e) => {
-                setImageUpload(e.target.files[0]);
-              }}
+              multiple
+              onChange={(e) => onSelectImage(e)}
             />
             <Button
               onClick={uploadFile}
@@ -323,6 +345,7 @@ function ProductForms() {
             >
               Upload
             </Button>
+</div>
             {/* {
             hideSize ? 
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -356,7 +379,7 @@ function ProductForms() {
           </div>
         </Box>
         <div className="d-flex justify-content-end">
-          <Button variant="outlined" color="success" onClick={addProduct}>
+          <Button variant="outlined" color="success" onClick={addProduct} disabled={!fileUpload} >
             Add Product
           </Button>
         </div>

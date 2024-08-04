@@ -42,7 +42,7 @@ export function CurrencyRates() {
       {loading ? (
         <CircularIndeterminate />
       ) : (
-        <div className="d-flex gap-2 align-items-center justify-content-between">
+        <div className="d-flex gap-2 align-items-center justify-content-between ">
           <BasicSelect
             options={allOptions}
             values={allCurrencies}

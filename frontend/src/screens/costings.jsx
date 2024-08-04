@@ -19,6 +19,8 @@ export default function Costing() {
   const [showFabricRatio, setShowFabricRatio] = useState(false);
   const [showCurrencies, setShowCurrencies] = useState(false);
   const [showLabel, setShowLabel] = useState("Fabric GSM Calculator");
+  const [isReedYarnDenier, setIsReedYarnDenier] = useState(false);
+  const [isPickYarnDenier, setIsPickYarnDenier] = useState(false);
 
   const onChange = (e) => {
     setGsmCalParams({
@@ -28,11 +30,22 @@ export default function Costing() {
   };
   const gsmCalculation = (e) => {
     // return ((gsmCalculation?.reed/ gsmCalculation?.reedYarn)+ (gsmCalculation?.reeds))
+    let denierReedYarn = 0;
+    let denierPickYarn = 0;
+    if (isReedYarnDenier) {
+      denierReedYarn = 5315 / gsmCalParams?.reedYarn;
+      console.log('isReedYarnDenier',denierReedYarn)
+    }
+    if (isPickYarnDenier) {
+      denierPickYarn = 5315 / gsmCalParams?.pickYarn;
+      console.log('isPickYarnDenier',denierPickYarn)
+    }
     let gsmCal =
-      +(
-        gsmCalParams?.reed / gsmCalParams?.reedYarn +
-        gsmCalParams?.pick / gsmCalParams?.pickYarn
-      ) * 25;
+      +(gsmCalParams?.reed / (denierReedYarn > 0
+        ? denierReedYarn
+        : gsmCalParams?.reedYarn) + gsmCalParams?.pick / (denierPickYarn > 0
+        ? denierPickYarn
+        : gsmCalParams?.pickYarn)) * 25;
     setGsm(Number(gsmCal.toFixed(4)));
   };
   const fabricPerKg = () => {
@@ -71,7 +84,7 @@ export default function Costing() {
   }, [gsmCalParams, gsm]);
   return (
     <div>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-sm-between flex-column flex-sm-row justify-content-sm-start">
         <Stack className="m-4" direction="row" spacing={1}>
           <Chip
             label="Fabric GSM Calculator"
@@ -87,9 +100,9 @@ export default function Costing() {
             onClick={(e) => showCaluclationTabs("Fabric Ratio")}
           />
         </Stack>
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-md-between justify-content-center">
           <div className="currenciesBox text-center">
-            <span >Dollar Rate</span>
+            <span>Dollar Rate</span>
             <CurrencyRates />
           </div>
         </div>
@@ -101,42 +114,50 @@ export default function Costing() {
             <div className="row m-4">
               {isGSMKnown ? (
                 <div className="col-12 col-sm-6 col-md-3 my-4">
-                  <TextField
-                    id="outlined-number"
-                    onChange={onChange}
-                    // value={selectedProduct?.quantity}
-                    label="Reed Yarn"
-                    name="reedYarn"
-                    type="text"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    inputProps={{
-                      inputMode: "numeric",
-                      pattern: "[d]{0,999}",
-                      maxlength: 3,
-                    }}
-                  />
+                  <div className="d-flex">
+                    <TextField
+                      id="outlined-number"
+                      onChange={onChange}
+                      // value={selectedProduct?.quantity}
+                      label="Reed Yarn"
+                      name="reedYarn"
+                      type="text"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        inputMode: "numeric",
+                        pattern: "[d]{0,999}",
+                        maxlength: 3,
+                      }}
+                    />
+                    <Checkbox onChange={() => setIsReedYarnDenier(true)} />
+                  </div>
                 </div>
               ) : null}
               {isGSMKnown ? (
                 <div className="col-12 col-sm-6 col-md-3 my-4">
-                  <TextField
-                    id="outlined-number"
-                    onChange={onChange}
-                    //   value={selectedProduct?.quantity}
-                    label="Pick Yarn"
-                    name="pickYarn"
-                    type="text"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    inputProps={{
-                      inputMode: "numeric",
-                      pattern: "[d]{0,999}",
-                      maxlength: 3,
-                    }}
-                  />
+                  <div className="d-flex">
+                    <TextField
+                      id="outlined-number"
+                      onChange={onChange}
+                      //   value={selectedProduct?.quantity}
+                      label="Pick Yarn"
+                      name="pickYarn"
+                      type="text"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      inputProps={{
+                        inputMode: "numeric",
+                        pattern: "[d]{0,999}",
+                        maxlength: 3,
+                      }}
+                    />
+                    <Checkbox onChange={() => setIsPickYarnDenier(true)} />
+                  </div>
                 </div>
               ) : null}
               {isGSMKnown ? (
@@ -148,6 +169,7 @@ export default function Costing() {
                     label="Reed"
                     name="reed"
                     type="text"
+                    fullWidth
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -165,6 +187,7 @@ export default function Costing() {
                     id="outlined-number"
                     onChange={onChange}
                     //   value={selectedProduct?.quantity}
+                    fullWidth
                     label="Pick"
                     name="pick"
                     type="text"
@@ -179,13 +202,34 @@ export default function Costing() {
                   />
                 </div>
               ) : null}
+
               <div className="col-12 col-sm-6 col-md-3 my-4">
+                <TextField
+                  id="outlined-number"
+                  onChange={onChange}
+                  //   value={selectedProduct?.quantity}
+                  label="Width"
+                  name="width"
+                  fullWidth
+                  type="text"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    inputMode: "numeric",
+                    pattern: "[d]{0,999}",
+                    maxlength: 3,
+                  }}
+                />
+              </div>
+              <div className="col-12 col-sm-6 col-md-6 my-4">
                 <TextField
                   id="outlined-number"
                   onChange={(e) => setGsm(e.target.value)}
                   value={gsm ? gsm : 0}
                   label="GSM"
                   name="gsm"
+                  fullWidth
                   type="text"
                   disabled={isGSMKnown}
                   InputLabelProps={{
@@ -201,24 +245,6 @@ export default function Costing() {
                   label="If you know GSM check this"
                   control={<Checkbox onChange={() => onCheck()} />}
                 ></FormControlLabel>
-              </div>
-              <div className="col-12 col-sm-6 col-md-3 my-4">
-                <TextField
-                  id="outlined-number"
-                  onChange={onChange}
-                  //   value={selectedProduct?.quantity}
-                  label="Width"
-                  name="width"
-                  type="text"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{
-                    inputMode: "numeric",
-                    pattern: "[d]{0,999}",
-                    maxlength: 3,
-                  }}
-                />
               </div>
               <div className="text-end">
                 Metre Fabric : {metreFabric ? metreFabric : 0} in 1 Kg
