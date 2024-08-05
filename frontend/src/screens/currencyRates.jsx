@@ -12,7 +12,8 @@ export function CurrencyRates() {
   const [defaultVal, setDefaultValue] = useState({});
   const getAllCurraencyUpdates = async () => {
     await axios
-      .get(`http://localhost:5000/api/getCurrencies`)
+      .get(`https://mm-trader-app.vercel.app/api/getCurrencies`)
+      // get(`http://localhost:5000/api/getCurrencies`)
       // .get(`https://mm-trader-app.vercel.app/api/getCurrencies`)
 
       .then((response) => {
