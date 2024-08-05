@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { HashLink } from "react-router-hash-link";
-
+import LogoutIcon from '@mui/icons-material/Logout';
 export default function Navbar() {
   let user = JSON.parse(localStorage.getItem("loginData"));
   const [loginBtn, setLoginBtn] = useState(true);
@@ -78,13 +78,15 @@ export default function Navbar() {
             {user ? (
               <div className="d-flex align-items-center">
                 <div>
-                  <Button
+                  <LogoutIcon 
+                  onClick={() => logOut()}
+                  />
+                  {/* <Button
                     variant="text"
                     className="text-white bg-dark border border-dark"
                     onClick={() => logOut()}
                   >
-                    Logout
-                  </Button>
+                  </Button> */}
                 </div>
                 <div className="m-2">
                   <p className="m-0 text-white">

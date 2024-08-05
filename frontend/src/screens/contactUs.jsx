@@ -6,10 +6,11 @@ import EmailIcon from "@mui/icons-material/Email";
 function ContactUs() {
   return (
     <div className="m-4">
-      <div className="bg-image">
+      <div className="bg-image d-lg-block d-none">
         <h1 className="text-white">Contact Us</h1>
       </div>
-      <div className="d-flex justify-content-around mt-2">
+      <h1 className="d-lg-none d-block text-center mb-2">Contact Us</h1>
+      <div className="d-lg-flex d-block justify-content-around mt-2">
         <div className="d-flex flex-column align-items-center">
           <div className="iconCircle bg-success mb-1">
             <PushPinIcon />

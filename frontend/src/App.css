@@ -79,10 +79,12 @@
 .bg-image {
   background-image: url("./assets/contactus.jpg");
   height: 300px;
-  width: 100%;
+  max-width: 100%;
   display: flex;
   align-items: center;
   padding: 20px;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .iconCircle {
   width: 100px;
