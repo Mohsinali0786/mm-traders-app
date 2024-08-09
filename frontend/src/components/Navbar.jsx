@@ -95,7 +95,7 @@ export default function Navbar() {
             
             {/* <HashLink className="nav-link" to="/#contactus"  smooth>Contact Us</HashLink> */}
           </div>
-          <div className="d-flex align-items-center">
+          <div className="d-md-flex align-items-center d-none">
             {user ? (
               <div className="d-flex align-items-center">
                 <div className="m-2">
