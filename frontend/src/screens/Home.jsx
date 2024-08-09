@@ -22,17 +22,6 @@ function Home() {
   const [searchProduct, setSearchProduct] = useState("");
 
   useEffect(() => {
-    const getData = async () => {
-      setAllProducts([]);
-      const querySnapshot = await getDocs(collection(db, "products"));
-      const productsArray = [];
-      if (querySnapshot) {
-        querySnapshot.forEach((doc) => {
-          productsArray.push(doc.data());
-        });
-        setAllProducts(productsArray);
-      }
-    };
     getData();
     listAll(imagesListRef).then((response) => {
       response.items.forEach((item) => {
@@ -48,8 +37,18 @@ function Home() {
     getProductCategory();
   }, []);
   useEffect(() => {}, localStorage.getItem("loginData"));
+  const getData = async () => {
+    setAllProducts([]);
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const productsArray = [];
+    if (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        productsArray.push(doc.data());
+      });
+      setAllProducts(productsArray);
+    }
+  };
   const sizes = ["small", "medium", "large", "x-large"];
-  // console.log('======>' , imageUrls)
   const getImageUrl = (product) => {
     // let imageURLSARR= []
     let reqImagesUrl = product?.imageURL?.map((y)=>(
@@ -71,6 +70,8 @@ function Home() {
       setProductCatArr(productsCatArray);
     }
   };
+  // console.log('productsArray' , productsArray)
+
   return (
     <div>
       {/* <div>

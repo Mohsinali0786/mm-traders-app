@@ -9,7 +9,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 
 function Card({ product, imageURL }) {
-  console.log('imageURL',imageURL)
+  console.log("imageURL", imageURL);
   const [isUserAdmin, setIsUserAdmin] = useState(false);
   const deleteProduct = async () => {
     await deleteDoc(doc(db, "products", JSON.stringify(product?.id)));
@@ -45,6 +45,16 @@ function Card({ product, imageURL }) {
               Price {product.price} $
             </span>
           </div>
+          {product?.sizes && product?.sizes.length > 0 ? (
+            <div className="d-flex justify-content-between align-items-center  m-2 ">
+              <span class="">Sizes</span>
+              <div className="d-flex gap-2">
+                {product?.sizes.map((x) => (
+                  <span class="badge badge-pill bg-success">{x}</span>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="text-center">
           {/* <img
@@ -53,24 +63,22 @@ function Card({ product, imageURL }) {
             alt="Card image cap"
           /> */}
           {/* <ImageListComponent imageURLS={product?.imageURL}/> */}
-          <ImageList  cols={4} rowHeight={50}>
-            {imageURL?.map((item) =>            {
+          <ImageList cols={4} rowHeight={50}>
+            {imageURL?.map((item) => {
               // console.log('item?.url',item)
-             return(
-               <ImageListItem key={item?.url}>
-                <img
-                  srcSet={`${item?.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${item?.url}?w=164&h=164&fit=crop&auto=format`}
-                  // alt={item.title}
-                  loading="lazy"
-                  className="btn h50"
-                  onClick={()=> window.open(`${item?.url}`, '_blank')}
-                />
-              </ImageListItem>
-             )
-
-            } 
-            )}
+              return (
+                <ImageListItem key={item?.url}>
+                  <img
+                    srcSet={`${item?.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${item?.url}?w=164&h=164&fit=crop&auto=format`}
+                    // alt={item.title}
+                    loading="lazy"
+                    className="btn h50"
+                    onClick={() => window.open(`${item?.url}`, "_blank")}
+                  />
+                </ImageListItem>
+              );
+            })}
           </ImageList>
         </div>
         <div className="card-body">

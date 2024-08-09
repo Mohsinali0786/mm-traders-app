@@ -4,8 +4,9 @@ import { useState } from "react";
 import { ProductTypes } from "../enums/enums";
 import { Link } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
+import CircularIndeterminate from "../components/spinner";
 import { deleteDoc } from "firebase/firestore";
-
+import { useNavigate } from "react-router-dom";
 import {
   getStorage,
   ref,
@@ -31,12 +32,14 @@ import {
 import { db, storage } from "../firebase";
 import { v4 } from "uuid";
 function ProductForms() {
+  const Navigate = useNavigate()
   const [inputValue, setInputValue] = useState("");
   const [hideSize, setHideSize] = useState(false);
   const [imageUpload, setImageUpload] = useState([]);
   const [showCategory, setShowCategory] = useState(false);
   const [fileUpload, setFileUpload] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [delLoading, setDelLoading] = useState(false);
 
   const imagesListRef = ref(storage, "images/");
 
@@ -51,6 +54,7 @@ function ProductForms() {
   });
   const [productCat, setProductCat] = useState({});
   const [productCatArr, setProductCatArr] = useState([]);
+  const [productLoader, setProductLoader] = useState(false);
 
   function onChange(e) {
     if (e.target.name == "quantity" || e.target.name == "price")
@@ -65,18 +69,16 @@ function ProductForms() {
       });
     }
   }
-  const onSelectImage = (e) =>{
-    if(e.target.files.length  > 4)
-      {
-        alert('Only 4 file Can be uplaoded')
-        setImageUpload([])
-        e.target.value=''
-        return
-      } 
-      else{
-        setImageUpload(e.target.files)
-      }
-  }
+  const onSelectImage = (e) => {
+    if (e.target.files.length > 4) {
+      alert("Only 4 file Can be uplaoded");
+      setImageUpload([]);
+      e.target.value = "";
+      return;
+    } else {
+      setImageUpload(e.target.files);
+    }
+  };
   const onSelecteProduct = (e) => {
     switch (e.target.value) {
       case "bedsheet":
@@ -100,45 +102,51 @@ function ProductForms() {
           type: e.target.value,
         });
         break;
+      case "fabric":
+        setselectedProduct({
+          ...selectedProduct,
+          // sizes: ["sm", "md", "large"],
+          type: e.target.value,
+        });
+        break;
     }
     setHideSize(true);
   };
-  const uploadFile = async  (e) => {
+  const uploadFile = async (e) => {
     e.preventDefault();
     if (imageUpload === null) {
       //   toastifyError("Please select an image");
       return;
     }
     // const imageRef = ref(storage, `${selectedProduct?.name}/${imageUpload.name + v4()}`);
-    console.log('Image Upload' , imageUpload)
-    let imageURLs=[]
-    for(let i=0; i<imageUpload.length; i++){
+    console.log("Image Upload", imageUpload);
+    let imageURLs = [];
+    for (let i = 0; i < imageUpload.length; i++) {
       const imageRef = ref(storage, `productImages/${imageUpload[i]?.name}`);
 
       await uploadBytes(imageRef, imageUpload[i])
         .then((snapshot) => {
-          imageURLs.push(snapshot.ref?._location?.path_)
+          imageURLs.push(snapshot.ref?._location?.path_);
           // console.log(snapshot, "snapshot.ref");
           // console.log(imageURLs, "imageURLs");
           setselectedProduct({
             ...selectedProduct,
             imageURL: imageURLs,
           });
-      
         })
         .catch((error) => {
           console.log(error, "error");
           // toastifyError(error.message);
         });
     }
-    setFileUpload(true)
-        // listAll(imagesListRef).then((response) => {
-        //   response.items.forEach((item) => {
-        //     getDownloadURL(item).then((url) => {
-        //       setImageUrls((prev) => [...prev, url]);
-        //     });
-        //   });
-        // });
+    setFileUpload(true);
+    // listAll(imagesListRef).then((response) => {
+    //   response.items.forEach((item) => {
+    //     getDownloadURL(item).then((url) => {
+    //       setImageUrls((prev) => [...prev, url]);
+    //     });
+    //   });
+    // });
   };
   useEffect(() => {
     getProductCategory();
@@ -162,20 +170,26 @@ function ProductForms() {
   //     });
   //   });
   // }, [])
-  const addProduct = () => {
+  const addProduct = async () => {
+    setProductLoader(true)
     console.log("Finaal Pro", selectedProduct);
     const id = Math.round(Math.random() * 1000);
     // setselectedProduct({...selectedProduct,id:id})
     let obj = { ...selectedProduct, id: id };
 
     const cityRef = doc(db, "products", JSON.stringify(id));
-    setDoc(cityRef, obj);
+    await setDoc(cityRef, obj);
+    setProductLoader(true)
+    Navigate('/')
   };
-  const addProductCat = () => {
+  const addProductCat = async () => {
+    setDelLoading(true);
     const id = Math.round(Math.random() * 1000);
     let obj = { ...productCat, id: id };
     const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
-    setDoc(productCatRef, obj);
+    await setDoc(productCatRef, obj);
+    await getProductCategory();
+    setDelLoading(false);
   };
   const getProductCategory = async () => {
     setProductCatArr([]);
@@ -189,8 +203,14 @@ function ProductForms() {
     }
   };
   const deleteCategory = async (id) => {
+    setDelLoading(true);
     await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
+    await getProductCategory();
+    console.log("productCatArr", productCatArr);
+    // setProductCatArr(productCatArr.filter((obj)=>obj?.id != id))
+    setDelLoading(false);
   };
+  useEffect(() => {}, [delLoading]);
   return (
     <>
       <div className="m-4">
@@ -198,50 +218,57 @@ function ProductForms() {
           <h5>Add Product Category</h5>
         </div>
 
-        <div className="d-flex gap-2 my-4">
+        <div className="d-flex flex-md-row flex-column gap-2 my-4">
           <TextField
             id="outlined-number"
             onChange={(e) =>
               setProductCat({ CategoryName: e.target.value.toLowerCase() })
             }
             value={productCat?.CategoryName}
-            label="Product Category"
+            label="Product Category Name"
             name="productCategory"
             type="text"
           />
           <Button variant="outlined" color="success" onClick={addProductCat}>
             Add Category
+            {loading ? <i class="fa fa-refresh fa-spin"></i> : null}
           </Button>
           <Button
             variant="outlined"
             color="success"
-            onClick={()=>{showCategory ? setShowCategory(false) : setShowCategory(true)}}
+            onClick={() => {
+              showCategory ? setShowCategory(false) : setShowCategory(true);
+            }}
           >
-            {showCategory ? 'Hide' : 'Show'} All Category
+            {showCategory ? "Hide" : "Show"} All Category
           </Button>
         </div>
         {showCategory ? (
           <div className="maxWidthCat">
-            <ul className="list-group">
-              {productCatArr.map((category) => {
-                return (
-                  // d-flex align-items-center justify-content-between maxWidthCat
-                  <div >
-                    <li className="list-group-item d-flex align-items-center justify-content-between">
-                      {category?.CategoryName.slice(0, 1).toUpperCase() +
-                        category?.CategoryName.slice(1)}
-                      <Button
-                        onClick={() => {
-                          deleteCategory(category?.id);
-                        }}
-                      >
-                        <ClearIcon />
-                      </Button>
-                    </li>
-                  </div>
-                );
-              })}
-            </ul>
+            {!delLoading ? (
+              <ul className="list-group">
+                {productCatArr.map((category) => {
+                  return (
+                    // d-flex align-items-center justify-content-between maxWidthCat
+                    <div>
+                      <li className="list-group-item d-flex align-items-center justify-content-between">
+                        {category?.CategoryName.slice(0, 1).toUpperCase() +
+                          category?.CategoryName.slice(1)}
+                        <Button
+                          onClick={() => {
+                            deleteCategory(category?.id);
+                          }}
+                        >
+                          <ClearIcon />
+                        </Button>
+                      </li>
+                    </div>
+                  );
+                })}
+              </ul>
+            ) : (
+              <CircularIndeterminate />
+            )}
           </div>
         ) : null}
         <hr
@@ -261,91 +288,122 @@ function ProductForms() {
           sx={{
             "& .MuiTextField-root": { m: 1 },
           }}
+          // className="my-1"
           noValidate
           autoComplete="off"
         >
-          <div>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-label">Type</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                // value={age}
-                label="Type"
-                onChange={(e) => onSelecteProduct(e)}
-              >
-                {productCatArr.map((x) => {
-                  return (
-                    <MenuItem value={x?.CategoryName}>
-                      {x?.CategoryName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            <TextField
-              required
-              id="outlined-required"
-              label="Required"
-              name="Name"
-              onChange={onChange}
-            />
-            <TextField
-              id="outlined-number"
-              onChange={onChange}
-              value={selectedProduct?.quantity}
-              label="Quantity"
-              name="quantity"
-              type="text"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[d]{0,11}",
-                maxlength: 2,
-              }}
-            />
-            <FormControl sx={{ m: 1 }} variant="filled">
-              <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-              <FilledInput
-                id="filled-adornment-amount"
+          <div className="row">
+            <div className="col-sm-12 col-md-3 my-2">
+              <FormControl sx={{ minWidth: "100%" }}>
+                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Type"
+                  fullWidth
+                  // className="w-sm-100"
+                  onChange={(e) => onSelecteProduct(e)}
+                >
+                  {productCatArr.map((x) => {
+                    return (
+                      <MenuItem value={x?.CategoryName}>
+                        {x?.CategoryName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
+
+            <div className="col-sm-12 col-md-3">
+              <TextField
+                required
+                id="outlined-required"
+                label="Title"
+                name="Name"
+                className="my-2 mx-0"
                 onChange={onChange}
-                value={selectedProduct?.price}
-                name="price"
+                fullWidth
+                // className="my-2 mx-0 w-100 w-md-25"
+              />
+            </div>
+            <div className="col-sm-12 col-md-3">
+              <TextField
+                id="outlined-number"
+                className="my-2 mx-0"
+                fullWidth
+                onChange={onChange}
+                value={selectedProduct?.quantity}
+                label="Quantity"
+                name="quantity"
+                type="text"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 inputProps={{
                   inputMode: "numeric",
                   pattern: "[d]{0,11}",
-                  maxlength: 3,
+                  maxlength: 2,
                 }}
-                startAdornment={
-                  <InputAdornment position="start">$</InputAdornment>
-                }
               />
-            </FormControl>
-<div>
-  
-            <input
-              label="Image"
-              placeholder="Choose image"
-              accept="image/png,image/jpeg"
-              type="file"
-              className="m-2"
-              multiple
-              onChange={(e) => onSelectImage(e)}
-            />
-            <Button
-              onClick={uploadFile}
-              variant="outlined"
-              startIcon={<UploadFileIcon />}
-              color="success"
-            >
-              Upload
-            </Button>
-</div>
+            </div>
+            <div className="col-sm-12 col-md-3">
+              <FormControl
+                sx={{ minWidth: "100%" }}
+                className="mt-md-2"
+                variant="filled"
+              >
+                <InputLabel htmlFor="filled-adornment-amount">
+                  Amount
+                </InputLabel>
+                <FilledInput
+                  id="filled-adornment-amount"
+                  onChange={onChange}
+                  value={selectedProduct?.price}
+                  name="price"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    inputMode: "numeric",
+                    pattern: "[d]{0,11}",
+                    maxlength: 3,
+                  }}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                />
+              </FormControl>
+            </div>
+            <div className="col-12 mt-md-0 mt-2">
+              <div className="container-fluid p-0">
+                <div className="row">
+                  <div className="col-sm-12 col-md-9 p-1">
+                    <input
+                      label="Image"
+                      placeholder="Choose image"
+                      accept="image/png,image/jpeg"
+                      type="file"
+                      multiple
+                      className="w-100 m-2"
+                      onChange={(e) => onSelectImage(e)}
+                    />
+                  </div>
+                  <div className="col-sm-12 col-md-2 d-flex justify-content-end">
+                    <Button
+                      onClick={uploadFile}
+                      variant="outlined"
+                      startIcon={<UploadFileIcon />}
+                      color="success"
+                    >
+                      Upload
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* {
             hideSize ? 
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -367,21 +425,35 @@ function ProductForms() {
             :
             null
           } */}
-            <TextField
-              id="outlined-multiline-static"
-              label="Product description"
-              name="description"
-              multiline
-              rows={4}
-              onChange={onChange}
-              fullWidth
-            />
+            <div className="col-12 p-1">
+              <TextField
+                id="outlined-multiline-static"
+                label="Product description"
+                name="description"
+                multiline
+                rows={4}
+                onChange={onChange}
+                fullWidth
+              />
+            </div>
           </div>
         </Box>
-        <div className="d-flex justify-content-end">
-          <Button variant="outlined" color="success" onClick={addProduct} disabled={!fileUpload} >
+        <div className="d-flex justify-content-end align-items-center">
+          <Button
+            variant="contained"
+            color="success"
+            onClick={addProduct}
+            disabled={!fileUpload || productLoader}
+          >
             Add Product
           </Button>
+          {productLoader ? (
+            <div className="d-flex align-items-center">
+              <div class="spinner-border productLoader text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </>

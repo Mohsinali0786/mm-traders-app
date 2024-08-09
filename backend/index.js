@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 })
 app.use(express.json())
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace '*' with your allowed origin
+  res.setHeader('Access-Control-Allow-Origin', 'https://mm-traders-app-frontend.vercel.app'); // Replace '*' with your allowed origin
   res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept',
@@ -19,9 +19,9 @@ app.use((req, res, next) => {
 })
 app.use(cors(
   {
-    origin:"https://mm-traders-app-frontend.vercel.app",
-    methods:["POST","GET"],
-    credentials:true
+    // origin:"https://mm-traders-app-frontend.vercel.app",
+    // methods:["POST","GET"],
+    // credentials:true
   }
 ));
 app.use("/api", userRoutes)

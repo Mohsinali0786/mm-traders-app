@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../logos/MM Traders_transparent.png";
 function SignUp() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [credential, setCredentials] = useState({
     name: "",
     email: "",
@@ -11,22 +12,31 @@ function SignUp() {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://mm-trader-app.vercel.app/api/createUser", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        name: credential.name,
-        email: credential.email,
-        password: credential.password,
-        location: credential.geolocation,
-      }),
-    });
+    setLoading(true);
+    const response = await fetch(
+      "https://mm-trader-app.vercel.app/api/createUser",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credential.name,
+          email: credential.email,
+          password: credential.password,
+          location: credential.geolocation,
+        }),
+      }
+    );
     const json = await response.json();
     console.log(json.success, "success");
-    if (!json.success) return alert(json.message ? json.message : "Enter valid credentials", json.errors);
-    navigate('/login')
+    if (!json.success)
+      return alert(
+        json.message ? json.message : "Enter valid credentials",
+        json.errors
+      );
+    navigate("/login");
+    setLoading(false);
   };
   const onChange = (e) => {
     setCredentials({ ...credential, [e.target.name]: e.target.value });
@@ -102,8 +112,9 @@ function SignUp() {
           </label>
         </div> */}
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn m-3  btn-success">
+            <button type="submit" disabled={loading} className="btn m-3  btn-success">
               Register
+              {loading ? <i class="fa fa-refresh fa-spin"></i> : null}
             </button>
             <Link className="m-3 btn btn-success" to="/login">
               Already a User

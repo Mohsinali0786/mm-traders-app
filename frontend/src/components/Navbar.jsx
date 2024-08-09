@@ -33,6 +33,27 @@ export default function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+        <div className="d-md-none d-flex w-100 justify-content-end">
+        <div className="d-flex align-items-center d-lg-none ">
+            {user ? (
+              <div className="d-flex align-items-center">
+                <div className="m-2">
+                  <p className="m-0 text-white">
+                    <i>Welcome</i>
+                    <b> {user?.name.toUpperCase()} !!! </b>
+                  </p>
+                </div>
+                <div>
+                  <LogoutIcon 
+                  onClick={() => logOut()}
+                  className="text-white"
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNavAltMarkup"
@@ -77,22 +98,17 @@ export default function Navbar() {
           <div className="d-flex align-items-center">
             {user ? (
               <div className="d-flex align-items-center">
-                <div>
-                  <LogoutIcon 
-                  onClick={() => logOut()}
-                  />
-                  {/* <Button
-                    variant="text"
-                    className="text-white bg-dark border border-dark"
-                    onClick={() => logOut()}
-                  >
-                  </Button> */}
-                </div>
                 <div className="m-2">
                   <p className="m-0 text-white">
                     <i>Welcome</i>
-                    <b> {user?.name.toUpperCase()} !!! </b>
                   </p>
+                  <p className="m-0 text-white loginNameEllipse"><b> {user?.name.toUpperCase()} !!!</b></p>
+                </div>
+                <div>
+                  <LogoutIcon 
+                  onClick={() => logOut()}
+                  className="text-white pointer"
+                  />
                 </div>
               </div>
             ) : null}

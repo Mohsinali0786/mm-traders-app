@@ -8,9 +8,11 @@ function Login() {
     email: "",
     password: "",
   });
+  const [loading ,setLoading] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://mm-trader-app.vercel.app/api/loginUser", {
+    setLoading(true)
+    const response = await fetch("http://localhost:5000/api/loginUser", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -36,6 +38,7 @@ function Login() {
     navigate("/");
     localStorage.setItem("authToken", json.authToken);
     localStorage.setItem("loginData", JSON.stringify(json.userLogin));
+    setLoading(false)
   };
   const onChange = (e) => {
     setCredentials({ ...credential, [e.target.name]: e.target.value });
@@ -81,8 +84,15 @@ function Login() {
           </div>
           <div className="row gap-2">
             <div className="col-sm-12 col-md-3">
-              <button type="submit" className="btn btn-success w-100 login-btn">
+              <button
+                type="submit"
+                className="btn btn-success w-100 login-btn buttonload"
+                disabled={loading}
+              >
                 Login
+                {
+                  loading ?  <i class="fa fa-refresh fa-spin"></i> : null
+                }
               </button>
             </div>
             <div className="col-sm-12 col-md-3">
