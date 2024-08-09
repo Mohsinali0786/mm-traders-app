@@ -39,10 +39,10 @@ function Card({ product, imageURL }) {
           {/* </div> */}
           <div className="d-flex justify-content-between m-2">
             <span class="badge badge-pill bg-success">
-              Quantity {product.quantity} Pcs
+              Quantity {product.quantity} {product.unit}
             </span>
             <span class="badge badge-pill bg-success">
-              Price {product.price} $
+              Price {product.price} Rs
             </span>
           </div>
           {product?.sizes && product?.sizes.length > 0 ? (

@@ -7,6 +7,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CircularIndeterminate from "../components/spinner";
 import { deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import SimpleAlert from "../components/alertBox";
 import {
   getStorage,
   ref,
@@ -32,7 +33,7 @@ import {
 import { db, storage } from "../firebase";
 import { v4 } from "uuid";
 function ProductForms() {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [hideSize, setHideSize] = useState(false);
   const [imageUpload, setImageUpload] = useState([]);
@@ -55,6 +56,10 @@ function ProductForms() {
   const [productCat, setProductCat] = useState({});
   const [productCatArr, setProductCatArr] = useState([]);
   const [productLoader, setProductLoader] = useState(false);
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [unitType, setunitType] = useState([]);
+
 
   function onChange(e) {
     if (e.target.name == "quantity" || e.target.name == "price")
@@ -80,6 +85,7 @@ function ProductForms() {
     }
   };
   const onSelecteProduct = (e) => {
+    // console.log('Switch',productCatArr)
     switch (e.target.value) {
       case "bedsheet":
         setselectedProduct({
@@ -87,6 +93,7 @@ function ProductForms() {
           sizes: ["king", "queen", "twin"],
           type: e.target.value,
         });
+        setunitType(['Kg','Pcs'])
         break;
       case "towel":
         setselectedProduct({
@@ -94,6 +101,7 @@ function ProductForms() {
           sizes: ["sm", "md", "large"],
           type: e.target.value,
         });
+        setunitType(['Kg','Pcs'])
         break;
       case "garment":
         setselectedProduct({
@@ -101,6 +109,7 @@ function ProductForms() {
           sizes: ["sm", "md", "large"],
           type: e.target.value,
         });
+        setunitType(['Kg','Pcs'])
         break;
       case "fabric":
         setselectedProduct({
@@ -108,6 +117,8 @@ function ProductForms() {
           // sizes: ["sm", "md", "large"],
           type: e.target.value,
         });
+        setunitType(['Kg','Metre','Yard'])
+
         break;
     }
     setHideSize(true);
@@ -171,7 +182,7 @@ function ProductForms() {
   //   });
   // }, [])
   const addProduct = async () => {
-    setProductLoader(true)
+    setProductLoader(true);
     console.log("Finaal Pro", selectedProduct);
     const id = Math.round(Math.random() * 1000);
     // setselectedProduct({...selectedProduct,id:id})
@@ -179,17 +190,22 @@ function ProductForms() {
 
     const cityRef = doc(db, "products", JSON.stringify(id));
     await setDoc(cityRef, obj);
-    setProductLoader(true)
-    Navigate('/')
+    setProductLoader(true);
+    Navigate("/");
   };
   const addProductCat = async () => {
+    setLoading(true);
     setDelLoading(true);
     const id = Math.round(Math.random() * 1000);
     let obj = { ...productCat, id: id };
     const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
     await setDoc(productCatRef, obj);
+    setIsAlert(true);
+    setAlertMessage("Added Category Successfully");
     await getProductCategory();
     setDelLoading(false);
+    setLoading(false);
+    setIsAlert(false);
   };
   const getProductCategory = async () => {
     setProductCatArr([]);
@@ -205,10 +221,14 @@ function ProductForms() {
   const deleteCategory = async (id) => {
     setDelLoading(true);
     await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
+    setIsAlert(true);
+    setAlertMessage("Deleted Category Successfully");
     await getProductCategory();
     console.log("productCatArr", productCatArr);
     // setProductCatArr(productCatArr.filter((obj)=>obj?.id != id))
+    // alert("Deleted your selected Category");
     setDelLoading(false);
+    setIsAlert(false);
   };
   useEffect(() => {}, [delLoading]);
   return (
@@ -229,7 +249,12 @@ function ProductForms() {
             name="productCategory"
             type="text"
           />
-          <Button variant="outlined" color="success" onClick={addProductCat}>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={addProductCat}
+            disabled={loading}
+          >
             Add Category
             {loading ? <i class="fa fa-refresh fa-spin"></i> : null}
           </Button>
@@ -344,9 +369,36 @@ function ProductForms() {
                 inputProps={{
                   inputMode: "numeric",
                   pattern: "[d]{0,11}",
-                  maxlength: 2,
+                  maxlength: 5,
                 }}
               />
+            </div>
+            <div className="col-sm-12 col-md-3 my-2">
+              <FormControl sx={{ minWidth: "100%" }}>
+                <InputLabel id="demo-simple-select-label">Unit</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  disabled={!selectedProduct?.type}
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Type"
+                  fullWidth
+                  // className="w-sm-100"
+                  onChange={(e) => {        
+                    setselectedProduct({
+                    ...selectedProduct,
+                    unit: e.target.value,
+                  });}}
+                >
+                  {unitType.map((x) => {
+                    return (
+                      <MenuItem value={x}>
+                        {x}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
             </div>
             <div className="col-sm-12 col-md-3">
               <FormControl
@@ -369,10 +421,10 @@ function ProductForms() {
                   inputProps={{
                     inputMode: "numeric",
                     pattern: "[d]{0,11}",
-                    maxlength: 3,
+                    maxlength: 5,
                   }}
                   startAdornment={
-                    <InputAdornment position="start">$</InputAdornment>
+                    <InputAdornment position="start">Rs</InputAdornment>
                   }
                 />
               </FormControl>
@@ -449,13 +501,21 @@ function ProductForms() {
           </Button>
           {productLoader ? (
             <div className="d-flex align-items-center">
-              <div class="spinner-border productLoader text-success" role="status">
+              <div
+                class="spinner-border productLoader text-success"
+                role="status"
+              >
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
           ) : null}
         </div>
       </div>
+      {isAlert != "" ? (
+        <div className="alertBox">
+          <SimpleAlert message={alertMessage} />
+        </div>
+      ) : null}
     </>
   );
 }
