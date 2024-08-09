@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
     setLoading(true)
     // http://localhost:5000/api/loginUser  
-    const response = await fetch("https://mm-trader-app.vercel.app/", {
+    const response = await fetch("https://mm-trader-app.vercel.app/api/loginUser", {
       method: "POST",
       headers: {
         "content-type": "application/json",
