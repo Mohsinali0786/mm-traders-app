@@ -196,16 +196,18 @@ function ProductForms() {
   const addProductCat = async () => {
     setLoading(true);
     setDelLoading(true);
-    const id = Math.round(Math.random() * 1000);
-    let obj = { ...productCat, id: id };
-    const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
-    await setDoc(productCatRef, obj);
-    setIsAlert(true);
-    setAlertMessage("Added Category Successfully");
-    await getProductCategory();
+    if(productCat?.CategoryName){
+      const id = Math.round(Math.random() * 1000);
+      let obj = { ...productCat, id: id };
+      const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
+      await setDoc(productCatRef, obj);
+      setIsAlert(true);
+      setAlertMessage("Added Category Successfully");
+      await getProductCategory();
+      setIsAlert(false);
+    }
     setDelLoading(false);
     setLoading(false);
-    setIsAlert(false);
   };
   const getProductCategory = async () => {
     setProductCatArr([]);

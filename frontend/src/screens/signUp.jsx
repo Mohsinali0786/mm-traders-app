@@ -14,6 +14,7 @@ function SignUp() {
     e.preventDefault();
     setLoading(true);
     const response = await fetch(
+      // http://localhost:5000/api/createUser
       "https://mm-trader-app.vercel.app/api/createUser",
       {
         method: "POST",
@@ -30,11 +31,13 @@ function SignUp() {
     );
     const json = await response.json();
     console.log(json.success, "success");
-    if (!json.success)
-      return alert(
-        json.message ? json.message : "Enter valid credentials",
-        json.errors
-      );
+    if (!json.success){
+      setLoading(false);
+        return alert(
+          json.message ? json.message : "Enter valid credentials",
+          json.errors
+        );
+    }
     navigate("/login");
     setLoading(false);
   };

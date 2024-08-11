@@ -12,8 +12,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    // http://localhost:5000/api/loginUser  
-    const response = await fetch("https://mm-trader-app.vercel.app/api/loginUser", {
+    const response = await fetch("https://mm-trader-app.vercel.app/api/loginUser  ", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -31,9 +30,11 @@ function Login() {
         console.log("=======", err);
         message = message + "\n" + err?.msg;
       });
+      setLoading(false)
       return alert(message);
     }
     if (!json.success && json.errors) {
+    setLoading(false)
       return alert(json.errors);
     }
     navigate("/");
