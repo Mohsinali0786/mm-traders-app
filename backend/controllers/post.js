@@ -80,5 +80,19 @@ const updateUserRole = async (req,res)=>{
         res.send({success:false})
     }
 }
-module.exports = { createUser , loginUser , updateUserRole};
+
+const deleteUser = async (req,res)=>{
+    console.log('Req.params' , req.params)
+    const { role } = req?.body
+    try{
+        const user = await User.findByIdAndDelete(req.params.id);
+        res.send({success:true ,message:'Deleted Successfully'})
+         console.log('user Updates Res' , user)
+    }
+    catch(err){
+        console.log('Err',err)
+        res.send({success:false , message:'Error in deleting record'})
+    }
+}
+module.exports = { createUser , loginUser , updateUserRole ,deleteUser};
 // module.exports=router

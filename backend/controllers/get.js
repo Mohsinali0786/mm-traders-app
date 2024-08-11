@@ -7,22 +7,34 @@ const apiKey = 'cur_live_0IZx3JH7uo2F6C5PesFXYTEfqnxc2hy0xW9RbwyL'
 const getUser = async (req,res)=>{
     try{
         let data = await User.find({})
-        console.log(data,'data')
-        res.send({success:true , data:data})
+        console.log(data, 'data')
+        let adminUser = 0;
+        let user = 0
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].role == 'admin') {
+                adminUser++
+            }
+            else {
+                user++
+            }
+        }
+        // const user =(data.filter((x)=>x?.role == 'user')).length()
+
+        res.send({ success: true, data: data, adminUser: adminUser, user: user })
     }
-    catch(err){
-        console.log('Err',err)
-        res.send({success:false , message : 'No record found'})
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false, message: 'No record found' })
     }
 }
 
-const getCurrenciesValue = async (req,res)=>{
+const getCurrenciesValue = async (req, res) => {
 
     return axios
-    .get(`https://api.currencyapi.com/v3/latest?apikey=${apiKey}&base_currency=USD`)
-    .then((response) => res.send(response.data)).catch((err)=>{
-        console.log(Err,'Err')
-    });
+        .get(`https://api.currencyapi.com/v3/latest?apikey=${apiKey}&base_currency=USD`)
+        .then((response) => res.send(response.data)).catch((err) => {
+            console.log(Err, 'Err')
+        });
     // let data = '';
 
     // const options = {
@@ -39,18 +51,18 @@ const getCurrenciesValue = async (req,res)=>{
     //       console.log(chunk ,'chunk');
     //       data += chunk;
     //     });
-    
+
     //     response.on('end', () => {
     //       console.log(data ,'data');
     //     });
     //   });
-    
+
     //   request.on('error', (error) => {
     //     console.error(error);
     //   });
-    
+
     //   request.end();
 }
 
-module.exports = { getUser , getCurrenciesValue };
+module.exports = { getUser, getCurrenciesValue };
 // module.exports=router
