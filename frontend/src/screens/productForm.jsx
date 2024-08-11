@@ -68,6 +68,7 @@ function ProductForms() {
         [e.target.name]: e.target.value.replace(/\D/g, ""),
       });
     else {
+      console.log('setselectedProduct',selectedProduct)
       setselectedProduct({
         ...selectedProduct,
         [e.target.name]: e.target.value,
@@ -258,7 +259,7 @@ function ProductForms() {
             disabled={loading}
           >
             Add Category
-            {loading ? <i class="fa fa-refresh fa-spin"></i> : null}
+            {loading ? <i className="fa fa-refresh fa-spin"></i> : null}
           </Button>
           <Button
             variant="outlined"
@@ -504,10 +505,10 @@ function ProductForms() {
           {productLoader ? (
             <div className="d-flex align-items-center">
               <div
-                class="spinner-border productLoader text-success"
+                className="spinner-border productLoader text-success"
                 role="status"
               >
-                <span class="visually-hidden">Loading...</span>
+                <span className="visually-hidden">Loading...</span>
               </div>
             </div>
           ) : null}

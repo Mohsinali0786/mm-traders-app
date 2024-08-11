@@ -27,7 +27,7 @@ function Card({ product, imageURL }) {
         <div className="w-100">
           {isUserAdmin ? (
             <div className="text-end">
-              <span class="badge badge-pill bg-success">
+              <span className="badge badge-pill bg-success">
                 <ClearIcon sx={{ color: "whiite" }} onClick={deleteProduct} />
               </span>
             </div>
@@ -38,19 +38,19 @@ function Card({ product, imageURL }) {
             </div> */}
           {/* </div> */}
           <div className="d-flex justify-content-between m-2">
-            <span class="badge badge-pill bg-success">
+            <span className="badge badge-pill bg-success">
               Quantity {product.quantity} {product.unit}
             </span>
-            <span class="badge badge-pill bg-success">
+            <span className="badge badge-pill bg-success">
               Price {product.price} Rs
             </span>
           </div>
           {product?.sizes && product?.sizes.length > 0 ? (
             <div className="d-flex justify-content-between align-items-center  m-2 ">
-              <span class="">Sizes</span>
+              <span className="">Sizes</span>
               <div className="d-flex gap-2">
                 {product?.sizes.map((x) => (
-                  <span class="badge badge-pill bg-success">{x}</span>
+                  <span className="badge badge-pill bg-success">{x}</span>
                 ))}
               </div>
             </div>
@@ -87,10 +87,10 @@ function Card({ product, imageURL }) {
               <h5 className="card-title">{product.Name}</h5>
             </div>
             {/* <div className="d-flex flex-column gap-1 text-align-end">
-              <span class="badge badge-pill bg-success">
+              <span className="badge badge-pill bg-success">
                 Quantity {product.quantity} Pcs
               </span>
-              <span class="badge badge-pill bg-success">
+              <span className="badge badge-pill bg-success">
                 Price {product.price} $
               </span>
             </div> */}

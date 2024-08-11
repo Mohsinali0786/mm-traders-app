@@ -47,7 +47,7 @@ function SignUp() {
   return (
     <div className="container ">
       <div className="d-flex justify-content-around">
-        <a class="navbar-brand" href="#">
+        <a className="navbar-brand" href="#">
           <img src={logo} height="150" alt="MDB Logo" loading="lazy" />
         </a>
       </div>
@@ -117,7 +117,7 @@ function SignUp() {
           <div className="d-flex justify-content-end">
             <button type="submit" disabled={loading} className="btn m-3  btn-success">
               Register
-              {loading ? <i class="fa fa-refresh fa-spin"></i> : null}
+              {loading ? <i className="fa fa-refresh fa-spin"></i> : null}
             </button>
             <Link className="m-3 btn btn-success" to="/login">
               Already a User
