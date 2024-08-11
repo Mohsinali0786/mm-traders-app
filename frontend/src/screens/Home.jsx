@@ -189,7 +189,7 @@ function Home() {
           {productCatArr?.map((data) => {
             return (
               <div className="row">
-                {allProducts.some((e, i) => e?.type == data?.CategoryName) ? (
+                {/* {allProducts.some((e, i) => e?.type == data?.CategoryName) ? (
                   <>
                     <div className="fs-3 m-3">
                       {data.CategoryName.toUpperCase()}
@@ -203,7 +203,7 @@ function Home() {
                       }}
                     />
                   </>
-                ) : null}
+                ) : null} */}
 
                 {allProducts
                   .filter(

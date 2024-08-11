@@ -114,6 +114,9 @@ export default function DataTable() {
       setRows(res?.data);
       calUsers(res?.data);
     }
+    else{
+      alert('Error')
+    }
   };
 
   const calUsers = (data) => {

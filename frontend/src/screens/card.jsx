@@ -7,7 +7,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 // import ImageListComponent from "../components/imageList";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-
+import { MakeCapitalFirstLetter } from "../commonFunctions/makeFirstLetterCap";
 function Card({ product, imageURL }) {
   console.log("imageURL", imageURL);
   const [isUserAdmin, setIsUserAdmin] = useState(false);
@@ -26,7 +26,10 @@ function Card({ product, imageURL }) {
       <div className="card mt-3" style={{ width: "18rem", height: "300px" }}>
         <div className="w-100">
           {isUserAdmin ? (
-            <div className="text-end">
+            <div className="d-flex justify-content-between align-items-center">
+                <span className="badge badge-pill bg-success">
+                Category  {MakeCapitalFirstLetter(product.type)}
+                </span>
               <span className="badge badge-pill bg-success">
                 <ClearIcon sx={{ color: "whiite" }} onClick={deleteProduct} />
               </span>
