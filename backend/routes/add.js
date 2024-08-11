@@ -1,7 +1,7 @@
 const express =require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator');
-const {createUser , loginUser, updateUserRole} = require('../controllers/post')
+const {createUser , loginUser, updateUserRole, deleteUser} = require('../controllers/post')
 
 router.post('/createUser',[[
     body('email').isEmail(),
@@ -14,4 +14,5 @@ router.post('/loginUser',[[
     body('password','Incorrect Password').isLength({min:5})
 ]], loginUser)
 router.post('/updateRole/:id', updateUserRole)
+router.post('/deleteUser/:id', deleteUser)
 module.exports=router

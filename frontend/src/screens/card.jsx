@@ -52,8 +52,8 @@ function Card({ product, imageURL }) {
             <div className="d-flex justify-content-between align-items-center  m-2 ">
               <span className="">Sizes</span>
               <div className="d-flex gap-2">
-                {product?.sizes.map((x) => (
-                  <span className="badge badge-pill bg-success">{x}</span>
+                {product?.sizes.map((x,i) => (
+                  <span className="badge badge-pill bg-success" key={i}>{x}</span>
                 ))}
               </div>
             </div>
@@ -67,10 +67,10 @@ function Card({ product, imageURL }) {
           /> */}
           {/* <ImageListComponent imageURLS={product?.imageURL}/> */}
           <ImageList cols={4} rowHeight={50}>
-            {imageURL?.map((item) => {
+            {imageURL?.map((item,i) => {
               // console.log('item?.url',item)
               return (
-                <ImageListItem key={item?.url}>
+                <ImageListItem key={i}>
                   <img
                     srcSet={`${item?.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                     src={`${item?.url}?w=164&h=164&fit=crop&auto=format`}

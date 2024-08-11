@@ -87,9 +87,9 @@
   background-size: cover;
 }
 .iconCircle {
-  width: 100px;
+  width: 80px;
   /* background-color: green; */
-  height: 100px;
+  height: 80px;
   color: white;
   border-radius: 100%;
   display: flex;
@@ -98,7 +98,7 @@
   font-size: larger;
 }
 .iconCircle > svg {
-  font-size: 60px;
+  font-size: 45px;
 }
 .iconCircle > div > p {
   margin: 0px !important;
@@ -209,4 +209,9 @@ margin-left: 5px;
   position: absolute;
   top: 250px;
   left: 200px;
+}
+.alertBoxDel{
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
