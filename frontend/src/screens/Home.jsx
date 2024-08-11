@@ -36,7 +36,7 @@ function Home() {
     });
     getProductCategory();
   }, []);
-  useEffect(() => {}, localStorage.getItem("loginData"));
+  useEffect(() => {}, [localStorage.getItem("loginData")]);
   const getData = async () => {
     setAllProducts([]);
     const querySnapshot = await getDocs(collection(db, "products"));
@@ -70,7 +70,8 @@ function Home() {
       setProductCatArr(productsCatArray);
     }
   };
-  // console.log('productsArray' , productsArray)
+
+  console.log('allProducts' , allProducts)
 
   return (
     <div>
@@ -180,7 +181,7 @@ function Home() {
         <div className="d-flex justify-content-between w-100">
         <h4>All Products</h4>
         <div className="d-sm-none border w-50 d-flex align-items-center">
-          <input className="mb-searchInp  border-0 w-100" placeholder="Search"/>
+          <input className="mb-searchInp  border-0 w-100" placeholder="Search"  onChange={(e) => setSearchProduct(e.target.value)}/>
           <SearchIcon/>
         </div>
         </div>
