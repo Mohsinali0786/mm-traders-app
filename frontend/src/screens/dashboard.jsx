@@ -2,12 +2,24 @@ import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import  EnhancedTable from  '../components/table'
 import CircularProgressWithLabel from '../components/spinner'
+import { GetAllUsers } from '../commonFunctions/getAllUsers'
 export default function Dashboard(){
     const [totalUsers , setTotalUsers] = useState()
-    useEffect(()=>{
-        let totalUsers = JSON.parse(localStorage?.getItem('totalUsers'))
-    setTotalUsers(totalUsers ? totalUsers : {admin : 0 ,user :0})
-    },[totalUsers])
+    const [allData , setAllData] = useState([])
+    // useEffect(()=>{
+    // setTotalUsers(totalUsers ? totalUsers : {admin : 0 ,user :0})
+    // },[])
+    useEffect(() => {
+        getData()
+        console.log("Get Data");
+    }, [totalUsers]);
+    const getData = async (e) => {
+          let res = await GetAllUsers();
+          console.log('Ressssssss',res)
+            setTotalUsers({admin:res?.adminUser , user:res?.user})
+            setAllData(res?.data)
+      };
+      console.log('Alll',allData)
 return(
     <>
         {/* <Navbar /> */}
@@ -19,7 +31,7 @@ return(
             {
                 
             }
-        <EnhancedTable/>
+        <EnhancedTable data={allData}/>
         </div>
     </>
 )
