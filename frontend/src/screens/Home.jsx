@@ -9,16 +9,21 @@ import slider1 from "../logos/slider1.jpeg";
 import slider2 from "../logos/slider2.jpg";
 import slider3 from "../logos/slider3.jpeg";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 // =============================================
 import { listAll, getDownloadURL, ref } from "firebase/storage";
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { useState } from "react";
+import { MakeCapitalFirstLetter } from "../commonFunctions/makeFirstLetterCap";
+import { RemoveDuplicates } from "../commonFunctions/removeDuplicateArray";
 function Home() {
   const [imageUrls, setImageUrls] = useState([]);
   const imagesListRef = ref(storage, "productImages/");
   const [allProducts, setAllProducts] = useState([]);
   const [productCatArr, setProductCatArr] = useState([]);
+  const [productCatArrForFilter, setProductCatArrForFilter] = useState([]);
+  const [filtersArray, setFiltersArray] = useState([]);
   const [searchProduct, setSearchProduct] = useState("");
 
   useEffect(() => {
@@ -37,6 +42,19 @@ function Home() {
     getProductCategory();
   }, []);
   useEffect(() => {}, [localStorage.getItem("loginData")]);
+  useEffect(() => {
+    let filterdData = [];
+    filtersArray.map((x) => {
+      let data = allProducts.filter((y) => y?.type == x.toLowerCase());
+      for (let i = 0; i < data.length; i++) {
+        filterdData.push(data[i]);
+      }
+    });
+    setAllProducts(filterdData);
+    if (filtersArray.length < 1) {
+      setAllProducts(productCatArrForFilter);
+    }
+  }, [filtersArray]);
   const getData = async () => {
     setAllProducts([]);
     const querySnapshot = await getDocs(collection(db, "products"));
@@ -46,16 +64,18 @@ function Home() {
         productsArray.push(doc.data());
       });
       setAllProducts(productsArray);
+      setProductCatArrForFilter(productsArray); // Make copy for filter purpose
     }
   };
   const sizes = ["small", "medium", "large", "x-large"];
   const getImageUrl = (product) => {
     // let imageURLSARR= []
-    let reqImagesUrl = product?.imageURL?.map((y)=>(
-      imageUrls.find((x) => x?.location == y)))
-      // console.log('reqImagesUrl',reqImagesUrl)
-      // imageURLSARR.push(reqImagesUrl)
-      return reqImagesUrl 
+    let reqImagesUrl = product?.imageURL?.map((y) =>
+      imageUrls.find((x) => x?.location == y)
+    );
+    // console.log('reqImagesUrl',reqImagesUrl)
+    // imageURLSARR.push(reqImagesUrl)
+    return reqImagesUrl;
     // console.log('imageURLSARR',imageURLSARR)
     // return imageURLSARR;
   };
@@ -71,7 +91,7 @@ function Home() {
     }
   };
 
-  console.log('allProducts' , allProducts)
+  console.log("filtersArray", filtersArray);
 
   return (
     <div>
@@ -110,7 +130,10 @@ function Home() {
             ></button>
           </div>
           <div className="carousel-inner" id="carousel">
-            <div className="carousel-caption d-none d-sm-inline" style={{ zIndex: 10 }}>
+            <div
+              className="carousel-caption d-none d-sm-inline"
+              style={{ zIndex: 10 }}
+            >
               <form className="d-flex">
                 <input
                   className="form-control mr-sm-2"
@@ -179,17 +202,22 @@ function Home() {
       </div>
       <div className="m-2 mobView-card-mainDiv">
         <div className="d-flex justify-content-between w-100">
-        <h4>All Products</h4>
-        <div className="d-sm-none border w-50 d-flex align-items-center">
-          <input className="mb-searchInp  border-0 w-100" placeholder="Search"  onChange={(e) => setSearchProduct(e.target.value)}/>
-          <SearchIcon/>
+          <h4>All Products</h4>
+          <div className="d-sm-none border w-50 d-flex align-items-center">
+            <input
+              className="mb-searchInp  border-0 w-100"
+              placeholder="Search"
+              onChange={(e) => setSearchProduct(e.target.value)}
+            />
+            <SearchIcon />
+          </div>
         </div>
-        </div>
-        <div className="container m-0">
-          {productCatArr?.map((data) => {
-            return (
-              <div className="row">
-                {/* {allProducts.some((e, i) => e?.type == data?.CategoryName) ? (
+        <div className="d-flex">
+          <div className="container m-0">
+            {productCatArr?.map((data, i) => {
+              return (
+                <div className="row" key={i}>
+                  {/* {allProducts.some((e, i) => e?.type == data?.CategoryName) ? (
                   <>
                     <div className="fs-3 m-3">
                       {data.CategoryName.toUpperCase()}
@@ -205,30 +233,86 @@ function Home() {
                   </>
                 ) : null} */}
 
-                {allProducts
-                  .filter(
-                    (e, i) =>
-                      e?.type == data?.CategoryName &&
-                      e.Name.toLowerCase().includes(searchProduct.toLowerCase())
-                  )
-                  .map((product) => {
-                    {
-                      return (
-                        <div className="col-12 col-md-6 col-lg-4">
-                          <Card
-                            product={product}
-                            imageURL={getImageUrl(product)}
-                          />
-                        </div>
-                      );
-                    }
-                  })}
-              </div>
-            );
-          })}
-          {/* {allProducts.map((e, i) => {
+                  {allProducts
+                    .filter(
+                      (e, i) =>
+                        e?.type == data?.CategoryName &&
+                        e.Name.toLowerCase().includes(
+                          searchProduct.toLowerCase()
+                        )
+                    )
+                    .map((product, i) => {
+                      {
+                        return (
+                          <div className="col-12 col-md-6 col-lg-4" key={i}>
+                            <Card
+                              product={product}
+                              imageURL={getImageUrl(product)}
+                            />
+                          </div>
+                        );
+                      }
+                    })}
+                </div>
+              );
+            })}
+            {/* {allProducts.map((e, i) => {
             return <Card product={e} imageURL={getImageUrl(e)} />;
           })} */}
+          </div>
+          <div className="border p-2 rounded maxWidthFIltered">
+            <div className="mb-4 ">
+              {filtersArray.length > 0 ? (
+                <>
+                  <p class="ribbon bg-success text-white">Filtered By</p>
+                  <div className="d-flex flex-wrap gap-1">
+                    {filtersArray?.map((x) => (
+                      <span className="border border-2 rounded mx-1 p-1 d-flex align-items-center">
+                        {/* <div className="d-flex align-items-center "> */}
+                          {MakeCapitalFirstLetter(x)}
+                          <ClearIcon
+                            sx={{ fontSize: "15px", marginLeft: "2px" }}
+                            className="pointer"
+                            onClick={(e) => {
+                              setFiltersArray(
+                                filtersArray.filter((y) => y != x)
+                              );
+                            }}
+                          />
+                        {/* </div > */}
+                      </span>
+                    ))}
+                  </div>
+                  {/* <p>Filtered By</p> */}
+                  <hr />
+                </>
+              ) : null}
+            </div>
+            {/* <p>Category Name</p> */}
+            <p class="ribbon bg-success text-white">Category Name</p>
+            <div className="d-flex flex-wrap gap-1">
+
+            {productCatArr?.map((x, i) => {
+              return (
+                // <div>
+                  <span
+                    className="border border-2 p-1 pointer"
+                    onClick={(e) => {
+                      console.log(filtersArray);
+                      setFiltersArray(
+                        RemoveDuplicates([...filtersArray, e.target.innerText])
+                      );
+                      setAllProducts(productCatArrForFilter);
+                    }}
+                    key={i}
+                  >
+                    {MakeCapitalFirstLetter(x?.CategoryName)}
+                  </span>
+                // </div>
+              );
+            })}
+            </div>
+          </div>
         </div>
         {/* {        imageUrls.map((x)=>{
   return(
