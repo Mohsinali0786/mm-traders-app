@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../logos/MM Traders_transparent.png";
+import SimpleAlert from "../components/alertBox";
 function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showMessageTimer, setShowMessageTimer] = useState({
+    status: false,
+    message: "",
+  });
   const [credential, setCredentials] = useState({
     name: "",
     email: "",
@@ -14,8 +19,8 @@ function SignUp() {
     e.preventDefault();
     setLoading(true);
     const response = await fetch(
-      // http://localhost:5000/api/createUser
       "https://mm-trader-app.vercel.app/api/createUser",
+      // "http://localhost:5000/api/createUser",
       {
         method: "POST",
         headers: {
@@ -30,29 +35,53 @@ function SignUp() {
       }
     );
     const json = await response.json();
-    console.log(json.success, "success");
-    if (!json.success){
+    console.log(json, "success");
+    if (!json.success) {
       setLoading(false);
-        return alert(
-          json.message ? json.message : "Enter valid credentials",
-          json.errors
-        );
+      return alert(
+        json.message ? json.message : "Enter valid credentials",
+        json.errors
+      );
     }
-    navigate("/login");
+    let user = {
+      email: json?.email,
+      name: json?.name,
+      token: json?.token,
+      _id: json?._id,
+      isVerified: json?.isVerified,
+    };
+    localStorage.setItem("user", JSON.stringify(user));
+    console.log("json?.emailSentmessage", json?.emailSentmessage);
+    setShowMessageTimer({ status: true, message: json?.emailSentmessage });
+    // navigate("/login");
     setLoading(false);
+    setTimeout(() => {
+      setShowMessageTimer({ status: false });
+    }, 3000);
   };
   const onChange = (e) => {
     setCredentials({ ...credential, [e.target.name]: e.target.value });
   };
+  console.log("setShowMessageTimer", showMessageTimer);
   return (
     <div className="container ">
+      {showMessageTimer?.status ? (
+        //   <Alert variant="outlined" severity="success" sx={{position:'absolute', right:'10px'}}>
+        //     This is an outlined success Alert.
+        //   </Alert>
+        <SimpleAlert
+          message={showMessageTimer?.message}
+          className="alertBoxPosition"
+          status="success"
+        />
+      ) : null}
       <div className="d-flex justify-content-around">
         <a className="navbar-brand" href="#">
-          <img src={logo} height="150" alt="MDB Logo" loading="lazy" />
+          <img src={logo} height="130" alt="MDB Logo" loading="lazy" />
         </a>
       </div>
       <div className="">
-        <h3 className="d-flex justify-content-center">Register yourself</h3>
+        <h4 className="d-flex justify-content-center m-0">Register yourself</h4>
         <form onSubmit={handleSubmit}>
           <div className="mb-2">
             <label className="form-label">Name</label>
@@ -115,7 +144,11 @@ function SignUp() {
           </label>
         </div> */}
           <div className="d-flex justify-content-end">
-            <button type="submit" disabled={loading} className="btn m-3  btn-success">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn m-3  btn-success"
+            >
               Register
               {loading ? <i className="fa fa-refresh fa-spin"></i> : null}
             </button>
