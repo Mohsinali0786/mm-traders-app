@@ -17,7 +17,7 @@ const sendVerificationEmail = (user) =>{
             };
             return new Promise ((resolve,reject)=>{
                 transporter.sendMail(mailOptions,function(error, info){ 
-                    if (error) return reject(err); 
+                    if (error) return reject(error); 
                     // console.log(info,'info'); 
                     return resolve('Email Verification Link sent Successfully please check your emai')
                     // console.log('Email Sent Successfully',info); 
