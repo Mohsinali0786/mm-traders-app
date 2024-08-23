@@ -80,7 +80,7 @@ const createUser = async (req, res) => {
         // console.log(result12,'result12')
         
         const token = createToken(result._id)
-        res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified , emailSentmessage:message})
+        res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified })
 
     }
     catch (err) {
