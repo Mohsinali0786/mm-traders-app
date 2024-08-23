@@ -66,9 +66,15 @@ const createUser = async (req, res) => {
             emailToken: crypto.randomBytes(64).toString("hex")
         })
         // console.log(res,'Userrrrrrrrrr')
-        sendVerificationEmail(result)
+        let message = await sendVerificationEmail(result).then((res)=>{
+            return res
+        }).catch((error)=>{
+            return error
+        })
+        // console.log(result12,'result12')
+        
         const token = createToken(result._id)
-        res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified})
+        res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified , emailSentmessage:message})
 
     }
     catch (err) {
