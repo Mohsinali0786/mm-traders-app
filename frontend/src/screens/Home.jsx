@@ -154,6 +154,7 @@ function Home() {
               <img
                 src={slider1}
                 className="d-block w-100 min-w-100"
+                style={{height:'350px'}}
                 alt="..."
               />
             </div>
@@ -213,7 +214,7 @@ function Home() {
           </div>
         </div>
         <div className="d-flex">
-          <div className="container m-0">
+          <div className="container m-2 productScroll">
             {productCatArr?.map((data, i) => {
               return (
                 <div className="row" key={i}>
@@ -260,7 +261,7 @@ function Home() {
             return <Card product={e} imageURL={getImageUrl(e)} />;
           })} */}
           </div>
-          <div className="border p-2 rounded maxWidthFIltered">
+          <div className="border p-2 rounded maxWidthFIltered d-none d-lg-block">
             <div className="mb-4 ">
               {filtersArray.length > 0 ? (
                 <>
