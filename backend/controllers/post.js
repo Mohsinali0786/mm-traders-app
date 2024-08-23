@@ -9,7 +9,7 @@ var crypto = require('crypto');
 
 
 let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
-console.log('process.env.JWT_SECRETE_KEY',process.env.JWT_SECRETE_KEY)
+// console.log('process.env.JWT_SECRETE_KEY',process.env.JWT_SECRETE_KEY)
 const createToken = (email) => {
     console.log(jwtSecrete, 'SSSSSSSSSs')
     return jsonwebtoken.sign({ email }, `${process.env.JWT_SECRETE_KEY}`, { expiresIn: '1h' })
