@@ -12,7 +12,7 @@ let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
 console.log('process.env.JWT_SECRETE_KEY',process.env.JWT_SECRETE_KEY)
 const createToken = (email) => {
     console.log(jwtSecrete, 'SSSSSSSSSs')
-    return jsonwebtoken.sign({ email }, process.env.JWT_SECRETE_KEY, { expiresIn: '1h' })
+    return jsonwebtoken.sign({ email }, `${process.env.JWT_SECRETE_KEY}`, { expiresIn: '1h' })
     // const emailToken = jsonwebtoken.sign({
     //     email: req.body.email
     // }, jwtSecrete, { expiresIn: '1h' });
