@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+// import { AuthContext } from "../context/AuthContext";
 import { Button } from "@mui/material";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import Login from "./login";
+// import Login from "./login";
 export const VerifyEmail = () => {
   // const [user,updateUser] = useContext(AuthContext)
   const [searchParams, setSearchParams] = useSearchParams();
