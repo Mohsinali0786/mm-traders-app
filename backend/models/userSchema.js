@@ -25,6 +25,13 @@ const userSchema=new Schema({
     role:{
         type:String,
         default:'user'
-    }
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
+    emailToken:{
+        type:String
+    },
 })
 module.exports=mongoose.model('user',userSchema)

@@ -20,6 +20,7 @@ import '../node_modules/bootstrap/js/src/base-component'
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProductForms from './screens/productForm';
+import { VerifyEmail } from './screens/verifyUser';
 // const ProtectedRoute = ({
 //   user,
 //   redirectPath = '/',
@@ -47,6 +48,8 @@ function App() {
         <Route path="p-form" element={<ProductForms />} />
         <Route path="/contactus" element={<ContactUs/>} />
         <Route path="/costings" element={<Costing/>} />
+        <Route path="/verify-email" element={<VerifyEmail/>} />
+      
         {/* <Route path="/currencyRates" element={<CurrencyRates/>} /> */}
 
         {/* <Route path="/addProductCat" element={<ProductCatForm/>} /> */}

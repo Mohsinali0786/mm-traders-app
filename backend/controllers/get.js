@@ -1,11 +1,12 @@
-const express =require('express')
-const User=require('../models/userSchema')
+const express = require('express')
+const User = require('../models/userSchema')
 const http = require('http');
 const axios = require('axios')
 const apiKey = 'cur_live_0IZx3JH7uo2F6C5PesFXYTEfqnxc2hy0xW9RbwyL'
+const jsonwebtoken = require('jsonwebtoken');
 
-const getUser = async (req,res)=>{
-    try{
+const getUser = async (req, res) => {
+    try {
         let data = await User.find({})
         console.log(data, 'data')
         let adminUser = 0;

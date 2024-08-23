@@ -234,3 +234,8 @@ margin-left: 5px;
 .maxWidthFIltered{
   min-width: 300px;
 }
+
+.alertBoxPosition{
+  position: absolute;
+  right: 10px;
+}
