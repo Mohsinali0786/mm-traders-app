@@ -6,7 +6,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const port = 5000
 require('dotenv').config();
-const mongoose = require('mongoose');
 
 app.use(cors(
   {
@@ -23,18 +22,6 @@ app.use((req, res, next) => {
   );
   next();
 })
-
-app.listen(port, async () => {
-  // await mongoDB()
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
-      console.log('Database Connected')
-
-    }).catch((err) => {
-      console.log('Err===>', err)
-    });
-  console.log(`Example app listening on port ${port}`)
-})
-
 
 app.use(bodyParser.json())
 app.use("/api", userRoutes)
