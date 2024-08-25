@@ -4,7 +4,7 @@ const User = require('../models/userSchema')
 const generateToken = require('../config/jwtToken')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
-const jsonwebtoken = require('jsonwebtoken')
+const jsonWebToken = require('jsonwebtoken')
 const {sendVerificationEmail} = require("../utils/sendVerificationMail")
 var crypto = require('crypto');
 let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
@@ -119,7 +119,7 @@ const verifyUser = async (req, res) => {
 }
 const loginUser = async (req, res) => {
     let email = req.body.email
-    console.log('jsonwebtoken==>', jsonwebtoken)
+    // console.log('jsonwebtoken==>', jsonWebToken)
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -135,7 +135,7 @@ const loginUser = async (req, res) => {
                 id: userData._id
             }
         }
-        const authToken = jsonwebtoken.sign(data, jwtSecrete)
+        const authToken = jsonWebToken.sign(data, jwtSecrete)
         return res.json({ success: true, authToken: authToken, userLogin: userData })
     }
     catch (err) {
