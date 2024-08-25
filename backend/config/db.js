@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dataSchema = require('../models/productSchema');
 var alphanumeric = require('alphanumeric-id');
 const uri = `mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/mmGarments?retryWrites=true&w=majority&appName=Cluster0`
 // const uri = "mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
