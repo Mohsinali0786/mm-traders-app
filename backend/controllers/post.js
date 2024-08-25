@@ -1,22 +1,13 @@
 const express = require('express')
 // const router = express.Router()
 const User = require('../models/userSchema')
+const generateToken = require('../config/jwtToken')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const {sendVerificationEmail} = require("../utils/sendVerificationMail")
 var crypto = require('crypto');
-
-
 let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
-console.log('process.env.JWT_SECRETE_KEY',jwtSecrete)
-const createToken = (email) => {
-    console.log(jwtSecrete, 'SSSSSSSSSs')
-    return jsonwebtoken.sign({ email }, jwtSecrete, { expiresIn: '1h' })
-    // const emailToken = jsonwebtoken.sign({
-    //     email: req.body.email
-    // }, jwtSecrete, { expiresIn: '1h' });
-}
 const createUser = async (req, res) => {
     // const emailTransporter = nodemailer.createTransport({
     //     service: 'gmail',
@@ -80,7 +71,7 @@ const createUser = async (req, res) => {
         // })
         // console.log(result12,'result12')
         
-        const token = createToken(result._id)
+        const token = generateToken(result._id)
         res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified })
 
     }
@@ -104,7 +95,7 @@ const verifyUser = async (req, res) => {
             user.emailToken = null
             await user.save()
             console.log(user, 'After Userr')
-            const token = createToken(user._id)
+            const token = generateToken(user._id)
             res.status(200).json({
                 success:true,
                 message:"Email Verified",
@@ -188,5 +179,7 @@ const deleteUser = async (req, res) => {
         res.send({ success: false, message: 'Error in deleting record' })
     }
 }
+
+
 module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser };
 // module.exports=router
