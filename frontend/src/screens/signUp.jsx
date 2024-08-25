@@ -19,7 +19,7 @@ function SignUp() {
     e.preventDefault();
     setLoading(true);
     const response = await fetch(
-      "https://mm-trader-app.vercel.app/api/createUser",
+      "https://mm-traders-backend-app.vercel.app/api/createUser",
       // "http://localhost:5000/api/createUser",
       {
         method: "POST",

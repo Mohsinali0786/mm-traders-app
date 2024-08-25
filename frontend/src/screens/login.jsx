@@ -12,7 +12,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const response = await fetch("https://mm-trader-app.vercel.app/api/loginUser  ", {
+    const response = await fetch("https://mm-traders-backend-app.vercel.app/api/loginUser  ", {
       method: "POST",
       headers: {
         "content-type": "application/json",
