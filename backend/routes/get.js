@@ -5,5 +5,7 @@ const {getUser, getCurrenciesValue } = require('../controllers/get');
 
 router.get('/getUser', getUser)
 router.get('/getCurrencies', getCurrenciesValue)
+router.get('/getUserbyId', getCurrenciesValue)
+
 
 module.exports=router
