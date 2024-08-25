@@ -9,9 +9,9 @@ require('dotenv').config();
 
 app.use(cors(
   {
-    origin:"https://mm-traders-app-frontend.vercel.app",
-    methods:["POST","GET"],
-    credentials:true
+    // origin:"https://mm-traders-app-frontend.vercel.app",
+    // methods:["POST","GET"],
+    // credentials:true
   }
 ));
 // app.use((req, res, next) => {
