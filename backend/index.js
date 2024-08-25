@@ -1,14 +1,19 @@
 const express = require('express')
 var cors = require('cors')
-const mongoDB=require('./db')
+const mongoDB=require('./config/db')
 const userRoutes = require('./routes/index')
 const app = express()
+const bodyParser = require('body-parser')
 const port = 5000
-mongoDB()
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-app.use(express.json())
+require('dotenv').config();
+
+app.use(cors(
+  {
+    origin:"https://mm-traders-app-frontend.vercel.app",
+    methods:["POST","GET"],
+    credentials:true
+  }
+));
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://mm-traders-app-frontend.vercel.app'); // Replace '*' with your allowed origin
   res.header(
@@ -17,16 +22,8 @@ app.use((req, res, next) => {
   );
   next();
 })
-app.use(cors(
-  {
-    origin:"https://mm-traders-app-frontend.vercel.app",
-    methods:["POST","GET"],
-    credentials:true
-  }
-));
-app.use("/api", userRoutes)
-// app.use("/api",require("./routes/loginUser"))
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use(bodyParser.json())
+app.use("/api", userRoutes)
+
+module.exports ={app}
