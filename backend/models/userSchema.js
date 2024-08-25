@@ -24,6 +24,7 @@ const userSchema=new Schema({
     },
     role:{
         type:String,
+        enum:['user','admin'],
         default:'user'
     },
     isVerified:{
@@ -33,5 +34,13 @@ const userSchema=new Schema({
     emailToken:{
         type:String
     },
+    // orders:[{
+    //     type:Schema.Types.ObjectId,
+    //     ref:'Order'
+    // }],
+    // addresses:[{
+    //     type:Schema.Types.ObjectId,
+    //     ref:'Address'
+    // }]
 })
 module.exports=mongoose.model('user',userSchema)

@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const dataSchema = require('./models/productSchema');
+const dataSchema = require('../models/productSchema');
 var alphanumeric = require('alphanumeric-id');
-const uri = "mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/mmGarments?retryWrites=true&w=majority&appName=Cluster0"
+const uri = `mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/mmGarments?retryWrites=true&w=majority&appName=Cluster0`
 // const uri = "mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+// const uri = `mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/foodDelivery?retryWrites=true&w=majority&appName=Cluster0`
 let key=  alphanumeric(20)
 //   {
 //     id:key,
@@ -37,7 +38,7 @@ const mongoDB = async () => {
     let myData=[{}]
     mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
         console.log('Database Connected')
-        const textileCollection = mongoose.model('textileCollection', dataSchema);
+        // const textileCollection = mongoose.model('textileCollection', dataSchema);
         // const kitty = new textileCollection(data);
         // console.log('data',textileCollection.find({}))
         // kitty.save().then(() => console.log('frfr'));

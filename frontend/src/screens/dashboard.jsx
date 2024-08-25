@@ -4,7 +4,7 @@ import  EnhancedTable from  '../components/table'
 import CircularProgressWithLabel from '../components/spinner'
 import { GetAllUsers } from '../commonFunctions/getAllUsers'
 export default function Dashboard(){
-    const [totalUsers , setTotalUsers] = useState()
+    const [totalUsers , setTotalUsers] = useState({admin:0 , user:0})
     const [allData , setAllData] = useState([])
     // useEffect(()=>{
     // setTotalUsers(totalUsers ? totalUsers : {admin : 0 ,user :0})
@@ -16,8 +16,10 @@ export default function Dashboard(){
     const getData = async (e) => {
           let res = await GetAllUsers();
           console.log('Ressssssss',res)
-            setTotalUsers({admin:res?.adminUser , user:res?.user})
-            setAllData(res?.data)
+          if(res?.adminUser > totalUsers?.adminUser || res?.user > totalUsers?.user ) {
+              setTotalUsers({admin:res?.adminUser , user:res?.user})
+              setAllData(res?.data)
+          }
       };
       console.log('Alll',allData)
 return(
