@@ -35,7 +35,9 @@ let data={
 
 const mongoDB = async () => {
     let myData=[{}]
-    mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
+    mongoose.connect(uri,{     serverSelectionTimeoutMS: 30000, // 30 seconds
+        socketTimeoutMS: 45000, // 45 seconds
+        useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
         console.log('Database Connected')
         // const textileCollection = mongoose.model('textileCollection', dataSchema);
         // const kitty = new textileCollection(data);
