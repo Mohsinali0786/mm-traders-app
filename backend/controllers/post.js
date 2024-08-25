@@ -119,9 +119,7 @@ const verifyUser = async (req, res) => {
 }
 const loginUser = async (req, res) => {
     let email = req.body.email
-    console.log('req.body.email==>', req.body.email)
 
-    console.log('jsonwebtoken==>', jsonWebToken)
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
