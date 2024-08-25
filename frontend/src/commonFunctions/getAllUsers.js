@@ -1,5 +1,5 @@
 export async function GetAllUsers(e) {
-    const response = await fetch("https://mm-trader-app.vercel.app/api/getUser", {
+    const response = await fetch("https://mm-traders-backend-app.vercel.app/api/getUser", {
         method: "GET",
         headers: {
             "content-type": "application/json",
