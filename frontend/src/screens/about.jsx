@@ -54,7 +54,6 @@ function About() {
           </li>
           <li className="mt-2">
             <span className="fw-bolder">Cotton PC</span>
-            Cotton PC
             <ol>
               <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
               <li>Garments</li>
