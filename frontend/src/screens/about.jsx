@@ -14,8 +14,8 @@ function About() {
         <p className="small">Our mission is powered by a passion for creativity and ingenuity to provide you with select apparel that not only meets but exceeds the measure. We put thought into every piece of both our fabric choices and our stitches; we are committed to the utmost quality and excellence. </p>
         <h6><b>What wee Offer</b></h6>
         <p className="small">We are working in flannel fabric from past 30+ years both locally and export We do shipments of flannel night dress in Canada and dusters in Germany. In past We have major focus in flannel fabric items.Recently we expand our work in Cotton PC Twill and hosiery and towel items  We work in following mentioned items
-          <ul>
-            <li>
+          <ul className="mt-2">
+            <li className="mt-2">
                 Flannel
                 <ol>
                   <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
@@ -25,21 +25,21 @@ function About() {
                   <li>Weapon Cleaning fabric</li>
                 </ol>
             </li>
-            <li>
+            <li className="mt-2">
                 Cotton PC
                 <ol>
                   <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
                   <li>Garments</li>
                 </ol>
             </li>
-            <li>
+            <li className="mt-2">
                 Hosirery
                 <ol>
                   <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
                   <li>Garments</li>
                 </ol>
             </li>
-            <li>
+            <li className="mt-2">
                 Others
                 <ol>
                   <li>Towels</li>
