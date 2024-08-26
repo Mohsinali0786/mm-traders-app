@@ -33,13 +33,13 @@ app.get("/", async (req, res) => {
 // app.use(bodyParser.json())
 app.use(express.json())
 app.use("/api", userRoutes)
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
+  console.log('Database Connected')
 
-app.listen(port, async () => {
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
-    console.log('Database Connected')
+}).catch((err) => {
+  console.log('Err===>', err)
+});
 
-  }).catch((err) => {
-    console.log('Err===>', err)
-  });
+app.listen(port,  () => {
 console.log(`Example app listening on port ${port}`)
 })
