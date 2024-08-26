@@ -25,7 +25,11 @@ app.use((req, res, next) => {
   );
   next();
 })
-
+app.get("/", async (req, res) => {
+  res.status(200).json({
+    message: "Hello developers from GFG",
+  });
+});
 // app.use(bodyParser.json())
 app.use(express.json())
 app.use("/api", userRoutes)
