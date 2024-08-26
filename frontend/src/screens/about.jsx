@@ -43,7 +43,7 @@ function About() {
         in following mentioned items
         <ul className="mt-2">
           <li className="mt-2">
-            <span className="font-weight-bold">Flannel</span>
+            <span className="fw-bolder">Flannel</span>
             <ol>
               <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
               <li>Night Dress</li>
@@ -53,7 +53,7 @@ function About() {
             </ol>
           </li>
           <li className="mt-2">
-            <span className="font-weight-bold">Cotton PC</span>
+            <span className="fw-bolder">Cotton PC</span>
             Cotton PC
             <ol>
               <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
@@ -61,14 +61,14 @@ function About() {
             </ol>
           </li>
           <li className="mt-2">
-            <span className="font-weight-bold">Hosirey</span>
+            <span className="fw-bolder">Hosirey</span>
             <ol>
               <li>Bedsheet , Fitted , Bed Cover , Pillow and Cushion</li>
               <li>Garments</li>
             </ol>
           </li>
           <li className="mt-2">
-            <span className="font-weight-bold">Others</span>
+            <span className="fw-bolder">Others</span>
             <ol>
               <li>Towels</li>
               <li>Kitchen Towels</li>
