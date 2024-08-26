@@ -3,25 +3,37 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { Select, MenuItem } from "@mui/material";
-import CircularProgressWithLabel from "./spinner"
+import ClearIcon from "@mui/icons-material/Clear";
+import SimpleAlert from "./alertBox";
+import CircularProgressWithLabel from "./spinner";
+import { GetAllUsers } from "../commonFunctions/getAllUsers";
 const userRole = [
   { id: 1, roleName: "admin" },
   { id: 2, roleName: "user" },
 ];
 
+const status = [
+  { id: 1, status: "Delivered" },
+  { id: 2, status: "Pending" },
+  { id: 3, status: "Out For Delivery" },
+
+];
 const rows = [];
 
-export default function DataTable() {
+export default function DataTable({ data }) {
+  console.log(data);
   const [role, setRole] = React.useState("");
   const [isRowFind, setIsRowFind] = React.useState(false);
-  const handleChange = (event , id) => {
+  const [isDeleted, setIsDeleted] = React.useState(false);
+  const [delMessage, setDelMessage] = React.useState('');
+  const handleChange = (event, id) => {
     setRole(event);
-    let selectedRow = rows.find((x)=>x._id == id)
-    if(selectedRow) {
-      setIsRowFind(true)
-      selectedRow['role'] =event
+    let selectedRow = rows.find((x) => x._id == id);
+    if (selectedRow) {
+      setIsRowFind(true);
+      selectedRow["role"] = event;
     }
-      // updateUserRole(id)
+    // updateUserRole(id)
   };
 
   const columns = [
@@ -52,12 +64,12 @@ export default function DataTable() {
               id="demo-simple-select"
               value={params?.row?.role}
               label="Age"
-              onChange={(e)=>handleChange(e.target.value ,params?.row?._id)}
+              onChange={(e) => handleChange(e.target.value, params?.row?._id)}
               variant="standard"
             >
               {userRole?.map((val, i) => {
                 return (
-                  <MenuItem value={val?.roleName}>{val?.roleName}</MenuItem>
+                  <MenuItem key={i} value={val?.roleName}>{val?.roleName}</MenuItem>
                 );
               })}
             </Select>
@@ -68,101 +80,117 @@ export default function DataTable() {
     {
       field: "actions",
       headerName: "Actions",
+      width: 150,
+
       renderCell: (params) => {
         return (
-          <>
+          <div>
             <Button
               variant="outlined"
               onClick={() => updateUser(params?.row?._id)}
             >
               Update
             </Button>
-          </>
+            <Button>
+              <ClearIcon onClick={() => deleteUser(params?.row?._id)} />
+            </Button>
+          </div>
         );
       },
     },
   ];
   const [rows, setRows] = useState([]);
-  React.useEffect(()=>{setIsRowFind(false)},[isRowFind])
-  
+  React.useEffect(() => {
+    setIsRowFind(false);
+  }, [isRowFind]);
+
   const [usersRoleCount, setUsersRoleCount] = useState({});
   const updateUser = async (rowId) => {
     console.log(rowId, "selectedRowId");
     console.log(role, "Role Updated");
-    const response = await fetch(`https://mm-trader-app.vercel.app/api/updateRole/${rowId}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body:JSON.stringify({"role":role}),
-    });
-  };
-  React.useEffect(() => {
-    getData();
-    console.log("Get Data");
-  }, []);
-  const getData = async (e) => {
-    const response = await fetch("https://mm-trader-app.vercel.app/api/getUser", {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    let res = await response.json();
-    if(res && res.success){
-      console.log("Get Data from api", res);
-      setRows(res?.data);
-      calUsers(res?.data);
-    }
-    else{
-      alert('Error')
-    }
-  };
-
-  const calUsers = (data) => {
-    if (!data) return;
-    let admin = data?.filter((x) => x?.role == "admin")?.length;
-    let user = data?.filter((x) => x?.role == "user")?.length;
-    console.log("adminUser", admin);
-    console.log("User", user);
-    localStorage.setItem(
-      "totalUsers",
-      JSON.stringify({ admin: admin, user: user })
+    const response = await fetch(
+      ` http://localhost:5000/api/updateRole/${rowId}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ role: role }),
+      }
     );
   };
+  const deleteUser = async (rowId) => {
+    console.log(rowId, "selectedRowId");
+    console.log(role, "Role Updated");
+    const response = await fetch(
+      ` http://localhost:5000/api/deleteUser/${rowId}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    const json = await response.json();
+    if (json.success) { 
+      let res =await GetAllUsers()
+      setRows(res.data)
+    //  setRows(data.filter((x)=>x?._id != rowId))
+      setIsDeleted(true);
+    }
+    setDelMessage(json.message)
+    console.log(json);
+      setIsDeleted(false)
+  };
+
+  React.useEffect(() => {
+    setRows(data);
+  }, [data]);
 
   return (
-    <div style={{ height: 380, width: "100%" }} className= {rows && rows.length > 0 ? "" : "dataHeight"} >
-      {
-        rows && rows.length > 0 ? 
-      <DataGrid
-      sx={{
-        // disable cell selection style
-        '.MuiDataGrid-cell:focus': {
-          outline: 'none'
-        },
-        // pointer cursor on ALL rows
-        '& .MuiDataGrid-row:hover': {
-          cursor: 'pointer'
-        }
-      }}
-        rows={rows}
-        columns={columns}
-        initialState={rows && rows.length > 10 ? {
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }: ""}
-        pageSizeOptions={[10 , 20 , 25]}
-        // checkboxSelection
-        getRowId={(row) => row._id}
-        disableSelectionOnClick={true}
-        isRowSelectable={() => false}
-        // onRowClick={(rows)=>{updateUserRole(rows?._id)}}
-      />
-      :
-      <CircularProgressWithLabel/>
-      }
+    <div
+      style={{ height: 380, width: "100%" }}
+      className={rows && rows.length > 0 ? "" : "dataHeight"}
+    >
+      {rows && rows.length > 0 ? (
+        <DataGrid
+          sx={{
+            // disable cell selection style
+
+            ".MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+            // pointer cursor on ALL rows
+            "& .MuiDataGrid-row:hover": {
+              cursor: "pointer",
+            },
+          }}
+          rows={rows}
+          columns={columns}
+          initialState={
+            rows && rows.length > 10
+              ? {
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }
+              : ""
+          }
+          pageSizeOptions={[10, 20, 25]}
+          // checkboxSelection
+          getRowId={(row) => row._id}
+          disableSelectionOnClick={true}
+          isRowSelectable={() => false}
+          // onRowClick={(rows)=>{updateUserRole(rows?._id)}}
+        />
+      ) : (
+        <CircularProgressWithLabel />
+      )}
+      {isDeleted ? (
+        <div className="alertBoxDel">
+          <SimpleAlert message={delMessage} />
+        </div>
+      ) : null}
     </div>
   );
 }
