@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import BasicSelect from "../components/select";
 import { RatioCostings } from "../components/ratioCosting";
+import { DusterFabricCalculator } from "../components/dusterFabricConsumption";
+
 import { CurrencyRates } from "./currencyRates";
 import {
   TextField,
@@ -18,6 +20,7 @@ export default function Costing() {
   const [showFabricGSM, setShowFabricGSM] = useState(true);
   const [showFabricRatio, setShowFabricRatio] = useState(false);
   const [showCurrencies, setShowCurrencies] = useState(false);
+  const [showDusterCosting, setShowDusterCosting] = useState(false);
   const [showLabel, setShowLabel] = useState("Fabric GSM Calculator");
   const [isReedYarnDenier, setIsReedYarnDenier] = useState(false);
   const [isPickYarnDenier, setIsPickYarnDenier] = useState(false);
@@ -34,18 +37,19 @@ export default function Costing() {
     let denierPickYarn = 0;
     if (isReedYarnDenier) {
       denierReedYarn = 5315 / gsmCalParams?.reedYarn;
-      console.log('isReedYarnDenier',denierReedYarn)
+      console.log("isReedYarnDenier", denierReedYarn);
     }
     if (isPickYarnDenier) {
       denierPickYarn = 5315 / gsmCalParams?.pickYarn;
-      console.log('isPickYarnDenier',denierPickYarn)
+      console.log("isPickYarnDenier", denierPickYarn);
     }
     let gsmCal =
-      +(gsmCalParams?.reed / (denierReedYarn > 0
-        ? denierReedYarn
-        : gsmCalParams?.reedYarn) + gsmCalParams?.pick / (denierPickYarn > 0
-        ? denierPickYarn
-        : gsmCalParams?.pickYarn)) * 25;
+      +(
+        gsmCalParams?.reed /
+          (denierReedYarn > 0 ? denierReedYarn : gsmCalParams?.reedYarn) +
+        gsmCalParams?.pick /
+          (denierPickYarn > 0 ? denierPickYarn : gsmCalParams?.pickYarn)
+      ) * 25;
     setGsm(Number(gsmCal.toFixed(4)));
   };
   const fabricPerKg = () => {
@@ -65,16 +69,25 @@ export default function Costing() {
         setShowFabricGSM(true);
         setShowFabricRatio(false);
         setShowCurrencies(false);
+        setShowDusterCosting(false);
         break;
       case "Fabric Ratio":
         setShowFabricGSM(false);
         setShowFabricRatio(true);
         setShowCurrencies(false);
+        setShowDusterCosting(false);
         break;
       case "Currencies":
         setShowFabricGSM(false);
         setShowFabricRatio(false);
         setShowCurrencies(true);
+        setShowDusterCosting(false);
+        break;
+      case "Duster Costings":
+        setShowFabricGSM(false);
+        setShowFabricRatio(false);
+        setShowCurrencies(false);
+        setShowDusterCosting(true);
         break;
     }
   };
@@ -98,6 +111,13 @@ export default function Costing() {
             value="FabricRatio"
             clickable={true}
             onClick={(e) => showCaluclationTabs("Fabric Ratio")}
+          />
+          <Chip
+            label="Duster Costing"
+            color="success"
+            value="DusterCosting"
+            clickable={true}
+            onClick={(e) => showCaluclationTabs("Duster Costings")}
           />
         </Stack>
         <div className="d-flex justify-content-md-between justify-content-center">
@@ -255,7 +275,11 @@ export default function Costing() {
           <>
             <RatioCostings />
           </>
-        ) : null}
+        ) :
+        showDusterCosting ? 
+        <DusterFabricCalculator/>
+        :
+         null}
         {/* {showCurrencies ? <CurrencyRates /> : null} */}
       </fieldset>
     </div>
