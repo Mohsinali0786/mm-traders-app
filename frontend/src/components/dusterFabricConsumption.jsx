@@ -32,7 +32,14 @@ export function DusterFabricCalculator() {
       );
 
       console.log("noOfPiece", noOfPiece);
-    } else {
+    }
+    else if(costingParams?.width % costingParams?.SizeLength == 0){
+        noOfPiece = costingParams?.width / costingParams?.SizeLength;
+        result = Number(
+          (((costingParams?.SizeWidth + 1) * 12) / noOfPiece / 39.37).toFixed(3)
+        );
+    } 
+    else {
       noOfPiece = costingParams?.width / costingParams?.SizeLength;
       let noOfPieceWidth = costingParams?.width / costingParams?.SizeWidth;
       if (noOfPiece > noOfPieceWidth) {
