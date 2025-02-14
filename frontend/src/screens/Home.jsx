@@ -17,6 +17,7 @@ import { db, storage } from "../firebase";
 import { useState } from "react";
 import { MakeCapitalFirstLetter } from "../commonFunctions/makeFirstLetterCap";
 import { RemoveDuplicates } from "../commonFunctions/removeDuplicateArray";
+import Documents from "../components/hisabKitab/hisabkitab";
 function Home() {
   const [imageUrls, setImageUrls] = useState([]);
   const imagesListRef = ref(storage, "productImages/");
@@ -314,7 +315,10 @@ function Home() {
             })}
             </div>
           </div>
+
         </div>
+      <Documents/>
+
         {/* {        imageUrls.map((x)=>{
   return(
     <>
