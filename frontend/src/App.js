@@ -24,6 +24,8 @@ import { VerifyEmail } from './screens/verifyUser';
 import {DusterFabricCalculator} from './components/dusterFabricConsumption';
 import HisabKitabForm from './components/hisabKitab/hisabKitabForm';
 import PaymentDetails from './components/paymentTable/paymentTable';
+import TableUnstyled from './components/tableWithPagination/table';
+import InwardData from './screens/inwardData/inwardData';
 // const ProtectedRoute = ({
 //   user,
 //   redirectPath = '/',
@@ -54,6 +56,9 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmail/>} />
         {/* <Route path="/verify-email" element={<DusterFabricCalculator/>} /> */}
         <Route path="/hisabForm" element={<HisabKitabForm/>} />
+        <Route path="/inWard" element={<InwardData/>} />
+        <Route path="/outWard" element={<TableUnstyled/>} />
+
 <Route path='paymentDetail' element={<PaymentDetails/>}/>
 
       
