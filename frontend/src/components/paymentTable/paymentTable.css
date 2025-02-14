@@ -1,0 +1,53 @@
+#data-table {
+  margin: 20px 0px;
+  text-align: center;
+  width: 90vw;
+  /* overflow: auto;
+  height: calc(100vh - 211px); */
+}
+/* .tableDiv{
+    display: contents;
+} */
+.dataTable {
+    margin: 10px;
+    /* display: flex;
+    flex-direction: column; */
+
+}
+ .tableDiv{
+    display: flex;
+    justify-content: center;
+    overflow-y: scroll;
+    margin-top: 50px;
+    height: calc(100vh - 200px);
+ }
+/* .dataTable div {
+  text-align: end;
+} */
+.exportBtn {
+  text-align: end;
+}
+.tabHeaders {
+  background-color: red;
+  color: white;
+}
+.partyName {
+    background-color: black;
+    color: whitesmoke;
+}
+.totalAmount {
+    background-color: green;
+    color: whitesmoke;
+}
+.remainingBal{
+    background-color: yellow;
+}
+.totalRemBal{
+  text-align: end;
+}
+/* .tableDiv{
+    overflow: scroll;
+    height: calc(100vh 700px)
+} */
+
+
