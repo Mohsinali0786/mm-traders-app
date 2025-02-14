@@ -6,7 +6,21 @@
   height: 40vmin;
   pointer-events: none;
 }
-
+.justifyBetween{
+  justify-content: space-between;
+}
+.textCenter{
+  text-align: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+.align-centre{
+  align-items: center;
+}
+.padding2{
+  padding: 4px;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -258,4 +272,19 @@ margin-left: 5px;
 body::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+table tbody tr td {
+  border-width: 1px;
+  /* border-right-width: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 0px;
+  border-left-width: 0px; */
+  border-style: solid;
+  border-color: black;
+}
+table thead tr th {
+  text-align: center;
+  border-width: 3px;
+  border-style: solid;
+  border-bottom-color: red;
 }

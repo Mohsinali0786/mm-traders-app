@@ -21,6 +21,9 @@ import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProductForms from './screens/productForm';
 import { VerifyEmail } from './screens/verifyUser';
+import {DusterFabricCalculator} from './components/dusterFabricConsumption';
+import HisabKitabForm from './components/hisabKitab/hisabKitabForm';
+import PaymentDetails from './components/paymentTable/paymentTable';
 // const ProtectedRoute = ({
 //   user,
 //   redirectPath = '/',
@@ -49,6 +52,10 @@ function App() {
         <Route path="/contactus" element={<ContactUs/>} />
         <Route path="/costings" element={<Costing/>} />
         <Route path="/verify-email" element={<VerifyEmail/>} />
+        {/* <Route path="/verify-email" element={<DusterFabricCalculator/>} /> */}
+        <Route path="/hisabForm" element={<HisabKitabForm/>} />
+<Route path='paymentDetail' element={<PaymentDetails/>}/>
+
       
         {/* <Route path="/currencyRates" element={<CurrencyRates/>} /> */}
 
