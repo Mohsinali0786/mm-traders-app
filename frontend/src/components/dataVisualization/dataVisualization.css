@@ -14,3 +14,7 @@
     background-color: darkgrey;
     outline: 1px solid slategrey;
   }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
