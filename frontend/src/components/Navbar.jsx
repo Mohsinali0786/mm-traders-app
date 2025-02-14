@@ -88,7 +88,13 @@ export default function Navbar() {
             <Link className="nav-link" to="/hisabForm">
               Hisab Form
             </Link>
-            <Link className="nav-link" to="/about">
+            <Link className="nav-link" to="/inWard">
+              Inward
+            </Link>
+            <Link className="nav-link" to="/contactus">
+              OutWard
+            </Link>
+            <Link className="nav-link" to="/outWard">
               About Us
             </Link>
             <Link className="nav-link" to="/contactus">
