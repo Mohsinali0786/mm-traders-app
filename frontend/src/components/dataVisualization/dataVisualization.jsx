@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import PartyDetailModal from "../modal/modal";
+// import PartyDetailModal from "../modal/modal";
 import { Link } from "react-router-dom";
+import "./dataVisualization.css"
 export default function DataTable({ data }) {
   console.log(data, "data");
   return (
@@ -15,7 +16,7 @@ export default function DataTable({ data }) {
               <td>{data?.partyName}</td>
               <td>
                 {/* <PartyDetailModal data={data} /> */}
-                <Link to="/paymentDetail" state={ data }>Link</Link>
+                <Link to="/paymentDetail" state={ data }>View Details</Link>
               </td>
             </tr>
           );
