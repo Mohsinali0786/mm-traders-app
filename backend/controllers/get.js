@@ -1,5 +1,7 @@
 const express = require('express')
 const User = require('../models/userSchema')
+const Party = require('../models/partySchema')
+
 const http = require('http');
 const axios = require('axios')
 const apiKey = 'cur_live_0IZx3JH7uo2F6C5PesFXYTEfqnxc2hy0xW9RbwyL'
@@ -64,6 +66,17 @@ const getCurrenciesValue = async (req, res) => {
 
     //   request.end();
 }
-
-module.exports = { getUser, getCurrenciesValue };
+const getHisab = async (req, res) => {
+    try {
+        let data = await Party.find({userId:req.params.id})
+    
+console.log('getData',data)
+        res.send({ success: true, data: data })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false, message: 'No record found' })
+    }
+}
+module.exports = { getUser, getCurrenciesValue,getHisab };
 // module.exports=router
