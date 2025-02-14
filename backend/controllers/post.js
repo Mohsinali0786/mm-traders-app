@@ -1,11 +1,14 @@
 const express = require('express')
+const mongoose = require("mongoose")
 // const router = express.Router()
 const User = require('../models/userSchema')
-const {generateToken} = require('../config/jwtToken')
+const Party = require('../models/partySchema')
+
+const { generateToken } = require('../config/jwtToken')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jsonWebToken = require('jsonwebtoken')
-const {sendVerificationEmail} = require("../utils/sendVerificationMail")
+const { sendVerificationEmail } = require("../utils/sendVerificationMail")
 var crypto = require('crypto');
 let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
 const createUser = async (req, res) => {
@@ -22,7 +25,7 @@ const createUser = async (req, res) => {
     // let token = createToken(req.body.email)
     // console.log('token',token)
     console.log('req.body', req.body)
-    const  {name , email , password} =  req.body
+    const { name, email, password } = req.body
     let result = await User.findOne({ email: req.body.email })
     console.log('result', result)
     if (result) return res.send({ success: false, message: 'This Email Exists in our database' })
@@ -70,9 +73,9 @@ const createUser = async (req, res) => {
         //     return error
         // })
         // console.log(result12,'result12')
-        
+
         const token = generateToken(result._id)
-        res.send({ success: true , _id: result._id, name, email, token ,isVerified:result?.isVerified })
+        res.send({ success: true, _id: result._id, name, email, token, isVerified: result?.isVerified })
 
     }
     catch (err) {
@@ -97,9 +100,9 @@ const verifyUser = async (req, res) => {
             console.log(user, 'After Userr')
             const token = generateToken(user._id)
             res.status(200).json({
-                success:true,
-                message:"Email Verified",
-                user:{
+                success: true,
+                message: "Email Verified",
+                user: {
                     _id: user._id,
                     name: user.name,
                     email: user.email,
@@ -109,12 +112,12 @@ const verifyUser = async (req, res) => {
             })
         }
         else {
-           res.status(404).json("Email Verification Failed Invalid Token")
+            res.status(404).json("Email Verification Failed Invalid Token")
         }
     }
     catch (err) {
         console.log('Err', err)
-       res.status(500).json(err.message)
+        res.status(500).json(err.message)
     }
 }
 const loginUser = async (req, res) => {
@@ -179,7 +182,107 @@ const deleteUser = async (req, res) => {
         res.send({ success: false, message: 'Error in deleting record' })
     }
 }
+const addHisab = async (req, res) => {
+    // console.log('Req.body', req.body)
+    const { id } = req?.params
+    try {
+        let hisab = {
+            partyName: req.body.partyName,
+            date: req.body.date,
+            pricePerMetre: req.body.pricePerMetre,
+            totalMetre: req.body.totalMetre,
+            totalPrice: req.body.totalPrice,
+            id: new mongoose.mongo.ObjectId(),
+            paymentRcvd:  [{paymentRcvd: 0 , remainingPayment:0 }],
+            remainingBal:req.body.totalPrice
+        }
+        let isPartyExist = false
+        let result = await Party.findOne({ partyName: req.body.partyName, userId: id })
+
+        console.log(result, 'result')
+        if (!result) {
+            const partyData = await Party.create({
+                userId: id,
+                id: new mongoose.mongo.ObjectId(),
+                partyName: req.body.partyName,
+                hisabKitab: hisab
+            })
+            const user = await User.findById(
+                { _id: req.params.id },
+            );
+            console.log(user, 'user')
+            user?.partyId.push(partyData?._id)
+            user.save()
+
+        }
+        else {
+            const partyData = await Party.findById(result._id)
+            // console.log(partyData,'partyData')
+            partyData?.hisabKitab.push(hisab)
+            partyData.save()
+        }
+        res.send({ success: true })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+const upDateHisab = async (req, res) => {
+    const { recordId, paymentRcvd,hisabId,userId } = req?.body
+    console.log(req.body)
+    try {
+        let result1 = await Party.findById(recordId)
+console.log('result1',result1)
+        let index = result1?.hisabKitab.findIndex((x) => x.id == hisabId)
+        console.log('index',index)
+        console.log(' ...result1?.hisabKitab[index].paymentRcvd', result1?.hisabKitab[index])
+        console.log('result1?.hisabKitab', result1?.hisabKitab)
+
+let filterArray = result1?.hisabKitab.filter((x)=>x.id != result1?.hisabKitab[index].id)
+result1?.hisabKitab[index].paymentRcvd.push({paymentRcvd:paymentRcvd > result1?.hisabKitab[index].remainingBal  ? result1?.hisabKitab[index].remainingBal : paymentRcvd  ,remainingPayment:paymentRcvd > result1?.hisabKitab[index].remainingBal ? 0 : result1?.hisabKitab[index].remainingBal - paymentRcvd ,date:new Date()})
+console.log('result1?.hisabKitab[index].paymentRcvd',result1?.hisabKitab[index].paymentRcvd)
+console.log('result1?.hisabKitab[index].paymentRcvd.paymentRcvd',result1?.hisabKitab[index].paymentRcvd.paymentRcvd)
+console.log(result1?.hisabKitab[index].remainingBal)
 
 
-module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser };
+let obj ={
+    partyName: result1?.hisabKitab[index].partyName,
+    date: result1?.hisabKitab[index].date,
+    pricePerMetre: result1?.hisabKitab[index].pricePerMetre,
+    totalMetre: result1?.hisabKitab[index].totalMetre,
+    totalPrice: result1?.hisabKitab[index].totalPrice,
+    id: result1?.hisabKitab[index].id,
+    paymentRcvd: result1?.hisabKitab[index].paymentRcvd,
+    remainingBal:
+    result1?.hisabKitab[index].remainingBal > 0 ?
+    result1?.hisabKitab[index].paymentRcvd[result1?.hisabKitab[index].paymentRcvd.length - 1].remainingPayment
+    :
+    result1?.hisabKitab[index].totalPrice - result1?.hisabKitab[index].paymentRcvd
+
+}
+console.log('filterArray before',filterArray)
+
+filterArray.push(obj)
+console.log('filterArray',filterArray)
+
+        let result = await Party.updateOne(
+            {$and:[
+                {_id: recordId},
+                // {"hisabKitab.id": hisabId},
+            ]},
+            {
+              $set: { "hisabKitab": filterArray },
+            }
+          );
+          console.log('rrrrrrr',result)
+        res.send({ success: true })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+
+module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab };
 // module.exports=router
