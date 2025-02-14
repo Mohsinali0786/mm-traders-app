@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <div className="container-fluid">
-        <Link className="navbar-brand fs-1 fst-italic" href="#">
+        <Link className="navbar-brand fs-1 fst-italic" to="/">
           MM Traders
         </Link>
         <button
@@ -85,7 +85,9 @@ export default function Navbar() {
             <Link className="nav-link" to="/costings">
               Costings
             </Link>
-            
+            <Link className="nav-link" to="/hisabForm">
+              Hisab Form
+            </Link>
             <Link className="nav-link" to="/about">
               About Us
             </Link>
