@@ -317,7 +317,7 @@ function Home() {
           </div>
 
         </div>
-      <Documents/>
+      {/* <Documents/> */}
 
         {/* {        imageUrls.map((x)=>{
   return(
