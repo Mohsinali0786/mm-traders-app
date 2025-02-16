@@ -14,6 +14,7 @@ export const VerifyEmail = () => {
 
   useEffect(() => {
     console.log(user, "userrrrrrrr");
+    localStorage.clear();
     verifyingEmail();
   }, [user, emailToken, isVerified]);
 
