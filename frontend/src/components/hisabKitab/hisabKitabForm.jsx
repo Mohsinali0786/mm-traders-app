@@ -22,7 +22,7 @@ export default function HisabKitabForm() {
     LSData = JSON.parse(LSData);
     setLoginData(LSData);
     axios
-      .get(`http://localhost:5000/api/getHisab/${LSData?._id}`)
+      .get(`https://mm-traders-backend-app.vercel.app/api/getHisab/${LSData?._id}`)
       .then((res) => {
         console.log(res, "resssss");
         setData(res?.data?.data);
@@ -40,7 +40,7 @@ export default function HisabKitabForm() {
     // setDataInLS("loginData",loginData)
     console.log("loginData", loginData);
     axios
-      .post(`http://localhost:5000/api/addHisab/${loginData?._id}`, data)
+      .post(`https://mm-traders-backend-app.vercel.app/api/addHisab/${loginData?._id}`, data)
       .then((res) => {
         console.log(res, "resssss");
       })
