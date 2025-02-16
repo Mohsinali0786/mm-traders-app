@@ -17,7 +17,7 @@ const sendVerificationEmail = (user) =>{
             };
             transporter.sendMail(mailOptions,function(error, info){ 
                 if (error) console.log(error,'errr'); 
-                console.log('Email Sent Successfully',info); 
+                // console.log('Email Sent Successfully',info); 
                 console.log(info); 
             });
             // return new Promise ((resolve,reject)=>{
