@@ -85,7 +85,7 @@ const createUser = async (req, res) => {
 }
 
 const verifyUser = async (req, res) => {
-    console.log('req.body', req.body)
+    console.log('req.body verify User', req.body)
 
     try {
         const emailToken = req.body.emailToken
