@@ -4,7 +4,7 @@ const  { emailTransporter }  = require("./createMailTransport");
 const sendVerificationEmail = (user) =>{
     const transporter =emailTransporter()
     // const verificationUrl = `http://localhost:5000/api/verify-email/${token}`;
-    let  verificationUrl = `http://localhost:3000/verify-email?emailToken=${user.emailToken}`;
+    let  verificationUrl = `https://mm-traders-app-frontend.vercel.app/verify-email?emailToken=${user.emailToken}`;
     console.log(verificationUrl, 'verificationUrl')
             console.log(verificationUrl,'verificationUrl')
             const mailOptions = {
