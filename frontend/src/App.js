@@ -57,7 +57,7 @@ function App() {
         {/* <Route path="/verify-email" element={<DusterFabricCalculator/>} /> */}
         <Route path="/hisabForm" element={<HisabKitabForm/>} />
         <Route path="/inWard" element={<InwardData/>} />
-        <Route path="/outWard" element={<TableUnstyled/>} />
+        <Route path="/outWard" element={<InwardData/>} />
 
 <Route path='paymentDetail' element={<PaymentDetails/>}/>
 
