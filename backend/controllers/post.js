@@ -131,6 +131,7 @@ const loginUser = async (req, res) => {
     try {
         let userData = await User.findOne({ email })
         if (!userData) return res.status(400).json({ errors: 'Email not exist' });
+        if(!userData?.isVerified) return res.status(400).json({ errors: 'Email Not verified' })
         const pwdCompare = await bcrypt.compare(req.body.password, userData.password)
         if (!pwdCompare) return res.status(400).json({ errors: 'Incorrect password' });
         const data = {
