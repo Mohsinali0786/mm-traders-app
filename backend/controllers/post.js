@@ -195,6 +195,9 @@ const addHisab = async (req, res) => {
             id: new mongoose.mongo.ObjectId(),
             paymentRcvd:  [{paymentRcvd: 0 , remainingPayment:0 }],
             remainingBal:req.body.totalPrice
+            remainingBal:req.body.totalPrice,
+            type:req.body.type,
+            quality:req.body.quality
         }
         let isPartyExist = false
         let result = await Party.findOne({ partyName: req.body.partyName, userId: id })
