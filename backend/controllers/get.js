@@ -68,9 +68,9 @@ const getCurrenciesValue = async (req, res) => {
 }
 const getHisab = async (req, res) => {
     try {
-        let data = await Party.find({userId:req.params.id})
-    
-console.log('getData',data)
+        let data = await Party.find({ userId: req.params.id })
+
+        console.log('getData', data)
         res.send({ success: true, data: data })
     }
     catch (err) {
@@ -78,5 +78,42 @@ console.log('getData',data)
         res.send({ success: false, message: 'No record found' })
     }
 }
-module.exports = { getUser, getCurrenciesValue,getHisab };
+const getInwards = async (req, res) => {
+    // console.log('Req.body', req.body)
+    const { id } = req?.params
+    console.log(req.query.queryParams, 'req.query')
+    try {
+
+        let result = await Party.find({ userId: id })
+        let filteredData = []
+        if (result) {
+            console.log(result, 'result')
+            for (let i = 0; i < result.length; i++) {
+                // console.log(result[i], 'result[i]')
+                for (let j = 0; j < result[i].hisabKitab.length; j++) {
+                    if(req.query.queryParams == "inWard"){
+                        if (result[i].hisabKitab[j].type == "PURCHASER") {
+                            filteredData.push(result[i].hisabKitab[j])
+                        }
+                    }
+                    else{
+                        if (result[i].hisabKitab[j].type == "SELLER") {
+                            filteredData.push(result[i].hisabKitab[j])
+                        }
+                    }
+                }
+            }
+        }
+        else {
+
+        }
+        console.log(filteredData, 'filteredData')
+        res.send({ success: true, result: filteredData })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+module.exports = { getUser, getCurrenciesValue, getHisab, getInwards };
 // module.exports=router
