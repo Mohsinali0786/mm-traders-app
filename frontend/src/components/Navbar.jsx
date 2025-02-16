@@ -88,10 +88,10 @@ export default function Navbar() {
             <Link className="nav-link" to="/hisabForm">
               Hisab Form
             </Link>
-            <Link className="nav-link" to="/inWard">
+            <Link className="nav-link" to={{pathname:"/inWard" , search: '?myParam=inWard'}} >
               Inward
             </Link>
-            <Link className="nav-link" to="/contactus">
+            <Link className="nav-link" to={{pathname:"/outWard" , search: '?myParam=outWard'}}>
               OutWard
             </Link>
             <Link className="nav-link" to="/outWard">
