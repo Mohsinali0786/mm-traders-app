@@ -5,13 +5,14 @@ import {
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
 
-export default function TableUnstyled({ tableHeaders ,rows }) {
+export default function TableUnstyled({ tableHeaders, rows }) {
+  console.log(rows);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows?.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -23,7 +24,7 @@ export default function TableUnstyled({ tableHeaders ,rows }) {
   };
 
   return (
-    <Root sx={{ maxWidth: "100%", width: 500 }}>
+    <Root sx={{ maxWidth: "100%" }}>
       <table aria-label="custom pagination table">
         <thead>
           <tr>
@@ -34,16 +35,25 @@ export default function TableUnstyled({ tableHeaders ,rows }) {
         </thead>
         <tbody>
           {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            ? rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
-            <tr key={row.name}>
-              <td>{row.name}</td>
-              <td style={{ width: 160 }} align="right">
-                {row.calories}
+          )?.map((row) => (
+            <tr key={row.id}>
+                       <td style={{ width: 160 }} align="right">
+                {row.id}
               </td>
               <td style={{ width: 160 }} align="right">
-                {row.fat}
+                {row.date}
+              </td>
+              <td>{row.partyName}</td>
+              <td style={{ width: 160 }} align="right">
+                {row.quality}
+              </td>
+              <td style={{ width: 160 }} align="right">
+                {row.totalMetre}
+              </td>
+              <td style={{ width: 160 }} align="right">
+                {row.totalPrice}
               </td>
             </tr>
           ))}
@@ -56,9 +66,10 @@ export default function TableUnstyled({ tableHeaders ,rows }) {
         <tfoot>
           <tr>
             <CustomTablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+              // rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+              rowsPerPageOptions={[25]}
               colSpan={3}
-              count={rows.length}
+              count={rows?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               slotProps={{
@@ -79,27 +90,6 @@ export default function TableUnstyled({ tableHeaders ,rows }) {
     </Root>
   );
 }
-
-function createData(name, calories, fat) {
-  return { name, calories, fat };
-}
-
-// const rows = [
-//   createData("Cupcake", 305, 3.7),
-//   createData("Donut", 452, 25.0),
-//   createData("Eclair", 262, 16.0),
-//   createData("Frozen yoghurt", 159, 6.0),
-//   createData("Gingerbread", 356, 16.0),
-//   createData("Honeycomb", 408, 3.2),
-//   createData("Ice cream sandwich", 237, 9.0),
-//   createData("Jelly Bean", 375, 0.0),
-//   createData("KitKat", 518, 26.0),
-//   createData("Lollipop", 392, 0.2),
-//   createData("Marshmallow", 318, 0),
-//   createData("Nougat", 360, 19.0),
-//   createData("Oreo", 437, 18.0),
-// ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 const grey = {
   50: "#F3F6F9",
   100: "#E5EAF2",
