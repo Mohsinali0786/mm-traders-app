@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 // import PartyDetailModal from "../modal/modal";
 import TableUnstyled from "../../components/tableWithPagination/table";
+import { getDataFromLS } from "../../commonFunctions/getAndSetDataFromLocalStrorage";
+import { useSearchParams } from 'react-router-dom';
+import NoRecordFound from "../../components/noRecordPage/noRecord";
+import axios from "axios";
 export default function InwardData() {
-
-  const headers=[
-    "S.no",
-    "Name",
-    "Quality",
-    "Quantity",
-    "Total"
-  ]
-  const rows = [
-    createData("Cupcake", 305, 3.7),
-    createData("Donut", 452, 25.0),
-    createData("Eclair", 262, 16.0),
-    createData("Frozen yoghurt", 159, 6.0),
-    createData("Gingerbread", 356, 16.0),
-    createData("Honeycomb", 408, 3.2),
-    createData("Ice cream sandwich", 237, 9.0),
-    createData("Jelly Bean", 375, 0.0),
-    createData("KitKat", 518, 26.0),
-    createData("Lollipop", 392, 0.2),
-    createData("Marshmallow", 318, 0),
-    createData("Nougat", 360, 19.0),
-    createData("Oreo", 437, 18.0),
-  ]
-  function createData(name, calories, fat) {
-    return { name, calories, fat };
-  }
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [rows,setRows] = useState([])
+  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Total"];
+  const myParam = searchParams.get('myParam');
+  console.log('myParam',myParam)
+  useEffect(() => {
+    let LSData = getDataFromLS("loginData");
+    LSData = JSON.parse(LSData);
+    getInward(LSData)
+  },[myParam]);
+  const getInward = (LSData) => {
+    axios
+      .get(`http://localhost:5000/api/getInwardEntry/${LSData?._id}`,
+        {
+          params: {
+              queryParams: myParam,
+          } }
+      )
+      .then((res) => {
+        console.log(res, "resssss");
+        setRows(res?.data?.result);
+      })
+      .catch((err) => {});
+  };
   return (
-    <div >
-      <TableUnstyled tableHeaders={headers} rows={rows}/>
+    <div>
+      {
+        rows && rows.length > 0 ?
+        <TableUnstyled tableHeaders={headers} rows={rows} />
+        :
+        <NoRecordFound/>
+      }
     </div>
   );
 }
