@@ -18,6 +18,11 @@ const partySchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:'user'
     },
-    hisabKitab:[]
+    hisabKitab:[],
+    type:{
+        type:String,
+        enum : ['SELLER','PURCHASER'],
+        // default: 'SELLER'
+    }
 })
 module.exports=mongoose.model('party',partySchema)
