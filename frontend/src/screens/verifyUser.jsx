@@ -28,8 +28,8 @@ export const VerifyEmail = () => {
   const verifyingEmail = async () => {
     if (!user?.isVerified) {
       const response = await fetch(
-        // "https://mm-traders-backend-app.vercel.app/api/createUser",
-        "http://localhost:5000/api/verify-email",
+        "https://mm-traders-backend-app.vercel.app/api/verify-email",
+        // "http://localhost:5000/api/verify-email",
         {
           method: "POST",
           headers: {
