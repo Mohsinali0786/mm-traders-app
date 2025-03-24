@@ -8,7 +8,7 @@ import axios from "axios";
 export default function InwardData() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [rows,setRows] = useState([])
-  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Total"];
+  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Total","Remaining Balance"];
   const myParam = searchParams.get('myParam');
   console.log('myParam',myParam)
   useEffect(() => {
@@ -30,6 +30,7 @@ export default function InwardData() {
       })
       .catch((err) => {});
   };
+  console.log('rowssssss',rows)
   return (
     <div>
       {
