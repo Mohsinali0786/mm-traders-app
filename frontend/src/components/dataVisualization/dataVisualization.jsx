@@ -9,6 +9,7 @@ export default function DataTable({ data }) {
       <table cellPadding={10}>
         <tr>
           <th>Name</th>
+          <th>Actions</th>
         </tr>
         {data &&
           data.map((data, index) => {
