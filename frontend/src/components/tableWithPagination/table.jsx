@@ -4,6 +4,7 @@ import {
   TablePagination,
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
+import { Link } from "react-router-dom";
 
 export default function TableUnstyled({ tableHeaders, rows }) {
   console.log(rows);
@@ -39,7 +40,7 @@ export default function TableUnstyled({ tableHeaders, rows }) {
             : rows
           )?.map((row) => (
             <tr key={row.id}>
-                       <td style={{ width: 160 }} align="right">
+              <td style={{ width: 160 }} align="right">
                 {row.id}
               </td>
               <td style={{ width: 160 }} align="right">
@@ -55,6 +56,14 @@ export default function TableUnstyled({ tableHeaders, rows }) {
               <td style={{ width: 160 }} align="right">
                 {row.totalPrice}
               </td>
+              <td style={{ width: 160 }} align="right">
+                {row.remainingBal}
+              </td>
+              {/* <td style={{ width: 160 }} align="right">
+                <Link to="/paymentDetail" state={row}>
+                  View Details
+                </Link>
+              </td> */}
             </tr>
           ))}
           {emptyRows > 0 && (
