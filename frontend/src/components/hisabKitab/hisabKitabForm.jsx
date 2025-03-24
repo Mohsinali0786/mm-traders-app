@@ -8,11 +8,13 @@ import {
   getDataFromLS,
   setDataInLS,
 } from "../../commonFunctions/getAndSetDataFromLocalStrorage";
+import BasicSelect from "../select";
 export default function HisabKitabForm() {
   const [currDate, setCurrDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
   const [formData, setFormData] = useState();
+  const [selectType, setSelectType] = useState("");
   console.log(currDate);
   const [data, setData] = useState([]);
   const [loginData, setLoginData] = useState();
@@ -35,6 +37,7 @@ export default function HisabKitabForm() {
       ...formData,
       date: currDate,
       partyIds: loginData?.partyId,
+      type:selectType
     };
     // loginData?.partyId.push(loginData?.partyId)
     // setDataInLS("loginData",loginData)
@@ -59,6 +62,19 @@ export default function HisabKitabForm() {
             className="my-2 mx-0"
             onChange={(e) => {
               setFormData({ ...formData, partyName: e.target.value });
+            }}
+            fullWidth
+          />
+        </div>
+        <div className="col-sm-12 col-md-3">
+          <TextField
+            required
+            id="outlined-required"
+            label="Quality"
+            name="quality"
+            className="my-2 mx-0"
+            onChange={(e) => {
+              setFormData({ ...formData, quality: e.target.value });
             }}
             fullWidth
           />
@@ -125,10 +141,25 @@ export default function HisabKitabForm() {
           />
         </div>
         <div className="col-sm-12 col-md-3">
+          <BasicSelect 
+           label = "Type"
+           options={["SELLER","PURCHASER"]}
+           values = {["SELLER","PURCHASER"]}
+           state={selectType}
+           setState={setSelectType}
+           defaultVal="SELLER"
+          />
+        </div>
+        <div className="col-sm-12 col-md-3">
           <button onClick={(e) => onSubmit(e)}>Submit</button>
         </div>
       </div>
-      <DataTable data={data} />
+      {
+        data && data.length > 0 ?
+        <DataTable data={data} />
+        :
+        null
+      }
     </div>
   );
 }
