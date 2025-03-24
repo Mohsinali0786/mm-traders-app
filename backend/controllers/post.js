@@ -196,7 +196,7 @@ const addHisab = async (req, res) => {
             id: new mongoose.mongo.ObjectId(),
             paymentRcvd:  [{paymentRcvd: 0 , remainingPayment:0 }],
             remainingBal:req.body.totalPrice,
-            type:req.body.type,
+            type:req.body.type ? req.body.type : 'SELLER' ,
             quality:req.body.quality
         }
         let isPartyExist = false
@@ -256,6 +256,8 @@ let obj ={
     totalMetre: result1?.hisabKitab[index].totalMetre,
     totalPrice: result1?.hisabKitab[index].totalPrice,
     id: result1?.hisabKitab[index].id,
+    type: result1?.hisabKitab[index].type,
+    quality: result1?.hisabKitab[index].quality,
     paymentRcvd: result1?.hisabKitab[index].paymentRcvd,
     remainingBal:
     result1?.hisabKitab[index].remainingBal > 0 ?
