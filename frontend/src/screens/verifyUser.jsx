@@ -18,9 +18,9 @@ export const VerifyEmail = () => {
     verifyingEmail();
   }, [user, emailToken, isVerified]);
 
-  // useEffect(() => {
-  //   setMessageAlert();
-  // }, [message]);
+  useEffect(() => {
+    // setMessageAlert();
+  }, [message]);
   const setMessageAlert = (message) => {
     console.log(!user?.isVerified, "!user?.isVerified");
     console.log(user, "user");
