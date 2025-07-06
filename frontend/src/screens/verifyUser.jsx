@@ -65,7 +65,7 @@ export const VerifyEmail = () => {
         <div class="alert alert-success" role="alert">
           {message ? (
             <span>
-              {messge}
+              {message}
               <Button onClick={routeToLogin}>Click here to Login</Button>
             </span>
           ) : (
