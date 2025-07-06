@@ -61,14 +61,18 @@ export const VerifyEmail = () => {
   };
   return (
     <>
-      {isVerified && message? (
-        <div class="alert alert-success" role="alert">
-          {message}
-          <Button onClick={routeToLogin}>Click here to Login</Button>
-        </div>
-      ) : (
-        <div class="alert alert-danger" role="alert">Please Wait</div>
-      )}
+      {isVerified ? (
+        message ? (
+          <div class="alert alert-success" role="alert">
+            {message}
+            <Button onClick={routeToLogin}>Click here to Login</Button>
+          </div>
+        ) : (
+          <div class="alert alert-danger" role="alert">
+            Please Wait
+          </div>
+        )
+      ) : null}
     </>
   );
 };
