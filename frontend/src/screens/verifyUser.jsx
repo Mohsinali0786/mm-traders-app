@@ -44,9 +44,9 @@ export const VerifyEmail = () => {
       if (json.success) {
         localStorage.setItem("user", JSON.stringify(json.user));
         setMessageAlert(json.message);
-        setTimeout(() => {
-          setIsVerified(true);
-        }, 20000);
+        // setTimeout(() => {
+        //   setIsVerified(true);
+        // }, 20000);
       }
       //   console.log(json, "success");
       console.log("Ressssssss", json);
