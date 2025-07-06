@@ -21,7 +21,7 @@ const partySchema=new Schema({
     hisabKitab:[],
     type:{
         type:String,
-        enum : ['SELLER','PURCHASER'],
+        enum : ['SELL','PURCHASER'],
         // default: 'SELLER'
     }
 })
