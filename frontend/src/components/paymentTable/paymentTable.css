@@ -45,6 +45,11 @@
 .totalRemBal{
   text-align: end;
 }
+.billTotal{
+  border: 3px solid purple;
+  background-color: salmon;
+  color: white;
+}
 /* .tableDiv{
     overflow: scroll;
     height: calc(100vh 700px)
