@@ -57,6 +57,10 @@ export const VerifyEmail = () => {
   const routeToLogin = () => {
     Navigate("/login");
   };
+        console.log(isVerified, "isVerified");
+        console.log(message, "message");
+
+
   return (
     <>
       {isVerified ? null : (
