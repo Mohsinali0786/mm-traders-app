@@ -18,13 +18,8 @@ export const VerifyEmail = () => {
     verifyingEmail();
   }, [user, emailToken, isVerified]);
 
-  useEffect(() => {
-    // setMessageAlert();
-  }, [message]);
+  useEffect(() => {setMessageAlert()}, []);
   const setMessageAlert = (message) => {
-    console.log(!user?.isVerified, "!user?.isVerified");
-    console.log(user, "user");
-
     if (!user?.isVerified) {
       setMessage(message + " Now you an Login");
     } else {
@@ -45,13 +40,13 @@ export const VerifyEmail = () => {
         }
       );
       const json = await response.json();
-      console.log(json, "json");
+      console.log(json,'json')
       if (json.success) {
         localStorage.setItem("user", JSON.stringify(json.user));
         setMessageAlert(json.message);
-        // setTimeout(() => {
-        //   setIsVerified(true);
-        // }, 20000);
+        setTimeout(() => {
+          setIsVerified(true);
+        }, 20000);
       }
       //   console.log(json, "success");
       console.log("Ressssssss", json);
@@ -64,14 +59,10 @@ export const VerifyEmail = () => {
   };
   return (
     <>
-      {isVerified && message ? (
+      {isVerified ? null : (
         <div class="alert alert-success" role="alert">
           {message}
           <Button onClick={routeToLogin}>Click here to Login</Button>
-        </div>
-      ) : (
-        <div class="alert alert-error" role="alert">
-           "Please Wait email is verifying ...."
         </div>
       )}
     </>
