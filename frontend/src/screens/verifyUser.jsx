@@ -71,8 +71,8 @@ export const VerifyEmail = () => {
           <Button onClick={routeToLogin}>Click here to Login</Button>
         </div>
       ) : (
-        <div class="alert alert-danger" role="alert">
-          Please wait Emain is verifying
+        <div class="alert alert-warning" role="alert">
+          Please wait Email is verifying ...
         </div>
       )}
     </>
