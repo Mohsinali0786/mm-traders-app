@@ -266,7 +266,7 @@ function Home() {
             <div className="mb-4 ">
               {filtersArray.length > 0 ? (
                 <>
-                  <p class="ribbon bg-success text-white">Filtered By</p>
+                  <p className="ribbon bg-success text-white">Filtered By</p>
                   <div className="d-flex flex-wrap gap-1">
                     {filtersArray?.map((x) => (
                       <span className="border border-2 rounded mx-1 p-1 d-flex align-items-center">
@@ -291,7 +291,7 @@ function Home() {
               ) : null}
             </div>
             {/* <p>Category Name</p> */}
-            <p class="ribbon bg-success text-white">Category Name</p>
+            <p className="ribbon bg-success text-white">Category Name</p>
             <div className="d-flex flex-wrap gap-1">
 
             {productCatArr?.map((x, i) => {
