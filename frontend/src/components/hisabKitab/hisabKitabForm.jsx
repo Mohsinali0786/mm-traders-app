@@ -86,8 +86,9 @@ export default function HisabKitabForm() {
             type="date"
             id="date"
             name="date"
-            min={currDate}
-            max={currDate}
+            // min={currDate}
+            // max={currDate}
+            onChange={(e)=>setCurrDate(e.target.value)}
             value={currDate}
           />
         </div>
