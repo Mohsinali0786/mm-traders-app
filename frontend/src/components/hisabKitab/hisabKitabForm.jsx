@@ -15,6 +15,7 @@ export default function HisabKitabForm() {
   );
   const [formData, setFormData] = useState();
   const [selectType, setSelectType] = useState("");
+  const [selectUnit, setUnit] = useState("");
   console.log(currDate);
   const [data, setData] = useState([]);
   const [loginData, setLoginData] = useState();
@@ -38,6 +39,7 @@ export default function HisabKitabForm() {
       date: currDate,
       partyIds: loginData?.partyId,
       type:selectType
+      type: selectType,
     };
     // loginData?.partyId.push(loginData?.partyId)
     // setDataInLS("loginData",loginData)
@@ -148,6 +150,27 @@ export default function HisabKitabForm() {
            state={selectType}
            setState={setSelectType}
            defaultVal="SELLER"
+        <div className="col-sm-12 col-md-1">
+          <BasicSelect
+            label="Unit"
+            options={["Kg", "Metre","Yard"]}
+            values={["Kg", "Metre","Yard"]}
+            state={selectUnit}
+            setState={setUnit}
+            defaultVal="Kg"
+            fullWidth={true}
+          />
+        </div>
+        <div className="col-sm-12 col-md-2">
+          <BasicSelect
+            label="Type"
+            options={["SELL", "PURCHASE"]}
+            values={["SELL", "PURCHASER"]}
+            state={selectType}
+            setState={setSelectType}
+            defaultVal="SELL"
+            fullWidth={true}
+
           />
         </div>
         <div className="col-sm-12 col-md-3">
