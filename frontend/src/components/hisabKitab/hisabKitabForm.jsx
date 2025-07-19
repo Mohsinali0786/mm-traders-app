@@ -38,10 +38,8 @@ export default function HisabKitabForm() {
       ...formData,
       date: currDate,
       partyIds: loginData?.partyId,
-      type:selectType
-      type: selectType,
       type: selectType
-    };
+    }
     // loginData?.partyId.push(loginData?.partyId)
     // setDataInLS("loginData",loginData)
     console.log("loginData", loginData);
