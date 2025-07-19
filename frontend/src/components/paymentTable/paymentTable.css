@@ -15,10 +15,11 @@
 
 }
  .tableDiv{
-    display: flex;
+    /* display: flex;
     justify-content: center;
+    flex-direction: column; */
     overflow-y: scroll;
-    margin-top: 50px;
+    /* margin-top: 50px; */
     height: calc(100vh - 200px);
  }
 /* .dataTable div {
