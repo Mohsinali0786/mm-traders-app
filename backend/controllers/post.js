@@ -75,7 +75,7 @@ const createUser = async (req, res) => {
         // console.log(result12,'result12')
 
         const token = generateToken(result._id)
-        res.send({ success: true, _id: result._id, name, email, token, isVerified: result?.isVerified })
+        res.send({ success: true, _id: result._id, name, email, token, isVerified: result?.isVerified ,emailSentmessage:"You Singup Successfully" })
 
     }
     catch (err) {
@@ -131,7 +131,7 @@ const loginUser = async (req, res) => {
     try {
         let userData = await User.findOne({ email })
         if (!userData) return res.status(400).json({ errors: 'Email not exist' });
-        if(!userData?.isVerified) return res.status(400).json({ errors: 'Email Not verified' })
+        if (!userData?.isVerified) return res.status(400).json({ errors: 'Email Not verified' })
         const pwdCompare = await bcrypt.compare(req.body.password, userData.password)
         if (!pwdCompare) return res.status(400).json({ errors: 'Incorrect password' });
         const data = {
@@ -194,10 +194,10 @@ const addHisab = async (req, res) => {
             totalMetre: req.body.totalMetre,
             totalPrice: req.body.totalPrice,
             id: new mongoose.mongo.ObjectId(),
-            paymentRcvd:  [{paymentRcvd: 0 , remainingPayment:0 }],
-            remainingBal:req.body.totalPrice,
-            type:req.body.type ? req.body.type : 'SELLER' ,
-            quality:req.body.quality
+            paymentRcvd: [{ paymentRcvd: 0, remainingPayment: 0 }],
+            remainingBal: req.body.totalPrice,
+            type: req.body.type ? req.body.type : 'SELL',
+            quality: req.body.quality
         }
         let isPartyExist = false
         let result = await Party.findOne({ partyName: req.body.partyName, userId: id })
@@ -232,55 +232,57 @@ const addHisab = async (req, res) => {
     }
 }
 const upDateHisab = async (req, res) => {
-    const { recordId, paymentRcvd,hisabId,userId } = req?.body
+    const { recordId, paymentRcvd, hisabId, userId } = req?.body
     console.log(req.body)
     try {
         let result1 = await Party.findById(recordId)
-console.log('result1',result1)
+        console.log('result1', result1)
         let index = result1?.hisabKitab.findIndex((x) => x.id == hisabId)
-        console.log('index',index)
+        console.log('index', index)
         console.log(' ...result1?.hisabKitab[index].paymentRcvd', result1?.hisabKitab[index])
         console.log('result1?.hisabKitab', result1?.hisabKitab)
 
-let filterArray = result1?.hisabKitab.filter((x)=>x.id != result1?.hisabKitab[index].id)
-result1?.hisabKitab[index].paymentRcvd.push({paymentRcvd:paymentRcvd > result1?.hisabKitab[index].remainingBal  ? result1?.hisabKitab[index].remainingBal : paymentRcvd  ,remainingPayment:paymentRcvd > result1?.hisabKitab[index].remainingBal ? 0 : result1?.hisabKitab[index].remainingBal - paymentRcvd ,date:new Date()})
-console.log('result1?.hisabKitab[index].paymentRcvd',result1?.hisabKitab[index].paymentRcvd)
-console.log('result1?.hisabKitab[index].paymentRcvd.paymentRcvd',result1?.hisabKitab[index].paymentRcvd.paymentRcvd)
-console.log(result1?.hisabKitab[index].remainingBal)
+        let filterArray = result1?.hisabKitab.filter((x) => x.id != result1?.hisabKitab[index].id)
+        result1?.hisabKitab[index].paymentRcvd.push({ paymentRcvd: paymentRcvd > result1?.hisabKitab[index].remainingBal ? result1?.hisabKitab[index].remainingBal : paymentRcvd, remainingPayment: paymentRcvd > result1?.hisabKitab[index].remainingBal ? 0 : result1?.hisabKitab[index].remainingBal - paymentRcvd, date: new Date() })
+        console.log('result1?.hisabKitab[index].paymentRcvd', result1?.hisabKitab[index].paymentRcvd)
+        console.log('result1?.hisabKitab[index].paymentRcvd.paymentRcvd', result1?.hisabKitab[index].paymentRcvd.paymentRcvd)
+        console.log(result1?.hisabKitab[index].remainingBal)
 
 
-let obj ={
-    partyName: result1?.hisabKitab[index].partyName,
-    date: result1?.hisabKitab[index].date,
-    pricePerMetre: result1?.hisabKitab[index].pricePerMetre,
-    totalMetre: result1?.hisabKitab[index].totalMetre,
-    totalPrice: result1?.hisabKitab[index].totalPrice,
-    id: result1?.hisabKitab[index].id,
-    type: result1?.hisabKitab[index].type,
-    quality: result1?.hisabKitab[index].quality,
-    paymentRcvd: result1?.hisabKitab[index].paymentRcvd,
-    remainingBal:
-    result1?.hisabKitab[index].remainingBal > 0 ?
-    result1?.hisabKitab[index].paymentRcvd[result1?.hisabKitab[index].paymentRcvd.length - 1].remainingPayment
-    :
-    result1?.hisabKitab[index].totalPrice - result1?.hisabKitab[index].paymentRcvd
+        let obj = {
+            partyName: result1?.hisabKitab[index].partyName,
+            date: result1?.hisabKitab[index].date,
+            pricePerMetre: result1?.hisabKitab[index].pricePerMetre,
+            totalMetre: result1?.hisabKitab[index].totalMetre,
+            totalPrice: result1?.hisabKitab[index].totalPrice,
+            id: result1?.hisabKitab[index].id,
+            type: result1?.hisabKitab[index].type,
+            quality: result1?.hisabKitab[index].quality,
+            paymentRcvd: result1?.hisabKitab[index].paymentRcvd,
+            remainingBal:
+                result1?.hisabKitab[index].remainingBal > 0 ?
+                    result1?.hisabKitab[index].paymentRcvd[result1?.hisabKitab[index].paymentRcvd.length - 1].remainingPayment
+                    :
+                    result1?.hisabKitab[index].totalPrice - result1?.hisabKitab[index].paymentRcvd
 
-}
-console.log('filterArray before',filterArray)
+        }
+        console.log('filterArray before', filterArray)
 
-filterArray.push(obj)
-console.log('filterArray',filterArray)
+        filterArray.push(obj)
+        console.log('filterArray', filterArray)
 
         let result = await Party.updateOne(
-            {$and:[
-                {_id: recordId},
-                // {"hisabKitab.id": hisabId},
-            ]},
             {
-              $set: { "hisabKitab": filterArray },
+                $and: [
+                    { _id: recordId },
+                    // {"hisabKitab.id": hisabId},
+                ]
+            },
+            {
+                $set: { "hisabKitab": filterArray },
             }
-          );
-          console.log('rrrrrrr',result)
+        );
+        console.log('rrrrrrr', result)
         res.send({ success: true })
     }
     catch (err) {
@@ -289,5 +291,47 @@ console.log('filterArray',filterArray)
     }
 }
 
-module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab };
+const upDateInwardOutward = async (req, res) => {
+    const { mainId, recId } = req?.body
+    const date = new Date()
+    console.log(req.body)
+    try {
+
+        const partyData = await Party.findById(mainId)
+        console.log('rrrrrrr', partyData)
+        let selectedRec = partyData.hisabKitab.find((rec) => rec.id == recId)
+        console.log( selectedRec['type'] ,'selectedRec')
+        selectedRec.type = "SELL"
+        selectedRec.outwardDate = date.toISOString().split('T')[0] 
+        partyData.markModified('hisabKitab');
+        await partyData.save()
+
+        console.log('selectedRec', selectedRec)
+        res.send({ success: true })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+const removeOutward = async (req, res) => {
+    const { mainId, recId } = req?.body
+    const date = new Date()
+    console.log(req.body)
+    try {
+
+        let partyData = await Party.findById(mainId)
+        console.log('rrrrrrr', partyData)
+        partyData.hisabKitab = partyData.hisabKitab.filter((rec) => rec.id != recId)
+        console.log( partyData,'filteredData')
+        await partyData.save()
+
+        res.send({ success: true })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, upDateInwardOutward ,removeOutward };
 // module.exports=router
