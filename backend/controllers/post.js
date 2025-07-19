@@ -302,6 +302,7 @@ const upDateInwardOutward = async (req, res) => {
         let selectedRec = partyData.hisabKitab.find((rec) => rec.id == recId)
         console.log( selectedRec['type'] ,'selectedRec')
         selectedRec.type = "SELL"
+        selectedRec.paymentIsCleared = true
         selectedRec.outwardDate = date.toISOString().split('T')[0] 
         partyData.markModified('hisabKitab');
         await partyData.save()
