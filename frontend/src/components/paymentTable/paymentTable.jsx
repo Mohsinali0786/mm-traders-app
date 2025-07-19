@@ -132,7 +132,7 @@ export default function PaymentDetails() {
                     >
                       {data?.totalPrice}
                     </td>
-                    <td rowSpan={data?.paymentRcvd?.length}>
+                    <td rowSpan={data?.paymentRcvd?.length} style={{backgroundColor:'black' ,color:'white'}}>
                       {/* <div className="textCenter"> */}
                       {!data.isUpdated ? (
                         <>
@@ -150,7 +150,7 @@ export default function PaymentDetails() {
                                   }}
                                 />
                               </p>
-                            ) : null}
+                            ) : <b style={{color:'red'}}>Cleared</b>}
                           </div>
                         </>
                       ) : (
@@ -186,7 +186,7 @@ export default function PaymentDetails() {
                         );
                       }
                     })}
-                  <tr className="">
+                  <tr className="billTotal">
                     <td colSpan={5}>Total</td>
                     <td>{getTotalPaymentRcvd(data?.paymentRcvd)}</td>
                     <td>{data?.remainingBal}</td>
