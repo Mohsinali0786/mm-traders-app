@@ -66,12 +66,12 @@ export const VerifyEmail = () => {
   return (
     <>
       {isVerified ? (
-        <div class="alert alert-success" role="alert">
+        <div className="alert alert-success" role="alert">
           {message}
           <Button onClick={routeToLogin}>Click here to Login</Button>
         </div>
       ) : (
-        <div class="alert alert-warning" role="alert">
+        <div className="alert alert-warning" role="alert">
           Please wait Email is verifying ...
         </div>
       )}
