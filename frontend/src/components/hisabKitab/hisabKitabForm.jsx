@@ -40,6 +40,7 @@ export default function HisabKitabForm() {
       partyIds: loginData?.partyId,
       type:selectType
       type: selectType,
+      type: selectType
     };
     // loginData?.partyId.push(loginData?.partyId)
     // setDataInLS("loginData",loginData)
