@@ -86,18 +86,21 @@ const getInwards = async (req, res) => {
 
         let result = await Party.find({ userId: id })
         let filteredData = []
+
         if (result) {
             console.log(result, 'result')
             for (let i = 0; i < result.length; i++) {
                 // console.log(result[i], 'result[i]')
                 for (let j = 0; j < result[i].hisabKitab.length; j++) {
                     if(req.query.queryParams == "inWard"){
-                        if (result[i].hisabKitab[j].type == "PURCHASER") {
+                        if (result[i].hisabKitab[j].type == "PURCHASE") {
+                            result[i].hisabKitab[j]['mainId']=result[i]._id
                             filteredData.push(result[i].hisabKitab[j])
                         }
                     }
                     else{
-                        if (result[i].hisabKitab[j].type == "SELLER") {
+                        if (result[i].hisabKitab[j].type == "SELL") {
+                            result[i].hisabKitab[j]['mainId']=result[i]._id
                             filteredData.push(result[i].hisabKitab[j])
                         }
                     }
@@ -115,5 +118,7 @@ const getInwards = async (req, res) => {
         res.send({ success: false })
     }
 }
-module.exports = { getUser, getCurrenciesValue, getHisab, getInwards };
+
+
+module.exports = { getUser, getCurrenciesValue, getHisab, getInwards  };
 // module.exports=router
