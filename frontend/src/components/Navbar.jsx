@@ -2,19 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { HashLink } from "react-router-hash-link";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import { getDataFromLS } from "../commonFunctions/getAndSetDataFromLocalStrorage";
 export default function Navbar() {
   let user = JSON.parse(localStorage.getItem("loginData"));
   const [loginBtn, setLoginBtn] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("UseEffect");
+    // if (!user) setLoginBtn(false);
+    // getDataFromLS("loginData")
+    if (!user) navigate("/login");
   }, [loginBtn]);
   const logOut = () => {
+    // console.log("logOut", JSON.parse(localStorage.getItem("loginData")));
+
     localStorage.clear();
     user = JSON.parse(localStorage.getItem("loginData"));
-    navigate("/login");
     setLoginBtn(false);
+    // navigate("/login");
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
@@ -34,7 +39,7 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="d-md-none d-flex w-100 justify-content-end">
-        <div className="d-flex align-items-center d-lg-none ">
+          <div className="d-flex align-items-center d-lg-none ">
             {user ? (
               <div className="d-flex align-items-center">
                 <div className="m-2">
@@ -44,16 +49,13 @@ export default function Navbar() {
                   </p>
                 </div>
                 <div>
-                  <LogoutIcon 
-                  onClick={() => logOut()}
-                  className="text-white"
-                  />
+                  <LogoutIcon onClick={() => logOut()} className="text-white" />
                 </div>
               </div>
             ) : null}
           </div>
         </div>
-        
+
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNavAltMarkup"
@@ -85,22 +87,34 @@ export default function Navbar() {
             <Link className="nav-link" to="/costings">
               Costings
             </Link>
-            <Link className="nav-link" to="/hisabForm">
-              Hisab Form
-            </Link>
-            <Link className="nav-link" to={{pathname:"/inWard" , search: '?myParam=inWard'}} >
-              Inward
-            </Link>
-            <Link className="nav-link" to={{pathname:"/outWard" , search: '?myParam=outWard'}}>
-              OutWard
-            </Link>
+            {user ? (
+              <Link className="nav-link" to="/hisabForm">
+                Hisab Form
+              </Link>
+            ) : null}
+            {user ? (
+              <Link
+                className="nav-link"
+                to={{ pathname: "/inWard", search: "?myParam=inWard" }}
+              >
+                Inward
+              </Link>
+            ) : null}
+            {user ? (
+              <Link
+                className="nav-link"
+                to={{ pathname: "/outWard", search: "?myParam=outWard" }}
+              >
+                OutWard
+              </Link>
+            ) : null}
             <Link className="nav-link" to="/outWard">
               About Us
             </Link>
             <Link className="nav-link" to="/contactus">
               Contact Us
             </Link>
-            
+
             {/* <HashLink className="nav-link" to="/#contactus"  smooth>Contact Us</HashLink> */}
           </div>
           <div className="d-md-flex align-items-center d-none">
@@ -110,12 +124,14 @@ export default function Navbar() {
                   <p className="m-0 text-white">
                     <i>Welcome</i>
                   </p>
-                  <p className="m-0 text-white loginNameEllipse"><b> {user?.name.toUpperCase()} !!!</b></p>
+                  <p className="m-0 text-white loginNameEllipse">
+                    <b> {user?.name.toUpperCase()} !!!</b>
+                  </p>
                 </div>
                 <div>
-                  <LogoutIcon 
-                  onClick={() => logOut()}
-                  className="text-white pointer"
+                  <LogoutIcon
+                    onClick={() => logOut()}
+                    className="text-white pointer"
                   />
                 </div>
               </div>
