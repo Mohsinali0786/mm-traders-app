@@ -141,14 +141,6 @@ export default function HisabKitabForm() {
             // className="my-2 mx-0 w-100 w-md-25"
           />
         </div>
-        <div className="col-sm-12 col-md-3">
-          <BasicSelect 
-           label = "Type"
-           options={["SELLER","PURCHASER"]}
-           values = {["SELLER","PURCHASER"]}
-           state={selectType}
-           setState={setSelectType}
-           defaultVal="SELLER"
         <div className="col-sm-12 col-md-1">
           <BasicSelect
             label="Unit"
@@ -176,12 +168,7 @@ export default function HisabKitabForm() {
           <button onClick={(e) => onSubmit(e)}>Submit</button>
         </div>
       </div>
-      {
-        data && data.length > 0 ?
-        <DataTable data={data} />
-        :
-        null
-      }
+      {data && data.length > 0 ? <DataTable data={data} /> : null}
     </div>
   );
 }
