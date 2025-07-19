@@ -142,10 +142,8 @@ export default function PaymentDetails() {
                             }
                           >
                             {data?.remainingBal  ? (
-                              <p>
-                                {
                                   data.paymentIsCleared ? 
-                                  <p><b>Payment Cleared</b></p>
+                                  <b>Payment Cleared</b>
                                   :
                                   <EditIcon
                                     onClick={() => {
@@ -153,8 +151,6 @@ export default function PaymentDetails() {
                                       data.isUpdated = true;
                                     }}
                                   />
-                                }
-                              </p>
                             ) : <b style={{color:'red'}}>Cleared</b>}
                           </div>
                         </>
