@@ -5,8 +5,13 @@ import {
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import CloseIcon from "@mui/icons-material/Close";
 
-export default function TableUnstyled({ tableHeaders, rows }) {
+export default function TableUnstyled({ tableHeaders, rows, myParam }) {
+  const BackendURL = "https://mm-traders-backend-app.vercel.app"
+  // const BackendURL = "http://localhost:5000"
+  h
   console.log(rows);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -23,13 +28,46 @@ export default function TableUnstyled({ tableHeaders, rows }) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const updateInwardOutward = (recId, mainId) => {
+    console.log("mainID", mainId);
+    console.log("recId", recId);
 
+    axios
+      .post(`${BackendURL}/api/updateinwardoutward`, {
+        mainId: mainId,
+        recId: recId,
+      })
+      .then((res) => {
+        console.log(res, "resssss");
+      })
+      .catch((err) => {});
+  };
+  const deleteRecord = (recId, mainId) => {
+    console.log("mainID", mainId);
+    console.log("recId", recId);
+
+    axios
+      .post(`${BackendURL}/api/deleteoutward`, {
+        mainId: mainId,
+        recId: recId,
+      })
+      .then((res) => {
+        console.log(res, "resssss");
+      })
+      .catch((err) => {});
+  };
+  console.log("parsm", myParam);
   return (
     <Root sx={{ maxWidth: "100%" }}>
       <table aria-label="custom pagination table">
         <thead>
           <tr>
             {tableHeaders?.map((header) => {
+              if (myParam == "outWard") {
+                if (header == "Total" || header == "Remaining Balance") {
+                  return null;
+                }
+              }
               return <th>{header}</th>;
             })}
           </tr>
@@ -44,7 +82,15 @@ export default function TableUnstyled({ tableHeaders, rows }) {
                 {row.id}
               </td>
               <td style={{ width: 160 }} align="right">
-                {row.date}
+                {myParam == "outWard" ? (
+                  <>
+                    <span>{row.date} Inward </span>
+                    <br />
+                    <span>{row.outwardDate} Outward</span>
+                  </>
+                ) : (
+                  <h6>{row.date}</h6>
+                )}
               </td>
               <td>{row.partyName}</td>
               <td style={{ width: 160 }} align="right">
@@ -53,11 +99,28 @@ export default function TableUnstyled({ tableHeaders, rows }) {
               <td style={{ width: 160 }} align="right">
                 {row.totalMetre}
               </td>
-              <td style={{ width: 160 }} align="right">
-                {row.totalPrice}
-              </td>
-              <td style={{ width: 160 }} align="right">
-                {row.remainingBal}
+              {myParam != "outWard" ? (
+                <td style={{ width: 160 }} align="right">
+                  {row.totalPrice}
+                </td>
+              ) : null}
+              {myParam != "outWard" ? (
+                <td style={{ width: 160 }} align="right">
+                  {row.remainingBal}
+                </td>
+              ) : null}
+              <td>
+                {myParam == "outWard" ? (
+                  <CloseIcon onClick={() => deleteRecord(row.id, row.mainId)} />
+                ) : (
+                  <button
+                    onClick={() => {
+                      updateInwardOutward(row.id, row.mainId);
+                    }}
+                  >
+                    Cleared
+                  </button>
+                )}
               </td>
               {/* <td style={{ width: 160 }} align="right">
                 <Link to="/paymentDetail" state={row}>
