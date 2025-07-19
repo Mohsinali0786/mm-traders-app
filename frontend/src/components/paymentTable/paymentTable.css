@@ -47,13 +47,17 @@
   text-align: end;
 }
 .billTotal{
-  border: 3px solid purple;
+  /* border: 3px solid purple; */
   background-color: salmon;
+  border-bottom: 5px solid  blueviolet;
+  /* border-left: 5px solid  blueviolet;
+  border-right: 5px solid  blueviolet; */
   color: white;
 }
 /* .tableDiv{
     overflow: scroll;
     height: calc(100vh 700px)
 } */
+
 
 
