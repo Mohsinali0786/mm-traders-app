@@ -13,6 +13,7 @@ export default function BasicSelect({
   setState,
   method,
   defaultVal,
+  fullWidth
 }) {
   const handleChange = (event) => {
     setState(event.target.value);
@@ -29,6 +30,7 @@ export default function BasicSelect({
           label="Age"
           onChange={handleChange}
           defaultValue={defaultVal}
+          autoWidth
         >
           {options?.map((opt, i) => {
             return (
