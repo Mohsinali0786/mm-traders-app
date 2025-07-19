@@ -32,7 +32,7 @@ export default function InwardData() {
       remainingBal:0
     },
   ]
-  const BackendURL ="`https://mm-traders-backend-app.vercel.app"
+  const BackendURL ="https://mm-traders-backend-app.vercel.app"
   // const BackendURL ="http://localhost:5000"
 
   const myParam = searchParams.get('myParam');
