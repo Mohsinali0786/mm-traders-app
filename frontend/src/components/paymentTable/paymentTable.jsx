@@ -143,12 +143,17 @@ export default function PaymentDetails() {
                           >
                             {data?.remainingBal  ? (
                               <p>
-                                <EditIcon
-                                  onClick={() => {
-                                    isPaymentUpdated(true);
-                                    data.isUpdated = true;
-                                  }}
-                                />
+                                {
+                                  data.paymentIsCleared ? 
+                                  <p><b>Payment Cleared</b></p>
+                                  :
+                                  <EditIcon
+                                    onClick={() => {
+                                      isPaymentUpdated(true);
+                                      data.isUpdated = true;
+                                    }}
+                                  />
+                                }
                               </p>
                             ) : <b style={{color:'red'}}>Cleared</b>}
                           </div>
@@ -189,7 +194,7 @@ export default function PaymentDetails() {
                   <tr className="billTotal">
                     <td colSpan={5}>Total</td>
                     <td>{getTotalPaymentRcvd(data?.paymentRcvd)}</td>
-                    <td>{data?.remainingBal}</td>
+                    <td>{data.paymentIsCleared ? 0 : data?.remainingBal}</td>
                   </tr>
                 </>
               );
