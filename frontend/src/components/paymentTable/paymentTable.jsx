@@ -49,12 +49,17 @@ export default function PaymentDetails() {
     });
     return sum;
   };
-  const getTotalRemainingBalance = (remainingBal) => {
-    console.log(remainingBal, "remainingBal==>");
+  const getTotalRemainingBalance = (hisabKitab) => {
+    console.log(hisabKitab, "hisabKitab==>");
     let sum = 0;
-    remainingBal?.forEach((x) => {
+    hisabKitab?.forEach((x) => {
       // console.log(x)
-      sum += +x?.remainingBal;
+            if(!x?.paymentIsCleared && x.type == "SELL"){
+              sum += +x?.remainingBal;
+            }
+            else if(!x?.paymentIsCleared && x.type == "PURCHASE"){
+              sum -= +x?.remainingBal;
+            }
     });
     setRemTotal = `Total B/L ${sum}`
     return sum;
@@ -102,6 +107,7 @@ export default function PaymentDetails() {
             <tr className="tabHeaders">
               <th>Bill Id</th>
               <th>Party Name</th>
+              <th>C/D</th>
               <th>Total Amount</th>
               <th>Add Payment</th>
               <th>Date</th>
@@ -126,6 +132,9 @@ export default function PaymentDetails() {
                     >
                       {data?.partyName}
                     </td>
+                    <td rowSpan={data?.paymentRcvd?.length}>
+                      {data?.type == "SELL" && !data.paymentIsCleared ? "CR" : data?.type != "SELL" && !data.paymentIsCleared ?  "DB" : "--"}
+                    </td>
                     <td
                       className="totalAmount"
                       rowSpan={data?.paymentRcvd?.length}
@@ -143,7 +152,7 @@ export default function PaymentDetails() {
                           >
                             {data?.remainingBal  ? (
                                   data.paymentIsCleared ? 
-                                  <b>Payment Cleared</b>
+                                  <b>Cleared</b>
                                   :
                                   <EditIcon
                                     onClick={() => {
@@ -188,7 +197,7 @@ export default function PaymentDetails() {
                       }
                     })}
                   <tr className="billTotal">
-                    <td colSpan={5}>Total</td>
+                    <td colSpan={6}>Total</td>
                     <td>{getTotalPaymentRcvd(data?.paymentRcvd)}</td>
                     <td>{data.paymentIsCleared ? 0 : data?.remainingBal}</td>
                   </tr>
@@ -208,7 +217,15 @@ export default function PaymentDetails() {
       </div>
         <div>
           <p className="textEnd">
-            Total Remaining Balance {getTotalRemainingBalance(rec?.hisabKitab)}
+            <span>
+              {
+                getTotalRemainingBalance(rec?.hisabKitab) < 0  ?<b style={{color:"red"}}>Debit</b> : <b style={{color:"green"}}>Credit</b> 
+              }
+            </span>
+            <p>
+            Total Remaining Balance {
+            getTotalRemainingBalance(rec?.hisabKitab)}
+            </p>
           </p>
         </div>
     </div>
