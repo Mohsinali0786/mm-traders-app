@@ -32,6 +32,9 @@ export default function InwardData() {
       remainingBal:0
     },
   ]
+  const BackendURL ="`https://mm-traders-backend-app.vercel.app"
+  // const BackendURL ="http://localhost:5000"
+
   const myParam = searchParams.get('myParam');
   console.log('myParam',myParam)
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function InwardData() {
   const getInward = (LSData) => {
     setLoading(true)
     axios
-      .get(`http://localhost:5000/api/getInwardEntry/${LSData?._id}`,
+      .get(`${BackendURL}/api/getInwardEntry/${LSData?._id}`,
         {
           params: {
               queryParams: myParam,
