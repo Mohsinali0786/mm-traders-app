@@ -83,6 +83,8 @@ export default function HisabKitabForm() {
         </div>
         <div className="col-sm-12 col-md-3">
           <label for="birthday">Date:</label>
+        <div className="col-sm-12 col-md-3 dateField">
+          <label for="date">Date</label>
           <input
             type="date"
             id="date"
