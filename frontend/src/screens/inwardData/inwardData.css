@@ -1,0 +1,10 @@
+.inWardDataMinDiv{
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.inWardDataMinDiv i{
+    font-size: 20px;
+}
