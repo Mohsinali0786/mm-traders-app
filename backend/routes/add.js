@@ -19,7 +19,7 @@ router.post('/deleteUser/:id', deleteUser)
 router.post('/verify-email', verifyUser)
 router.post('/addHisab/:id', addHisab)
 router.post('/updatehisab/:id', upDateHisab)
-router.post('/updateinwardoutward/', upDateInwardOutward)
+// router.post('/updateinwardoutward/', upDateInwardOutward)
 router.post('/deleteoutward/', removeOutward)
 
 
