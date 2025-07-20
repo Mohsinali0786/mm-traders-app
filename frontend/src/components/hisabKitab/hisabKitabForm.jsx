@@ -81,8 +81,6 @@ export default function HisabKitabForm() {
             fullWidth
           />
         </div>
-        <div className="col-sm-12 col-md-3">
-          <label for="birthday">Date:</label>
         <div className="col-sm-12 col-md-3 dateField">
           <label for="date">Date</label>
           <input
@@ -159,11 +157,12 @@ export default function HisabKitabForm() {
         <div className="col-sm-12 col-md-2">
           <BasicSelect
             label="Type"
-            options={["SELL", "PURCHASE"]}
-            values={["SELL", "PURCHASER"]}
+            options={["PURCHASE"]}
+            values={["PURCHASE"]}
+            disabled = {true}
             state={selectType}
             setState={setSelectType}
-            defaultVal="SELL"
+            defaultVal="PURCHASE"
             fullWidth={true}
 
           />
