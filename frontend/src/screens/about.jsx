@@ -6,7 +6,7 @@ function About() {
     <div className="m-4">
       <h3 className="text-center my-2">
         <i>
-          Welcome to <b>MM Garments</b>
+          Welcome to <b>MM Traders</b>
         </i>
       </h3>
       <div className="d-flex justify-content-end gap-4">
@@ -27,7 +27,7 @@ function About() {
       </p>
       <p className="small">
         We not only want to make you look different, but also feel different
-        because our vision at MM Garments is clothing with power! Founded by an
+        because our vision at MM Traders is clothing with power! Founded by an
         enthusiasm for fashion and a dedication to excellence, we have been
         serving both local as well as international markets from Pakistan since
         the year 2000.
