@@ -203,7 +203,7 @@ export default function SellItemModalDialog({
                      setFormData({
                        ...formData,
                        pricePerMetre: e.target.value,
-                       totalPrice: e.target.value * totalMetre,
+                       totalPrice: e.target.value * formData?.totalMetre,
                      });
                    }}
                   fullWidth
