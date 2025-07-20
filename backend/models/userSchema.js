@@ -34,6 +34,9 @@ const userSchema=new Schema({
     emailToken:{
         type:String
     },
+    partyId:{
+        type:Array,
+    }
     // orders:[{
     //     type:Schema.Types.ObjectId,
     //     ref:'Order'
