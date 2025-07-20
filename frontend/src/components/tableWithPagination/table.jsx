@@ -93,11 +93,14 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
                 )}
               </td>
               <td>{row.partyName}</td>
-              <td style={{ width: 160 }} align="right">
+              <td style={{ width: 250 }} align="right">
                 {row.quality}
               </td>
-              <td style={{ width: 160 }} align="right">
+              <td style={{ width: 60 }} align="right">
                 {row.totalMetre}
+              </td>
+                  <td style={{ width: 60 }} align="right">
+                {row.unitType}
               </td>
               {myParam != "outWard" ? (
                 <td style={{ width: 160 }} align="right">
@@ -121,7 +124,7 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
                   >
                     Cleared
                   </button> */}
-             <SellItemModalDialog quality={row.quality} totalMetre={row?.totalMetre}
+             <SellItemModalDialog mainId={row?.mainId} quality={row.quality} totalMetre={row?.totalMetre}
              unitType={row?.unitType} itemId={row?.id} pricePerMetre={row.pricePerMetre}  inwardDate={row?.date}
              />
                   </>
