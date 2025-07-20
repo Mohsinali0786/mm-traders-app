@@ -296,3 +296,18 @@ table thead tr th {
   border-style: solid;
   border-bottom-color: red;
 }
+.dateField{
+      border: 1px solid silver;
+    border-radius: 3px !important;
+    padding: 5px !important;
+    height: 55px !important;
+    margin: 9px 0px !important;
+    display: flex;
+    flex-direction: column;
+}
+.dateField input{
+  border: none;
+}
+.dateField label{
+color: gray;
+}
