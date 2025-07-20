@@ -20,6 +20,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
+const BackendURL = "https://mm-traders-backend-app.vercel.app/api/"
+// const BackendURL = "http://localhost:5000/api/"
 
 export default function SellItemModalDialog({
   itemId,
@@ -63,7 +65,7 @@ export default function SellItemModalDialog({
     };
     console.log("loginData", loginData);
     axios
-      .post(`http://localhost:5000/api/addHisab/${loginData?._id}`, data)
+      .post(`${BackendURL}addHisab/${loginData?._id}`, data)
       .then((res) => {
         console.log(res, "resssss");
         updateQuantity()
@@ -81,7 +83,7 @@ export default function SellItemModalDialog({
             console.log(body, "body");
 
        axios
-      .post(`http://localhost:5000/api/updatequantity`, body)
+      .post(`${BackendURL}updatequantity`, body)
       .then((res) => {
         console.log(res, "resssss");
       })
