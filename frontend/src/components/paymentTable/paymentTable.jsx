@@ -219,7 +219,7 @@ export default function PaymentDetails() {
           <p className="textEnd">
             <span>
               {
-                getTotalRemainingBalance(rec?.hisabKitab) < 0  ?<b style={{color:"red"}}>Debit</b> : <b style={{color:"green"}}>Credit</b> 
+                getTotalRemainingBalance(rec?.hisabKitab) < 0  ?<b style={{color:"red"}}>Debit (Mujhe Dene Hei)</b> : <b style={{color:"green"}}>Credit (Mujhe Lene Hei)</b> 
               }
             </span>
             <p>
