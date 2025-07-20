@@ -38,7 +38,8 @@ export default function HisabKitabForm() {
       ...formData,
       date: currDate,
       partyIds: loginData?.partyId,
-      type: selectType
+      type: selectType,
+      unitType:selectUnit
     }
     // loginData?.partyId.push(loginData?.partyId)
     // setDataInLS("loginData",loginData)
