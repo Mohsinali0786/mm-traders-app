@@ -212,7 +212,7 @@ export default function SellItemModalDialog({
                   // className="my-2 mx-0 w-100 w-md-25"
                 />
               </div>
-              <div className="col-sm-12 col-md-6">
+              {/* <div className="col-sm-12 col-md-6">
                 <TextField
                   required
                   id="outlined-required"
@@ -225,10 +225,10 @@ export default function SellItemModalDialog({
                   fullWidth
                   // className="my-2 mx-0 w-100 w-md-25"
                 />
-              </div>
+              </div> */}
 
-              <div className="col-sm-12 col-md-6">
-                <label for="birthday">Date:</label>
+              <div className="col-sm-12 col-md-6 dateField">
+                <label for="date" >Date</label>
                 <input
                   type="date"
                   id="date"
