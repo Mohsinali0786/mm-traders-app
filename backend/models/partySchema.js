@@ -23,6 +23,11 @@ const partySchema=new Schema({
         type:String,
         enum : ['SELL','PURCHASER'],
         // default: 'SELLER'
+    },
+      unitType:{
+        type:String,
+        enum : ['Kg','Metre','Yard'],
+        // default: 'SELLER'
     }
 })
 module.exports=mongoose.model('party',partySchema)
