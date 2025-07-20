@@ -2,15 +2,26 @@ import React, { useEffect, useState } from "react";
 // import PartyDetailModal from "../modal/modal";
 import TableUnstyled from "../../components/tableWithPagination/table";
 import { getDataFromLS } from "../../commonFunctions/getAndSetDataFromLocalStrorage";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 import NoRecordFound from "../../components/noRecordPage/noRecord";
 import axios from "axios";
+import "./inwardData.css";
 export default function InwardData() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [rows,setRows] = useState([])
-  const [loading,setLoading] = useState(false)
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Unit" , "Total","Remaining Balance","Action"];
+  const headers = [
+    "Rec Id",
+    "Date",
+    "Party Name",
+    "Quality",
+    "Quantity",
+    "Unit",
+    "Total",
+    "Remaining Balance",
+    "Action",
+  ];
 
   const constRow = [
     {
@@ -61,20 +72,27 @@ export default function InwardData() {
   
     };
   
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    // setLoading(false)
+  };
 
   
   console.log('rowssssss',rows)
   return (
-    <div>
-      {
-        loading ? <i className="fa fa-refresh fa-spin"></i>
-        :
-        rows && rows.length > 0 || constRow && constRow.length > 0 ?
-        <TableUnstyled tableHeaders={headers} rows={rows} myParam={myParam}/>
-        :
-        <NoRecordFound/>
-
-      }
+    <div className="">
+      {loading ? (
+        <div className="inWardDataMinDiv">
+          <i className="fa fa-refresh fa-spin"></i>
+        </div>
+      ) : (rows && rows.length > 0) || (constRow && constRow.length > 0) ? (
+        <>
+          <TableUnstyled tableHeaders={headers} rows={rows} myParam={myParam} />
+        </>
+      ) : (
+        <NoRecordFound />
+      )}
     </div>
   );
 }
