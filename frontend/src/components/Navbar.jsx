@@ -108,7 +108,7 @@ export default function Navbar() {
                 OutWard
               </Link>
             ) : null}
-            <Link className="nav-link" to="/outWard">
+            <Link className="nav-link" to="/about">
               About Us
             </Link>
             <Link className="nav-link" to="/contactus">
