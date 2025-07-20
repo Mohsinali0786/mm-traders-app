@@ -68,21 +68,17 @@ export default function InwardData() {
         setRows(res?.data?.result);
       })
       .catch((err) => {});
-    setLoading(false)
-  
-    };
-  
     setTimeout(() => {
       setLoading(false);
     }, 1000);
     // setLoading(false)
-  };
+  }
 
-  
-  console.log('rowssssss',rows)
+  console.log("rowssssss", rows);
   return (
     <div className="">
-      {loading ? (
+      {
+      loading ? (
         <div className="inWardDataMinDiv">
           <i className="fa fa-refresh fa-spin"></i>
         </div>
@@ -92,7 +88,8 @@ export default function InwardData() {
         </>
       ) : (
         <NoRecordFound />
-      )}
+      )
+      }
     </div>
   );
 }
