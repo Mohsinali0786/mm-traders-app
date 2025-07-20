@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Avatar } from "@mui/material";
 function About() {
   return (
     <div className="m-4">
@@ -7,6 +9,22 @@ function About() {
           Welcome to <b>MM Garments</b>
         </i>
       </h3>
+      <div className="d-flex justify-content-end gap-4">
+        <div className="d-flex justify-content-center flex-column align-items-end">
+          <Avatar sx={{ bgcolor: "green"}} alt="Remy Sharp">A</Avatar>
+          <p className="small">Muhammad Ali (CEO)</p>
+        </div>
+        <div className="d-flex justify-content-center flex-column align-items-end">
+          <Avatar alt="Remy Sharp" sx={{ bgcolor: "white", color:"green", border:"1px solid black"}}>MF</Avatar>
+          <p className="small">Mohsin & Farzan (COO)</p>
+        </div>
+      </div>
+
+      <p className="small">
+        MM Traders was founded in 2000 with a vision to simplify sourcing and
+        supply for small and large businesses alike. With humble beginnings in
+        Karachi, we’ve grown into a trusted name in the trading industry
+      </p>
       <p className="small">
         We not only want to make you look different, but also feel different
         because our vision at MM Garments is clothing with power! Founded by an
@@ -31,6 +49,10 @@ function About() {
         provide you with select apparel that not only meets but exceeds the
         measure. We put thought into every piece of both our fabric choices and
         our stitches; we are committed to the utmost quality and excellence.{" "}
+      </p>
+      <p className="small">
+        Our clientele includes retailers, wholesalers, and businesses across
+        Pakistan — and we are expanding into export markets across worldwide.
       </p>
       <h6>
         <b>What we Offer</b>
@@ -74,6 +96,11 @@ function About() {
             </ol>
           </li>
         </ul>
+      </p>
+      <p className="medium">
+        Interested in working with MM Traders?{" "}
+        <Link to="/contactus">Contact us </Link> today or browse our product
+        range to get started.
       </p>
     </div>
   );
