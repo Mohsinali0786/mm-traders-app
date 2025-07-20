@@ -1,7 +1,7 @@
 const express =require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator');
-const {createUser , loginUser, updateUserRole, deleteUser,verifyUser, addHisab, upDateHisab, upDateInwardOutward, removeOutward} = require('../controllers/post')
+const {createUser , loginUser, updateUserRole, deleteUser,verifyUser, addHisab, upDateHisab, upDateInwardOutward, removeOutward, updateQuantity} = require('../controllers/post')
 
 router.post('/createUser',[[
     body('email').isEmail(),
@@ -21,6 +21,8 @@ router.post('/addHisab/:id', addHisab)
 router.post('/updatehisab/:id', upDateHisab)
 // router.post('/updateinwardoutward/', upDateInwardOutward)
 router.post('/deleteoutward/', removeOutward)
+router.post('/updatequantity/', updateQuantity)
+
 
 
 
