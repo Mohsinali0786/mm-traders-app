@@ -75,7 +75,7 @@ const createUser = async (req, res) => {
         // console.log(result12,'result12')
 
         const token = generateToken(result._id)
-        res.send({ success: true, _id: result._id, name, email, token, isVerified: result?.isVerified ,emailSentmessage:"You Singup Successfully" })
+        res.send({ success: true, _id: result._id, name, email, token, isVerified: result?.isVerified, emailSentmessage: "You Singup Successfully" })
 
     }
     catch (err) {
@@ -193,11 +193,13 @@ const addHisab = async (req, res) => {
             pricePerMetre: req.body.pricePerMetre,
             totalMetre: req.body.totalMetre,
             totalPrice: req.body.totalPrice,
-            id: new mongoose.mongo.ObjectId(),
+            id: req.body.type == 'SELL' ? req.body.itemId : new mongoose.mongo.ObjectId(),
             paymentRcvd: [{ paymentRcvd: 0, remainingPayment: 0 }],
             remainingBal: req.body.totalPrice,
             type: req.body.type ? req.body.type : 'SELL',
-            quality: req.body.quality
+            unitType: req.body.unitType ? req.body.unitType : 'Kg',
+            quality: req.body.quality,
+            inwardDate: req.body.inwardDate
         }
         let isPartyExist = false
         let result = await Party.findOne({ partyName: req.body.partyName, userId: id })
@@ -258,6 +260,8 @@ const upDateHisab = async (req, res) => {
             id: result1?.hisabKitab[index].id,
             type: result1?.hisabKitab[index].type,
             quality: result1?.hisabKitab[index].quality,
+            unitType: req.body.unitType ? req.body.unitType : 'Kg',
+            inwardDate: req.body.inwardDate,
             paymentRcvd: result1?.hisabKitab[index].paymentRcvd,
             remainingBal:
                 result1?.hisabKitab[index].remainingBal > 0 ?
@@ -291,30 +295,30 @@ const upDateHisab = async (req, res) => {
     }
 }
 
-const upDateInwardOutward = async (req, res) => {
-    const { mainId, recId } = req?.body
-    const date = new Date()
-    console.log(req.body)
-    try {
+// const upDateInwardOutward = async (req, res) => {
+//     const { mainId, recId } = req?.body
+//     const date = new Date()
+//     console.log(req.body)
+//     try {
 
-        const partyData = await Party.findById(mainId)
-        console.log('rrrrrrr', partyData)
-        let selectedRec = partyData.hisabKitab.find((rec) => rec.id == recId)
-        console.log( selectedRec['type'] ,'selectedRec')
-        selectedRec.type = "SELL"
-        selectedRec.paymentIsCleared = true
-        selectedRec.outwardDate = date.toISOString().split('T')[0] 
-        partyData.markModified('hisabKitab');
-        await partyData.save()
+//         const partyData = await Party.findById(mainId)
+//         console.log('rrrrrrr', partyData)
+//         let selectedRec = partyData.hisabKitab.find((rec) => rec.id == recId)
+//         console.log( selectedRec['type'] ,'selectedRec')
+//         selectedRec.type = "SELL"
+//         selectedRec.paymentIsCleared = true
+//         selectedRec.outwardDate = date.toISOString().split('T')[0] 
+//         partyData.markModified('hisabKitab');
+//         await partyData.save()
 
-        console.log('selectedRec', selectedRec)
-        res.send({ success: true })
-    }
-    catch (err) {
-        console.log('Err', err)
-        res.send({ success: false })
-    }
-}
+//         console.log('selectedRec', selectedRec)
+//         res.send({ success: true })
+//     }
+//     catch (err) {
+//         console.log('Err', err)
+//         res.send({ success: false })
+//     }
+// }
 const removeOutward = async (req, res) => {
     const { mainId, recId } = req?.body
     const date = new Date()
@@ -324,7 +328,7 @@ const removeOutward = async (req, res) => {
         let partyData = await Party.findById(mainId)
         console.log('rrrrrrr', partyData)
         partyData.hisabKitab = partyData.hisabKitab.filter((rec) => rec.id != recId)
-        console.log( partyData,'filteredData')
+        console.log(partyData, 'filteredData')
         await partyData.save()
 
         res.send({ success: true })
@@ -334,5 +338,5 @@ const removeOutward = async (req, res) => {
         res.send({ success: false })
     }
 }
-module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, upDateInwardOutward ,removeOutward };
+module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, removeOutward };
 // module.exports=router
