@@ -21,7 +21,7 @@ export default function BasicSelect({
 
   return (
     <Box>
-      <FormControl>
+      <FormControl           sx={{width:"100%"}}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -31,6 +31,7 @@ export default function BasicSelect({
           onChange={handleChange}
           defaultValue={defaultVal}
           autoWidth
+
         >
           {options?.map((opt, i) => {
             return (
