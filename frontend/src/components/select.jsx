@@ -13,7 +13,8 @@ export default function BasicSelect({
   setState,
   method,
   defaultVal,
-  fullWidth
+  fullWidth,
+  disabled
 }) {
   const handleChange = (event) => {
     setState(event.target.value);
@@ -31,6 +32,7 @@ export default function BasicSelect({
           onChange={handleChange}
           defaultValue={defaultVal}
           autoWidth
+          disabled={disabled}
 
         >
           {options?.map((opt, i) => {
