@@ -23,6 +23,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function SellItemModalDialog({
   itemId,
+  mainId,
   quality,
   totalMetre,
   unitType,
@@ -46,7 +47,7 @@ export default function SellItemModalDialog({
   const handleClose = () => {
     setOpen(false);
   };
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     console.log(totalMetre,'totalMetre')
     let data = {
@@ -65,18 +66,43 @@ export default function SellItemModalDialog({
       .post(`http://localhost:5000/api/addHisab/${loginData?._id}`, data)
       .then((res) => {
         console.log(res, "resssss");
+        updateQuantity()
       })
       .catch((err) => {});
+
     handleClose();
   };
+  const updateQuantity = () =>{
+    let body={
+      mainId,
+      itemId,
+      totalMetre:formData?.totalMetre
+    }
+            console.log(body, "body");
+
+       axios
+      .post(`http://localhost:5000/api/updatequantity`, body)
+      .then((res) => {
+        console.log(res, "resssss");
+      })
+      .catch((err) => {});
+  }
   const [currDate, setCurrDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
   return (
     <React.Fragment>
+      {
+      totalMetre > 0 ?
       <Button variant="outlined" onClick={handleClickOpen}>
         Sell Item
       </Button>
+      :
+            <Button variant="text"  disabled onClick={handleClickOpen}>
+        Out Of Stock
+      </Button>
+      
+      }
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -158,7 +184,7 @@ export default function SellItemModalDialog({
                    onChange={(e) => {
                      setFormData({
                        ...formData,
-                       totalMetre: e.target.value,
+                       totalMetre: e.target.value > totalMetre ? totalMetre : e.target.value,
                        totalPrice: e.target.value * formData?.pricePerMetre,
                      });
                    }}
