@@ -291,3 +291,8 @@ table thead tr th {
   border-style: solid;
   border-bottom-color: red;
 }
+table{
+  display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
