@@ -204,7 +204,7 @@ const addHisab = async (req, res) => {
         let isPartyExist = false
         let result = await Party.findOne({ partyName: req.body.partyName, userId: id })
 
-        console.log(result, 'result')
+        // console.log(result, 'result')
         if (!result) {
             const partyData = await Party.create({
                 userId: id,
@@ -215,7 +215,7 @@ const addHisab = async (req, res) => {
             const user = await User.findById(
                 { _id: req.params.id },
             );
-            console.log(user, 'user')
+            // console.log(user, 'user')
             user?.partyId.push(partyData?._id)
             user.save()
 
@@ -338,5 +338,28 @@ const removeOutward = async (req, res) => {
         res.send({ success: false })
     }
 }
-module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, removeOutward };
+
+const updateQuantity = async (req, res) => {
+    const { mainId, itemId, totalMetre } = req?.body
+    console.log(req.body ,'updateQuantity Body')
+    try {
+        let partyData = await Party.findById(mainId)
+        let result1 = partyData.hisabKitab.find((item, index) => item.id == itemId)
+        // console.log('rrrrrrr', result1)
+        console.log('result1.totalMetre', result1.totalMetre)
+        console.log('totalMetre', totalMetre)
+
+        result1.totalMetre = result1.totalMetre - totalMetre
+        console.log('rrrrrrr', result1)
+        partyData.markModified('hisabKitab');
+        partyData.save()
+
+        res.send({ success: true })
+    }
+    catch (err) {
+        console.log('Err', err)
+        res.send({ success: false })
+    }
+}
+module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, removeOutward, updateQuantity };
 // module.exports=router
