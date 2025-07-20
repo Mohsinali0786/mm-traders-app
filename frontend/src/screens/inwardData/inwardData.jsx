@@ -10,7 +10,7 @@ export default function InwardData() {
   const [rows,setRows] = useState([])
   const [loading,setLoading] = useState(false)
 
-  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Total","Remaining Balance","Action"];
+  const headers = ["Rec Id" ,"Date", "Party Name", "Quality", "Quantity", "Unit" , "Total","Remaining Balance","Action"];
 
   const constRow = [
     {
