@@ -7,6 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
+import SellItemModalDialog from "../modal/sellItemModal/sellItemModal";
 
 export default function TableUnstyled({ tableHeaders, rows, myParam }) {
   const BackendURL = "https://mm-traders-backend-app.vercel.app"
@@ -27,20 +28,20 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const updateInwardOutward = (recId, mainId) => {
-    console.log("mainID", mainId);
-    console.log("recId", recId);
+  // const updateInwardOutward = (recId, mainId) => {
+  //   console.log("mainID", mainId);
+  //   console.log("recId", recId);
 
-    axios
-      .post(`${BackendURL}/api/updateinwardoutward`, {
-        mainId: mainId,
-        recId: recId,
-      })
-      .then((res) => {
-        console.log(res, "resssss");
-      })
-      .catch((err) => {});
-  };
+  //   axios
+  //     .post(`${BackendURL}/api/updateinwardoutward`, {
+  //       mainId: mainId,
+  //       recId: recId,
+  //     })
+  //     .then((res) => {
+  //       console.log(res, "resssss");
+  //     })
+  //     .catch((err) => {});
+  // };
   const deleteRecord = (recId, mainId) => {
     console.log("mainID", mainId);
     console.log("recId", recId);
@@ -83,9 +84,9 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
               <td style={{ width: 160 }} align="right">
                 {myParam == "outWard" ? (
                   <>
-                    <span>{row.date} Inward </span>
+                    <span>{row.inwardDate} Inward </span>
                     <br />
-                    <span>{row.outwardDate} Outward</span>
+                    <span>{row.date} Outward</span>
                   </>
                 ) : (
                   <h6>{row.date}</h6>
@@ -112,13 +113,18 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
                 {myParam == "outWard" ? (
                   <CloseIcon onClick={() => deleteRecord(row.id, row.mainId)} />
                 ) : (
-                  <button
+                  <>
+                  {/* <button
                     onClick={() => {
                       updateInwardOutward(row.id, row.mainId);
                     }}
                   >
                     Cleared
-                  </button>
+                  </button> */}
+             <SellItemModalDialog quality={row.quality} totalMetre={row?.totalMetre}
+             unitType={row?.unitType} itemId={row?.id} pricePerMetre={row.pricePerMetre}  inwardDate={row?.date}
+             />
+                  </>
                 )}
               </td>
               {/* <td style={{ width: 160 }} align="right">
