@@ -33,6 +33,7 @@ export default function PaymentDetails() {
       recordId: recordId,
       hisabId: id,
       paymentRcvd: payment,
+      paymentDate: paymentDate,
     };
     axios
       .post(`https://mm-traders-backend-app.vercel.app/api/updatehisab/${LSData?._id}`, body)
