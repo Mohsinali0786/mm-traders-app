@@ -14,7 +14,7 @@ export default function HisabKitabForm() {
     new Date().toISOString().slice(0, 10)
   );
   const [formData, setFormData] = useState();
-  const [selectType, setSelectType] = useState("");
+  const [selectType, setSelectType] = useState("PURCHASE");
   const [selectUnit, setUnit] = useState("");
   console.log(currDate);
   const [data, setData] = useState([]);
@@ -157,14 +157,11 @@ export default function HisabKitabForm() {
         <div className="col-sm-12 col-md-2">
           <BasicSelect
             label="Type"
-            options={["PURCHASE"]}
-            values={["PURCHASE"]}
+            options={[selectType]}
+            values={[selectType]}
             disabled = {true}
-            state={selectType}
-            setState={setSelectType}
-            defaultVal="PURCHASE"
             fullWidth={true}
-
+            defaultVal={selectType}
           />
         </div>
         <div className="col-sm-12 col-md-3">
