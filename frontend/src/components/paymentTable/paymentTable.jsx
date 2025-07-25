@@ -14,6 +14,7 @@ export default function PaymentDetails() {
   const [totalPaymentRcvd, setTotalPaymentRcvd] = useState(0);
   const [paymentUpdated, isPaymentUpdated] = React.useState(false);
   const [payment, setPayment] = React.useState();
+  const [paymentDate, setPaymentDate] = React.useState(new Date().toISOString().slice(0, 10));
   const location = useLocation();
   const rec = location.state;
   const doc = new jsPDF();
