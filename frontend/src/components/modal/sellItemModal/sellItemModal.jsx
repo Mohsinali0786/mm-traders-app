@@ -198,8 +198,8 @@ export default function SellItemModalDialog({
                    onChange={(e) => {
                      setFormData({
                        ...formData,
-                       totalMetre: e.target.value > totalMetre ? totalMetre : e.target.value,
-                       totalPrice: e.target.value * formData?.pricePerMetre,
+                       totalMetre: Number(e.target.value) > Number(totalMetre) ? Number(totalMetre) : Number(e.target.value),
+                       totalPrice: Number(e.target.value) * formData?.pricePerMetre,
                      });
                    }}
                   fullWidth
