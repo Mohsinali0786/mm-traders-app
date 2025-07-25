@@ -226,7 +226,7 @@ const addHisab = async (req, res) => {
             partyData?.hisabKitab.push(hisab)
             partyData.save()
         }
-        res.send({ success: true })
+        res.send({ success: true ,message:`You ${req.body.type} product added successfully`})
     }
     catch (err) {
         console.log('Err', err)
