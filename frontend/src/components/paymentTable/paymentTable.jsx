@@ -165,7 +165,10 @@ export default function PaymentDetails() {
                         </>
                       ) : (
                         <>
-                          <input onChange={(e) => setPayment(e.target.value)} />
+                        <div className="paymentDiv">
+                          <input placeholder="Amount" value={payment} onChange={(e) => setPayment(e.target.value)} />
+                          <input type="date" onChange={(e) => setPaymentDate(e.target.value)} value={paymentDate} />
+                        </div>
                           <button
                             onClick={(e) => {
                               onSubmit(e, data?.id, rec?._id);
