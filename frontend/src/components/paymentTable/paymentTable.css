@@ -58,6 +58,13 @@
     overflow: scroll;
     height: calc(100vh 700px)
 } */
-
+.paymentDiv{
+  display: flex;
+  gap:10px;
+  padding:5px
+}
+.paymentDiv input{
+  width: 120px;
+}
 
 
