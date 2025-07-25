@@ -234,7 +234,7 @@ const addHisab = async (req, res) => {
     }
 }
 const upDateHisab = async (req, res) => {
-    const { recordId, paymentRcvd, hisabId, userId } = req?.body
+    const { recordId, paymentRcvd, hisabId, userId ,paymentDate } = req?.body
     console.log(req.body)
     try {
         let result1 = await Party.findById(recordId)
@@ -245,7 +245,7 @@ const upDateHisab = async (req, res) => {
         console.log('result1?.hisabKitab', result1?.hisabKitab)
 
         let filterArray = result1?.hisabKitab.filter((x) => x.id != result1?.hisabKitab[index].id)
-        result1?.hisabKitab[index].paymentRcvd.push({ paymentRcvd: paymentRcvd > result1?.hisabKitab[index].remainingBal ? result1?.hisabKitab[index].remainingBal : paymentRcvd, remainingPayment: paymentRcvd > result1?.hisabKitab[index].remainingBal ? 0 : result1?.hisabKitab[index].remainingBal - paymentRcvd, date: new Date() })
+        result1?.hisabKitab[index].paymentRcvd.push({ paymentRcvd: paymentRcvd > result1?.hisabKitab[index].remainingBal ? result1?.hisabKitab[index].remainingBal : paymentRcvd, remainingPayment: paymentRcvd > result1?.hisabKitab[index].remainingBal ? 0 : result1?.hisabKitab[index].remainingBal - paymentRcvd, date: paymentDate })
         console.log('result1?.hisabKitab[index].paymentRcvd', result1?.hisabKitab[index].paymentRcvd)
         console.log('result1?.hisabKitab[index].paymentRcvd.paymentRcvd', result1?.hisabKitab[index].paymentRcvd.paymentRcvd)
         console.log(result1?.hisabKitab[index].remainingBal)
