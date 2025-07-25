@@ -1,18 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../logos/MM Traders_transparent.png";
+import SimpleAlert from "../components/alertBox";
 
 function Login() {
+  const alertBoxStyle={
+        position:'absolute',
+        right:'30px',
+        top:'100px'
+      }
+    
   const navigate = useNavigate();
   const [credential, setCredentials] = useState({
     email: "",
     password: "",
   });
   const [loading ,setLoading] = useState(false)
+   const [showMessageTimer, setShowMessageTimer] = useState({
+      status: false,
+      // message: "Enter correct email" +  "\n" + "Incorrect Password",
+      message:""
+    });
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const response = await fetch("https://mm-traders-backend-app.vercel.app/api/loginUser  ", {
+    const response = await fetch("http://localhost:5000/api/loginUser  ", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -31,11 +43,20 @@ function Login() {
         message = message + "\n" + err?.msg;
       });
       setLoading(false)
-      return alert(message);
+          setShowMessageTimer({ status: true, message: message });
+
+      return setTimeout(() => {
+      setShowMessageTimer({ status: false });
+    }, 3000); 
+      // return alert(message);
     }
     if (!json.success && json.errors) {
+          setShowMessageTimer({ status: true, message: json.errors });
     setLoading(false)
-      return alert(json.errors);
+        return setTimeout(() => {
+      setShowMessageTimer({ status: false });
+    }, 3000);
+      // return alert(json.errors);
     }
     navigate("/");
     localStorage.setItem("authToken", json.authToken);
@@ -52,6 +73,16 @@ function Login() {
           <img src={logo} height="150" alt="MDB Logo" loading="lazy" />
         </a>
       </div>
+      {showMessageTimer?.status ? (
+              //   <Alert variant="outlined" severity="success" sx={{position:'absolute', right:'10px'}}>
+              //     This is an outlined success Alert.
+              //   </Alert>
+              <SimpleAlert
+                message={showMessageTimer?.message}
+                style={alertBoxStyle}
+                status="error"
+              />
+            ) : null}
       <div>
         <h3 className="d-flex justify-content-center">LogIn</h3>
         <form onSubmit={handleSubmit}>
