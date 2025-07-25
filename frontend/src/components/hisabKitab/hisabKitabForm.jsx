@@ -9,6 +9,7 @@ import {
   setDataInLS,
 } from "../../commonFunctions/getAndSetDataFromLocalStrorage";
 import BasicSelect from "../select";
+import SimpleAlert from "../alertBox";
 export default function HisabKitabForm() {
   const [currDate, setCurrDate] = useState(
     new Date().toISOString().slice(0, 10)
@@ -19,6 +20,8 @@ export default function HisabKitabForm() {
   console.log(currDate);
   const [data, setData] = useState([]);
   const [loginData, setLoginData] = useState();
+    const [isAlert, setIsAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
   console.log(data, "data hisab");
   useEffect(() => {
     let LSData = getDataFromLS("loginData");
@@ -31,7 +34,9 @@ export default function HisabKitabForm() {
         setData(res?.data?.data);
       })
       .catch((err) => {});
-  }, []);
+      setFormData({partyName:"",quality:"",pricePerMetre:0,totalMetre:0,paymentRcvd:0})
+      setTimeout(()=>setIsAlert(false),2000)
+  }, [isAlert]);
   const onSubmit = (e) => {
     e.preventDefault();
     let data = {
@@ -45,15 +50,28 @@ export default function HisabKitabForm() {
     // setDataInLS("loginData",loginData)
     console.log("loginData", loginData);
     axios
-      .post(`https://mm-traders-backend-app.vercel.app/api/addHisab/${loginData?._id}`, data)
-      .then((res) => {
-        console.log(res, "resssss");
+    .post(`http://localhost:5000/api/addHisab/${loginData?._id}`, data)
+    .then((res) => {
+      console.log(res?.data?.message, "res?.data?.message");
+      setAlertMessage(res?.data?.message)
+      setIsAlert(true)
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setAlertMessage("Some Error occured try again")
+      setIsAlert(true)
+
+      });
+
   };
   console.log(data, "data in in");
   return (
     <div className="hisabKitabForm-Container">
+      {
+        isAlert ? 
+        <SimpleAlert message={alertMessage}/>
+        :
+        null
+      }
       <div className="row">
         <div className="col-sm-12 col-md-3">
           <TextField
@@ -61,6 +79,7 @@ export default function HisabKitabForm() {
             id="outlined-required"
             label="Party Name"
             name="partyName"
+            value={formData?.partyName}
             className="my-2 mx-0"
             onChange={(e) => {
               setFormData({ ...formData, partyName: e.target.value });
@@ -73,6 +92,7 @@ export default function HisabKitabForm() {
             required
             id="outlined-required"
             label="Quality"
+            value={formData?.quality}
             name="quality"
             className="my-2 mx-0"
             onChange={(e) => {
@@ -100,6 +120,7 @@ export default function HisabKitabForm() {
             label="Total Metre"
             name="totalMetre"
             className="my-2 mx-0"
+            value={formData?.totalMetre}
             onChange={(e) => {
               setFormData({
                 ...formData,
@@ -117,6 +138,7 @@ export default function HisabKitabForm() {
             id="outlined-required"
             label="Price/Metre"
             name="pricePerMetre"
+            value={formData?.pricePerMetre}
             className="my-2 mx-0"
             onChange={(e) => {
               setFormData({
@@ -135,6 +157,7 @@ export default function HisabKitabForm() {
             id="outlined-required"
             label="Total Received Payment"
             name="paymentRecvd"
+            value={formData?.paymentRcvd}
             className="my-2 mx-0"
             onChange={(e) => {
               setFormData({ ...formData, paymentRcvd: e.target.value });
