@@ -96,11 +96,23 @@ export default function SellItemModalDialog({
     <React.Fragment>
       {
       totalMetre > 0 ?
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" sx={{
+        border:'none',
+        color:'green' ,
+        '&:hover': {
+          backgroundColor: 'green',
+          color:'white'
+        }
+      }} 
+        onClick={handleClickOpen}>
         Sell Item
       </Button>
       :
-            <Button variant="text"  disabled onClick={handleClickOpen}>
+            <Button variant="text"  sx={{
+        '&.Mui-disabled': {
+          color: 'red', // Adjust text color for contrast if needed
+        },
+      }}  disabled onClick={handleClickOpen}>
         Out Of Stock
       </Button>
       
