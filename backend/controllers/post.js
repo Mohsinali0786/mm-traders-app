@@ -196,7 +196,7 @@ const addHisab = async (req, res) => {
             id: req.body.type == 'SELL' ? req.body.itemId : new mongoose.mongo.ObjectId(),
             paymentRcvd: [{ paymentRcvd: 0, remainingPayment: 0 }],
             remainingBal: req.body.totalPrice,
-            type: req.body.type ? req.body.type : 'SELL',
+            type: req.body.type,
             unitType: req.body.unitType ? req.body.unitType : 'Kg',
             quality: req.body.quality,
             inwardDate: req.body.inwardDate
