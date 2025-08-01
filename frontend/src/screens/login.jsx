@@ -24,7 +24,10 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const response = await fetch("http://localhost:5000/api/loginUser  ", {
+    // cosnt backend_URL="http://localhost:5000/api/loginUser"
+    const backend_URL="https://mm-traders-backend-app.vercel.app/api/loginUser"
+
+    const response = await fetch(`${backend_URL}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
