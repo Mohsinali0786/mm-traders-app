@@ -11,6 +11,7 @@ const jsonWebToken = require('jsonwebtoken')
 const { sendVerificationEmail } = require("../utils/sendVerificationMail")
 var crypto = require('crypto');
 let jwtSecrete = `${process.env.JWT_SECRETE_KEY}`
+const {emailTransporter} =require("../utils/createMailTransport")
 const createUser = async (req, res) => {
     // const emailTransporter = nodemailer.createTransport({
     //     service: 'gmail',
@@ -66,6 +67,7 @@ const createUser = async (req, res) => {
         // }).catch((error)=>{
         //     return error
         // })
+        console.log(result,'result in post')
         sendVerificationEmail(result)
         // let message = await sendVerificationEmail(result).then((res)=>{
         //     return res
@@ -295,6 +297,31 @@ const upDateHisab = async (req, res) => {
     }
 }
 
+const contactFormMessage = async (req,res) =>{
+    const {name,email,phone,message} = req.body
+    const transporter =emailTransporter(email)
+    console.log(req.body ,email)
+            const mailOptions = {
+                from: email,
+                to: 'faranimp@gmail.com',
+                subject: 'Contact Information',
+                html: `
+                <p>Dear Sir<br/> ${message}</p>
+                <p>Regards <br/>${name}</p>
+                <p>Contact Info <br/>${phone}</p>
+                <p>Email <br/>${email}</p>
+                `
+            };
+            transporter.sendMail(mailOptions,function(error, info){ 
+                if (error){
+                    console.log(error,'errr'); 
+                 res.send({ success: false ,  message:'Message failed to sent Some error occured'})
+                } 
+                    
+                 res.send({ success: true ,  message:'Your message sent succesfully'})
+            });
+} 
+
 // const upDateInwardOutward = async (req, res) => {
 //     const { mainId, recId } = req?.body
 //     const date = new Date()
@@ -361,5 +388,5 @@ const updateQuantity = async (req, res) => {
         res.send({ success: false })
     }
 }
-module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, removeOutward, updateQuantity };
+module.exports = { createUser, loginUser, updateUserRole, deleteUser, verifyUser, addHisab, upDateHisab, removeOutward, updateQuantity, contactFormMessage };
 // module.exports=router
