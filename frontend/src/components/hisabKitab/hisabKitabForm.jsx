@@ -28,7 +28,7 @@ export default function HisabKitabForm() {
     LSData = JSON.parse(LSData);
     setLoginData(LSData);
     axios
-      .get(`https://mm-traders-backend-app.vercel.app/api/getHisab/${LSData?._id}`)
+      .get(`${BackendURL}getHisab/${LSData?._id}`)
       .then((res) => {
         console.log(res, "resssss");
         setData(res?.data?.data);
@@ -37,6 +37,8 @@ export default function HisabKitabForm() {
       setFormData({partyName:"",quality:"",pricePerMetre:0,totalMetre:0,paymentRcvd:0})
       setTimeout(()=>setIsAlert(false),2000)
   }, [isAlert]);
+  const BackendURL = "https://mm-traders-backend-app.vercel.app/api/"
+// const BackendURL = "http://localhost:5000/api/"
   const onSubmit = (e) => {
     e.preventDefault();
     let data = {
@@ -50,7 +52,7 @@ export default function HisabKitabForm() {
     // setDataInLS("loginData",loginData)
     console.log("loginData", loginData);
     axios
-    .post(`http://localhost:5000/api/addHisab/${loginData?._id}`, data)
+    .post(`${BackendURL}addHisab/${loginData?._id}`, data)
     .then((res) => {
       console.log(res?.data?.message, "res?.data?.message");
       setAlertMessage(res?.data?.message)
@@ -64,6 +66,7 @@ export default function HisabKitabForm() {
 
   };
   console.log(data, "data in in");
+  
   return (
     <div className="hisabKitabForm-Container">
       {
