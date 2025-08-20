@@ -8,7 +8,7 @@ const emailTransporter = ()=>{
             port: 5000,
             secure: true,
             auth: {
-                user: 'freelancers00786@gmail.com',
+                user: 'faranimp@gmail.com',
                 pass: process.env.Email_Pass
             }
         });
