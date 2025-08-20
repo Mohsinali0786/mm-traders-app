@@ -15,7 +15,7 @@ const sendVerificationEmail = async (user) =>{
                 html: `Please click the following link to verify your email: <a href="${verificationUrl}">${verificationUrl}</a>`
 
             };
-            transporter.sendMail(mailOptions,function(error, info){ 
+            await transporter.sendMail(mailOptions,function(error, info){ 
                 if (error) console.log(error,'errr'); 
                 // console.log('Email Sent Successfully',info); 
                 console.log(info,'info'); 
