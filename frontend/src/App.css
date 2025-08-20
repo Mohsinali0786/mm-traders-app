@@ -1,3 +1,11 @@
+p{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.width33{
+  width: 33%;
+}
+
 .App {
   text-align: center;
 }
@@ -95,18 +103,19 @@
 }
 .bg-image {
   background-image: url("./assets/contactus.jpg");
-  height: 300px;
+  /* height: 300px; */
+  height: calc(100vh - 90px);
   max-width: 100%;
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   background-repeat: no-repeat;
   background-size: cover;
 }
 .iconCircle {
-  width: 80px;
+  width: 40px;
   /* background-color: green; */
-  height: 80px;
+  height: 40px;
   color: white;
   border-radius: 100%;
   display: flex;
@@ -115,12 +124,43 @@
   font-size: larger;
 }
 .iconCircle > svg {
-  font-size: 45px;
+  font-size: 25px;
 }
 .iconCircle > div > p {
   margin: 0px !important;
 }
+.contactInfo{
+    color: green;
+  background-color: whitesmoke;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.contactForm{
+  background-color: whitesmoke;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100vw;
+  margin: 20px;
+}
 
+.submitContactForm button{
+  border: 1px solid yellow;
+  color: white;
+  background-color: green;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: bold;
+    display: flex;
+  align-items: center;
+}
+.submitContactForm svg{
+  font-size: 20px;
+  margin-left: 10px;
+  margin-bottom: 2px;
+  
+}
 fieldset {
   border: thick solid #000;
 }
