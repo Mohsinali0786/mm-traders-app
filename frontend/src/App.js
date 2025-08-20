@@ -21,11 +21,13 @@ import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ProductForms from './screens/productForm';
 import { VerifyEmail } from './screens/verifyUser';
-import {DusterFabricCalculator} from './components/dusterFabricConsumption';
+import { DusterFabricCalculator } from './components/dusterFabricConsumption';
 import HisabKitabForm from './components/hisabKitab/hisabKitabForm';
 import PaymentDetails from './components/paymentTable/paymentTable';
 import TableUnstyled from './components/tableWithPagination/table';
 import InwardData from './screens/inwardData/inwardData';
+import { ToastContainer, toast } from "react-toastify";
+
 // const ProtectedRoute = ({
 //   user,
 //   redirectPath = '/',
@@ -43,7 +45,17 @@ function App() {
   // useEffect(()=>{},[])
   return (
     <Router>
-      <Navbar/>
+      <Navbar />
+      <ToastContainer position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
@@ -51,17 +63,17 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="about" element={<About />} />
         <Route path="p-form" element={<ProductForms />} />
-        <Route path="/contactus" element={<ContactUs/>} />
-        <Route path="/costings" element={<Costing/>} />
-        <Route path="/verify-email" element={<VerifyEmail/>} />
+        <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/costings" element={<Costing />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         {/* <Route path="/verify-email" element={<DusterFabricCalculator/>} /> */}
-        <Route path="/hisabForm" element={<HisabKitabForm/>} />
-        <Route path="/inWard" element={<InwardData/>} />
-        <Route path="/outWard" element={<InwardData/>} />
+        <Route path="/hisabForm" element={<HisabKitabForm />} />
+        <Route path="/inWard" element={<InwardData />} />
+        <Route path="/outWard" element={<InwardData />} />
 
-<Route path='paymentDetail' element={<PaymentDetails/>}/>
+        <Route path='paymentDetail' element={<PaymentDetails />} />
 
-      
+
         {/* <Route path="/currencyRates" element={<CurrencyRates/>} /> */}
 
         {/* <Route path="/addProductCat" element={<ProductCatForm/>} /> */}
@@ -70,7 +82,7 @@ function App() {
         {/* <Route element={<ProtectedRoute user={user} />}>
           <Route path="dashboard" element={<Dashboard />} />
         </Route> */}
-            {/* <Route
+        {/* <Route
           path="dashboard"
           element={
             <ProtectedRoute
