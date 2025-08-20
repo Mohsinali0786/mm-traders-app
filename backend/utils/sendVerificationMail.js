@@ -8,7 +8,7 @@ const sendVerificationEmail = (user) =>{
     // console.log(verificationUrl, 'verificationUrl')
     //         console.log(verificationUrl,'verificationUrl')
             const mailOptions = {
-                from: 'freelancers00786@gmail.com',
+                from: 'faranimp@gmail.com',
                 to: user.email,
                 subject: 'Verify Your Email',
                 // html: `Please click the following link to verify your email: <a href="${verificationUrl}">${verificationUrl}</a>`
