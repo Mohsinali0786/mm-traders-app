@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import SellItemModalDialog from "../modal/sellItemModal/sellItemModal";
-
+import { getMonthName } from "../../commonFunctions/getMonthNames";
 export default function TableUnstyled({ tableHeaders, rows, myParam }) {
   const BackendURL = "https://mm-traders-backend-app.vercel.app"
   // const BackendURL = "http://localhost:5000"
@@ -89,7 +89,7 @@ export default function TableUnstyled({ tableHeaders, rows, myParam }) {
                     <span>{row.date} Outward</span>
                   </>
                 ) : (
-                  <h6>{row.date}</h6>
+                  <h6>{ row.date.slice(8) + "/" + getMonthName(parseInt(row.date.slice(5,6) > 0 ? row.date.slice(5,7) : row.date.slice(6,7)) - 1) + "/" + row.date.slice(0, 4)}</h6>
                 )}
               </td>
               <td>{row.partyName}</td>
