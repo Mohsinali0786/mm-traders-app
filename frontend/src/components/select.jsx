@@ -14,31 +14,51 @@ export default function BasicSelect({
   method,
   defaultVal,
   fullWidth,
-  disabled
+  disabled,
 }) {
+  const isObjectOptions = options.length > 0 && typeof options[0] === "object";
   const handleChange = (event) => {
-    setState(event.target.value);
+    if (isObjectOptions) {
+      const selected = options.find(
+        (item) => item.value === event.target.value,
+      );
+
+      setState(selected); // {label, value}
+    } else {
+      setState(event.target.value); // string
+    }
   };
+  console.log("state", state);
 
   return (
     <Box>
-      <FormControl           sx={{width:"100%"}}>
+      <FormControl sx={{ width: "100%" }}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={state != "" ? state : defaultVal}
+          value={
+            isObjectOptions
+              ? (state?.value ?? defaultVal ?? "")
+              : (state ?? defaultVal ?? "")
+          }
           label="Age"
           onChange={handleChange}
           defaultValue={defaultVal}
           autoWidth
           disabled={disabled}
-
         >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+
           {options?.map((opt, i) => {
             return (
-              <MenuItem key={i} value={opt}>
-                {opt}
+              <MenuItem
+                key={isObjectOptions ? opt.value : i}
+                value={isObjectOptions ? opt.value : opt}
+              >
+                {isObjectOptions ? opt.label : opt}
               </MenuItem>
             );
           })}
