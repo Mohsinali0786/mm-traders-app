@@ -11,6 +11,7 @@ export default function Navbar() {
   useEffect(() => {
     // if (!user) setLoginBtn(false);
     // getDataFromLS("loginData")
+    setLoginBtn(true);
     if (!user) navigate("/login");
   }, [loginBtn]);
   const logOut = () => {
