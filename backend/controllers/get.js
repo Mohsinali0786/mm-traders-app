@@ -1,11 +1,12 @@
-const express = require('express')
-const User = require('../models/userSchema')
-const Party = require('../models/partySchema')
+const express = require("express");
+const User = require("../models/userSchema");
+const PartiesSchema = require("../models/partySchemaModel");
+const PartyData = require("../models/partySchema");
 
-const http = require('http');
-const axios = require('axios')
-const apiKey = 'cur_live_0IZx3JH7uo2F6C5PesFXYTEfqnxc2hy0xW9RbwyL'
-const jsonwebtoken = require('jsonwebtoken');
+const http = require("http");
+const axios = require("axios");
+const apiKey = "cur_live_0IZx3JH7uo2F6C5PesFXYTEfqnxc2hy0xW9RbwyL";
+const jsonwebtoken = require("jsonwebtoken");
 
 const getUser = async (req, res) => {
     try {
@@ -67,8 +68,8 @@ const getCurrenciesValue = async (req, res) => {
     //   request.end();
 }
 const getHisab = async (req, res) => {
-    try {
-        let data = await Party.find({ userId: req.params.id })
+  try {
+    let data = await PartyData.find({ userId: req.params.id });
 
         console.log('getData', data)
         res.send({ success: true, data: data })
@@ -79,13 +80,12 @@ const getHisab = async (req, res) => {
     }
 }
 const getInwards = async (req, res) => {
-    // console.log('Req.body', req.body)
-    const { id } = req?.params
-    console.log(req.query.queryParams, 'req.query')
-    try {
-
-        let result = await Party.find({ userId: id })
-        let filteredData = []
+  // console.log('Req.body', req.body)
+  const { id } = req?.params;
+  console.log(req.query.queryParams, "req.query");
+  try {
+    let result = await PartyData.find({ userId: id });
+    let filteredData = [];
 
         if (result) {
             console.log(result, 'result')
