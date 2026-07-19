@@ -118,7 +118,23 @@ const getInwards = async (req, res) => {
         res.send({ success: false })
     }
 }
+const getAllParties = async (req, res) => {
+  const userId = req?.params?.userId;
+  try {
+    let result = await PartiesSchema.find({userId: userId});
+    if (result) {
+      console.log(result, "result");
+      res.send({ success: true, result: result });
+    }
+    else{
+      res.send({ success: false, message: "No record found" });
+    }
+  } catch (err) {
+    console.log("Err", err);
+    res.send({ success: false });
+  }
+};
 
 
-module.exports = { getUser, getCurrenciesValue, getHisab, getInwards  };
+module.exports = { getUser, getCurrenciesValue, getHisab, getInwards ,getAllParties };
 // module.exports=router
