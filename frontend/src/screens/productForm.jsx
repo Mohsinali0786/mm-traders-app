@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+// import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { useState } from "react";
 import { ProductTypes } from "../enums/enums";
 import { Link } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 import CircularIndeterminate from "../components/spinner";
-import { deleteDoc } from "firebase/firestore";
+// import { deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import SimpleAlert from "../components/alertBox";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  list,
-  listAll,
-  getDownloadURL,
-} from "firebase/storage";
+// import {
+//   getStorage,
+//   ref,
+//   uploadBytes,
+//   list,
+//   listAll,
+//   getDownloadURL,
+// } from "firebase/storage";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Box,
@@ -30,7 +30,7 @@ import {
   Input,
   Button,
 } from "@mui/material";
-import { db, storage } from "../firebase";
+// import { db, storage } from "../firebase";
 import { v4 } from "uuid";
 function ProductForms() {
   const Navigate = useNavigate();
@@ -42,7 +42,7 @@ function ProductForms() {
   const [loading, setLoading] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
 
-  const imagesListRef = ref(storage, "images/");
+  // const imagesListRef = ref(storage, "images/");
 
   const [selectedProduct, setselectedProduct] = useState({
     Name: "",
@@ -60,7 +60,6 @@ function ProductForms() {
   const [alertMessage, setAlertMessage] = useState("");
   const [unitType, setunitType] = useState([]);
 
-
   function onChange(e) {
     if (e.target.name == "quantity" || e.target.name == "price")
       setselectedProduct({
@@ -68,7 +67,7 @@ function ProductForms() {
         [e.target.name]: e.target.value.replace(/\D/g, ""),
       });
     else {
-      console.log('setselectedProduct',selectedProduct)
+      console.log("setselectedProduct", selectedProduct);
       setselectedProduct({
         ...selectedProduct,
         [e.target.name]: e.target.value,
@@ -76,96 +75,120 @@ function ProductForms() {
     }
   }
   const onSelectImage = (e) => {
-    if (e.target.files.length > 4) {
-      alert("Only 4 file Can be uplaoded");
-      setImageUpload([]);
-      e.target.value = "";
+    const files = Array.from(e.target.files);
+    if (files.length > 4) {
+      alert("Maximum 4 images allowed.");
       return;
     } else {
-      setImageUpload(e.target.files);
+      setImageUpload(files);
     }
   };
   const onSelecteProduct = (e) => {
-    // console.log('Switch',productCatArr)
-    switch (e.target.value) {
-      case "bedsheet":
-        setselectedProduct({
-          ...selectedProduct,
-          sizes: ["king", "queen", "twin"],
-          type: e.target.value,
-        });
-        setunitType(['Kg','Pcs'])
-        break;
-      case "towel":
-        setselectedProduct({
-          ...selectedProduct,
-          sizes: ["sm", "md", "large"],
-          type: e.target.value,
-        });
-        setunitType(['Kg','Pcs'])
-        break;
-      case "garment":
-        setselectedProduct({
-          ...selectedProduct,
-          sizes: ["sm", "md", "large"],
-          type: e.target.value,
-        });
-        setunitType(['Kg','Pcs'])
-        break;
-      case "fabric":
-        setselectedProduct({
-          ...selectedProduct,
-          // sizes: ["sm", "md", "large"],
-          type: e.target.value,
-        });
-        setunitType(['Kg','Metre','Yard'])
-
-        break;
-    }
-    setHideSize(true);
+    //   // console.log('Switch',productCatArr)
+    //   switch (e.target.value) {
+    //     case "bedsheet":
+    //       setselectedProduct({
+    //         ...selectedProduct,
+    //         sizes: ["king", "queen", "twin"],
+    //         type: e.target.value,
+    //       });
+    //       setunitType(['Kg','Pcs'])
+    //       break;
+    //     case "towel":
+    //       setselectedProduct({
+    //         ...selectedProduct,
+    //         sizes: ["sm", "md", "large"],
+    //         type: e.target.value,
+    //       });
+    //       setunitType(['Kg','Pcs'])
+    //       break;
+    //     case "garment":
+    //       setselectedProduct({
+    //         ...selectedProduct,
+    //         sizes: ["sm", "md", "large"],
+    //         type: e.target.value,
+    //       });
+    //       setunitType(['Kg','Pcs'])
+    //       break;
+    //     case "fabric":
+    //       setselectedProduct({
+    //         ...selectedProduct,
+    //         // sizes: ["sm", "md", "large"],
+    //         type: e.target.value,
+    //       });
+    //       setunitType(['Kg','Metre','Yard'])
+    //       break;
+    //   }
+    //   setHideSize(true);
   };
+  console.log(imageUpload, "imageUpload");
   const uploadFile = async (e) => {
     e.preventDefault();
     if (imageUpload === null) {
-      //   toastifyError("Please select an image");
+      // toastifyError("Please select an image");
       return;
     }
-    // const imageRef = ref(storage, `${selectedProduct?.name}/${imageUpload.name + v4()}`);
-    console.log("Image Upload", imageUpload);
-    let imageURLs = [];
-    for (let i = 0; i < imageUpload.length; i++) {
-      const imageRef = ref(storage, `productImages/${imageUpload[i]?.name}`);
-
-      await uploadBytes(imageRef, imageUpload[i])
-        .then((snapshot) => {
-          imageURLs.push(snapshot.ref?._location?.path_);
-          // console.log(snapshot, "snapshot.ref");
-          // console.log(imageURLs, "imageURLs");
-          setselectedProduct({
-            ...selectedProduct,
-            imageURL: imageURLs,
-          });
-        })
-        .catch((error) => {
-          console.log(error, "error");
-          // toastifyError(error.message);
+    const backend_URL = "http://localhost:5000/api/upload";
+    // setLoading(true);
+    const formData = new FormData();
+    imageUpload.forEach((image) => {
+      formData.append("images", image);
+    });
+    try {
+      const response = await fetch(`${backend_URL}`, {
+        method: "POST",
+        body: formData,
+      });
+      const json = await response.json();
+      if (!json.success && json.errors && Array.isArray(json.errors)) {
+        let message = "";
+        json.errors.map((err) => {
+          console.log("=======", err);
+          message = message + "\n" + err?.msg;
         });
+        setFileUpload(true)
+      }
+    } catch (error) {
+      console.error("Error adding party:", error);
+    } finally {
+      setLoading(false);
     }
-    setFileUpload(true);
-    // listAll(imagesListRef).then((response) => {
-    //   response.items.forEach((item) => {
-    //     getDownloadURL(item).then((url) => {
-    //       setImageUrls((prev) => [...prev, url]);
-    //     });
-    //   });
-    // });
+    //   // const imageRef = ref(storage, `${selectedProduct?.name}/${imageUpload.name + v4()}`);
+    //   console.log("Image Upload", imageUpload);
+    //   let imageURLs = [];
+    //   for (let i = 0; i < imageUpload.length; i++) {
+    //     const imageRef = ref(storage, `productImages/${imageUpload[i]?.name}`);
+
+    //     await uploadBytes(imageRef, imageUpload[i])
+    //       .then((snapshot) => {
+    //         imageURLs.push(snapshot.ref?._location?.path_);
+    //         // console.log(snapshot, "snapshot.ref");
+    //         // console.log(imageURLs, "imageURLs");
+    //         setselectedProduct({
+    //           ...selectedProduct,
+    //           imageURL: imageURLs,
+    //         });
+    //       })
+    //       .catch((error) => {
+    //         console.log(error, "error");
+    //         // toastifyError(error.message);
+    //       });
+    //   }
+    //   setFileUpload(true);
+    //   // listAll(imagesListRef).then((response) => {
+    //   //   response.items.forEach((item) => {
+    //   //     getDownloadURL(item).then((url) => {
+    //   //       setImageUrls((prev) => [...prev, url]);
+    //   //     });
+    //   //   });
+    //   // });
   };
   useEffect(() => {
     getProductCategory();
   }, []);
   useEffect(() => {
     const findProduct = productCatArr.find(
-      (x) => x?.name == selectedProduct?.name
+      (x) => x?.name == selectedProduct?.name,
     );
     if (findProduct)
       return setselectedProduct({
@@ -183,55 +206,94 @@ function ProductForms() {
   //   });
   // }, [])
   const addProduct = async () => {
-    setProductLoader(true);
-    console.log("Finaal Pro", selectedProduct);
-    const id = Math.round(Math.random() * 1000);
-    // setselectedProduct({...selectedProduct,id:id})
-    let obj = { ...selectedProduct, id: id };
-
-    const cityRef = doc(db, "products", JSON.stringify(id));
-    await setDoc(cityRef, obj);
-    setProductLoader(true);
-    Navigate("/");
+    //   setProductLoader(true);
+    //   console.log("Finaal Pro", selectedProduct);
+    //   const id = Math.round(Math.random() * 1000);
+    //   // setselectedProduct({...selectedProduct,id:id})
+    //   let obj = { ...selectedProduct, id: id };
+    //   const cityRef = doc(db, "products", JSON.stringify(id));
+    //   await setDoc(cityRef, obj);
+    //   setProductLoader(true);
+    //   Navigate("/");
   };
   const addProductCat = async () => {
-    setLoading(true);
-    setDelLoading(true);
-    if(productCat?.CategoryName){
-      const id = Math.round(Math.random() * 1000);
-      let obj = { ...productCat, id: id };
-      const productCatRef = doc(db, "productsCategory", JSON.stringify(id));
-      await setDoc(productCatRef, obj);
-      setIsAlert(true);
-      setAlertMessage("Added Category Successfully");
-      await getProductCategory();
-      setIsAlert(false);
+      setLoading(true);
+      setDelLoading(true);
+      console.log("productCat", productCat);
+    const backend_URL = "http://localhost:5000/api/addCategory";
+    try {
+      const response = await fetch(`${backend_URL}`, {
+        method: "POST",
+         headers: {
+        "content-type": "application/json",
+      },
+        body: JSON.stringify({ categoryName: productCat.CategoryName }),
+      });
+      const json = await response.json();
+      if (!json.success && json.errors && Array.isArray(json.errors)) {
+        let message = "";
+        json.errors.map((err) => {
+          console.log("=======", err);
+          message = message + "\n" + err?.msg;
+        });
+        setFileUpload(true)
+      }
+    } catch (error) {
+      console.error("Error adding party:", error);
+    } finally {
+      setLoading(false);
     }
-    setDelLoading(false);
-    setLoading(false);
+      setDelLoading(false);
+      setLoading(false);
   };
   const getProductCategory = async () => {
-    setProductCatArr([]);
-    const querySnapshot = await getDocs(collection(db, "productsCategory"));
-    const productsCatArray = [];
-    if (querySnapshot) {
-      querySnapshot.forEach((doc) => {
-        productsCatArray.push(doc.data());
+    //   setProductCatArr([]);
+    //   const querySnapshot = await getDocs(collection(db, "productsCategory"));
+    //   const productsCatArray = [];
+    //   if (querySnapshot) {
+    //     querySnapshot.forEach((doc) => {
+    //       productsCatArray.push(doc.data());
+    //     });
+    //     setProductCatArr(productsCatArray);
+    //   }
+    const backend_URL = "http://localhost:5000/api/getAllProductCategories";
+     setProductCatArr([]);
+    try {
+      const response = await fetch(`${backend_URL}`, {
+        method: "GET",
       });
-      setProductCatArr(productsCatArray);
+      const json = await response.json();
+      console.log(json, "json");
+      if(json.success && json.result && Array.isArray(json.result)){
+        setProductCatArr(json.result)
+      }
+      else if (!json.success && json.errors && Array.isArray(json.errors)) {
+        let message = "";
+        json.errors.map((err) => {
+          console.log("=======", err);
+          message = message + "\n" + err?.msg;
+        });
+        setFileUpload(true)
+      }
+    } catch (error) {
+      console.error("Error adding category:", error);
+    } finally {
+      setLoading(false);
     }
+      setDelLoading(false);
+      setLoading(false);
   };
   const deleteCategory = async (id) => {
-    setDelLoading(true);
-    await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
-    setIsAlert(true);
-    setAlertMessage("Deleted Category Successfully");
-    await getProductCategory();
-    console.log("productCatArr", productCatArr);
-    // setProductCatArr(productCatArr.filter((obj)=>obj?.id != id))
-    // alert("Deleted your selected Category");
-    setDelLoading(false);
-    setIsAlert(false);
+    //   setDelLoading(true);
+    //   await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
+    //   setIsAlert(true);
+    //   setAlertMessage("Deleted Category Successfully");
+    //   await getProductCategory();
+    //   console.log("productCatArr", productCatArr);
+    //   // setProductCatArr(productCatArr.filter((obj)=>obj?.id != id))
+    //   // alert("Deleted your selected Category");
+    //   setDelLoading(false);
+    //   setIsAlert(false);
   };
   useEffect(() => {}, [delLoading]);
   return (
@@ -387,18 +449,15 @@ function ProductForms() {
                   label="Type"
                   fullWidth
                   // className="w-sm-100"
-                  onChange={(e) => {        
+                  onChange={(e) => {
                     setselectedProduct({
-                    ...selectedProduct,
-                    unit: e.target.value,
-                  });}}
+                      ...selectedProduct,
+                      unit: e.target.value,
+                    });
+                  }}
                 >
                   {unitType.map((x) => {
-                    return (
-                      <MenuItem value={x}>
-                        {x}
-                      </MenuItem>
-                    );
+                    return <MenuItem value={x}>{x}</MenuItem>;
                   })}
                 </Select>
               </FormControl>
@@ -522,5 +581,4 @@ function ProductForms() {
     </>
   );
 }
-
 export default ProductForms;
