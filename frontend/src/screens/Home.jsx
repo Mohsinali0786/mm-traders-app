@@ -11,37 +11,37 @@ import slider3 from "../logos/slider3.jpeg";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 // =============================================
-import { listAll, getDownloadURL, ref } from "firebase/storage";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
-import { db, storage } from "../firebase";
+// import { listAll, getDownloadURL, ref } from "firebase/storage";
+// import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+// import { db, storage } from "../firebase";
 import { useState } from "react";
 import { MakeCapitalFirstLetter } from "../commonFunctions/makeFirstLetterCap";
 import { RemoveDuplicates } from "../commonFunctions/removeDuplicateArray";
 import Documents from "../components/hisabKitab/hisabkitab";
 function Home() {
   const [imageUrls, setImageUrls] = useState([]);
-  const imagesListRef = ref(storage, "productImages/");
+  // const imagesListRef = ref(storage, "productImages/");
   const [allProducts, setAllProducts] = useState([]);
   const [productCatArr, setProductCatArr] = useState([]);
   const [productCatArrForFilter, setProductCatArrForFilter] = useState([]);
   const [filtersArray, setFiltersArray] = useState([]);
   const [searchProduct, setSearchProduct] = useState("");
 
-  useEffect(() => {
-    getData();
-    listAll(imagesListRef).then((response) => {
-      response.items.forEach((item) => {
-        // item.location.path
-        getDownloadURL(item).then((url) => {
-          setImageUrls((prev) => [
-            ...prev,
-            { location: item?._location?.path, url: url },
-          ]);
-        });
-      });
-    });
-    getProductCategory();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  //   listAll(imagesListRef).then((response) => {
+  //     response.items.forEach((item) => {
+  //       // item.location.path
+  //       getDownloadURL(item).then((url) => {
+  //         setImageUrls((prev) => [
+  //           ...prev,
+  //           { location: item?._location?.path, url: url },
+  //         ]);
+  //       });
+  //     });
+  //   });
+  //   getProductCategory();
+  // }, []);
   useEffect(() => {}, [localStorage.getItem("loginData")]);
   useEffect(() => {
     let filterdData = [];
@@ -56,18 +56,18 @@ function Home() {
       setAllProducts(productCatArrForFilter);
     }
   }, [filtersArray]);
-  const getData = async () => {
-    setAllProducts([]);
-    const querySnapshot = await getDocs(collection(db, "products"));
-    const productsArray = [];
-    if (querySnapshot) {
-      querySnapshot.forEach((doc) => {
-        productsArray.push(doc.data());
-      });
-      setAllProducts(productsArray);
-      setProductCatArrForFilter(productsArray); // Make copy for filter purpose
-    }
-  };
+  // const getData = async () => {
+  //   setAllProducts([]);
+  //   const querySnapshot = await getDocs(collection(db, "products"));
+  //   const productsArray = [];
+  //   if (querySnapshot) {
+  //     querySnapshot.forEach((doc) => {
+  //       productsArray.push(doc.data());
+  //     });
+  //     setAllProducts(productsArray);
+  //     setProductCatArrForFilter(productsArray); // Make copy for filter purpose
+  //   }
+  // };
   const sizes = ["small", "medium", "large", "x-large"];
   const getImageUrl = (product) => {
     // let imageURLSARR= []
@@ -80,17 +80,17 @@ function Home() {
     // console.log('imageURLSARR',imageURLSARR)
     // return imageURLSARR;
   };
-  const getProductCategory = async () => {
-    setProductCatArr([]);
-    const querySnapshot = await getDocs(collection(db, "productsCategory"));
-    const productsCatArray = [];
-    if (querySnapshot) {
-      querySnapshot.forEach((doc) => {
-        productsCatArray.push(doc.data());
-      });
-      setProductCatArr(productsCatArray);
-    }
-  };
+  // const getProductCategory = async () => {
+  //   setProductCatArr([]);
+  //   const querySnapshot = await getDocs(collection(db, "productsCategory"));
+  //   const productsCatArray = [];
+  //   if (querySnapshot) {
+  //     querySnapshot.forEach((doc) => {
+  //       productsCatArray.push(doc.data());
+  //     });
+  //     setProductCatArr(productsCatArray);
+  //   }
+  // };
 
   console.log("filtersArray", filtersArray);
 
