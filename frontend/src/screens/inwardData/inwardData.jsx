@@ -23,28 +23,28 @@ export default function InwardData() {
     "Action",
   ];
 
-  const constRow = [
-    {
-      id:"abcxyz123",
-      date:"20/06/2025",
-      partyName:"Test 1", 
-      quality:"Flannel", 
-      totalMetre:2500, 
-      totalPrice:250000,
-      remainingBal:0
-    },
-    {
-      id:"xyzqwe4e45",
-      date:"20/06/2025",
-      partyName:"Test 2", 
-      quality:"Cotton", 
-      totalMetre:500, 
-      totalPrice:150000,
-      remainingBal:0
-    },
-  ]
-  const BackendURL ="https://mm-traders-backend-app.vercel.app"
-  // const BackendURL ="http://localhost:5000"
+  // const constRow = [
+  //   {
+  //     id:"abcxyz123",
+  //     date:"20/06/2025",
+  //     partyName:"Test 1", 
+  //     quality:"Flannel", 
+  //     totalMetre:2500, 
+  //     totalPrice:250000,
+  //     remainingBal:0
+  //   },
+  //   {
+  //     id:"xyzqwe4e45",
+  //     date:"20/06/2025",
+  //     partyName:"Test 2", 
+  //     quality:"Cotton", 
+  //     totalMetre:500, 
+  //     totalPrice:150000,
+  //     remainingBal:0
+  //   },
+  // ]
+  // const BackendURL ="https://mm-traders-backend-app.vercel.app"
+  const BackendURL ="http://localhost:5000"
 
   const myParam = searchParams.get('myParam');
   console.log('myParam',myParam)
@@ -54,6 +54,7 @@ export default function InwardData() {
     console.log("LSDAta",LSData)
     getInward(LSData)
   },[myParam]);
+  // useEffect(()=>{},[rows])
   const getInward = (LSData) => {
     setLoading(true)
     axios
@@ -65,12 +66,13 @@ export default function InwardData() {
       )
       .then((res) => {
         console.log(res, "resssss");
-        setRows(res?.data?.result);
+        res?.data?.success && res?.data?.result.length > 0 ? setRows(res?.data?.result) : setRows([]);
+        setLoading(false);
       })
-      .catch((err) => {});
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+      .catch((err) => {console.log("Errrrr",err)});
+      // setLoading(false);
+    // setTimeout(() => {
+    // }, 1000);
     // setLoading(false)
   }
 
@@ -82,7 +84,7 @@ export default function InwardData() {
         <div className="inWardDataMinDiv">
           <i className="fa fa-refresh fa-spin"></i>
         </div>
-      ) : (rows && rows.length > 0) || (constRow && constRow.length > 0) ? (
+      ) : (rows && rows.length > 0) ? (
         <>
           <TableUnstyled tableHeaders={headers} rows={rows} myParam={myParam} />
         </>
