@@ -22,6 +22,7 @@ export default function Navbar() {
     setLoginBtn(false);
     // navigate("/login");
   };
+  console.log(loginBtn, "loginBtn");
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <div className="container-fluid">
@@ -75,16 +76,46 @@ export default function Navbar() {
                 SignUp
               </Link>
             ) : null}
-            {user && user.role && user.role == "admin" ? (
-              <Link className="nav-link" to="/dashboard">
-                Dashboard
-              </Link>
+            {user ? (
+              <div className="dropdown">
+                <button
+                  className="btn btn-success dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Services
+                </button>
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                >
+                  {user ? (
+                    <li>
+                      <Link className="dropdown-item" to="/party-form">
+                        Add Party
+                      </Link>
+                    </li>
+                  ) : null}
+                  {user && user.role && user.role == "admin" ? (
+                    <li>
+                      <Link className="dropdown-item" to="/dashboard">
+                        Dashboard
+                      </Link>
+                    </li>
+                  ) : null}
+                  {user && user.role && user.role == "admin" ? (
+                    <li>
+                      <Link className="dropdown-item" to="/p-form">
+                        Add Product
+                      </Link>
+                    </li>
+                  ) : null}
+                </ul>
+              </div>
             ) : null}
-            {user && user.role && user.role == "admin" ? (
-              <Link className="nav-link" to="/p-form">
-                Add Product
-              </Link>
-            ) : null}
+
             <Link className="nav-link" to="/costings">
               Costings
             </Link>
