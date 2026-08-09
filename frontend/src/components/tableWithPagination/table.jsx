@@ -1,9 +1,8 @@
 import * as React from "react";
 import { styled } from "@mui/system";
-import {
-  TablePagination,
+import TablePagination, {
   tablePaginationClasses as classes,
-} from "@mui/base/TablePagination";
+} from "@mui/material/TablePagination";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
