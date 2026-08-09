@@ -9,6 +9,19 @@ p{
 .App {
   text-align: center;
 }
+/*  Inernet Status */
+.internet-error {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px;
+  background: #dc3545;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+  z-index: 9999;
+}
 
 .App-logo {
   height: 40vmin;
