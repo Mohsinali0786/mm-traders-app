@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
-import { doc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase";
+// import { doc, deleteDoc } from "firebase/firestore";
+// import { db } from "../firebase";
 import ClearIcon from "@mui/icons-material/Clear";
 // import ImageListComponent from "../components/imageList";
 import ImageList from "@mui/material/ImageList";
@@ -11,9 +11,9 @@ import { MakeCapitalFirstLetter } from "../commonFunctions/makeFirstLetterCap";
 function Card({ product, imageURL }) {
   console.log("imageURL", imageURL);
   const [isUserAdmin, setIsUserAdmin] = useState(false);
-  const deleteProduct = async () => {
-    await deleteDoc(doc(db, "products", JSON.stringify(product?.id)));
-  };
+  // const deleteProduct = async () => {
+  //   await deleteDoc(doc(db, "products", JSON.stringify(product?.id)));
+  // };
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("loginData"));
     if (user?.role == "admin") {
@@ -31,7 +31,7 @@ function Card({ product, imageURL }) {
                 Category  {MakeCapitalFirstLetter(product.type)}
                 </span>
               <span className="badge badge-pill bg-success">
-                <ClearIcon sx={{ color: "whiite" }} onClick={deleteProduct} />
+                <ClearIcon sx={{ color: "whiite" }} onClick={()=>{}} />
               </span>
             </div>
           ) : null}
