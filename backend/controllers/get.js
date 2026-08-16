@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/userSchema");
 const PartiesSchema = require("../models/partySchemaModel");
 const PartyData = require("../models/partySchema");
+const ProductCategory = require("../models/productCategorySchema");
 
 const http = require("http");
 const axios = require("axios");
@@ -69,7 +70,7 @@ const getCurrenciesValue = async (req, res) => {
 }
 const getHisab = async (req, res) => {
   try {
-    let data = await PartyData.find({ userId: req.params.id });
+    let data = await PartyData.find({ userId: req.params.id }).populate("userId").populate("partyId");
 
         console.log('getData', data)
         res.send({ success: true, data: data })
@@ -111,11 +112,12 @@ const getInwards = async (req, res) => {
 
         }
         console.log(filteredData, 'filteredData')
+        //  await new Promise(resolve => setTimeout(resolve, 3000))
         res.send({ success: true, result: filteredData })
     }
     catch (err) {
         console.log('Err', err)
-        res.send({ success: false })
+        res.send({ success: false ,result:[] })
     }
 }
 const getAllParties = async (req, res) => {
@@ -134,7 +136,23 @@ const getAllParties = async (req, res) => {
     res.send({ success: false });
   }
 };
+const getAllProductCategories = async (req, res) => {
+  const userId = req?.params?.userId;
+  try {
+    let result = await ProductCategory.find({});
+    if (result) {
+      console.log(result, "result");
+      res.send({ success: true, result: result });
+    }
+    else{
+      res.send({ success: false, message: "No record found" });
+    }
+  } catch (err) {
+    console.log("Err", err);
+    res.send({ success: false });
+  }
+};
 
 
-module.exports = { getUser, getCurrenciesValue, getHisab, getInwards ,getAllParties };
+module.exports = { getUser, getCurrenciesValue, getHisab, getInwards ,getAllParties,getAllProductCategories };
 // module.exports=router
