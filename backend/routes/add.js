@@ -1,8 +1,9 @@
 const express =require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator');
-const {createUser , loginUser, updateUserRole, deleteUser,verifyUser, addHisab, upDateHisab, upDateInwardOutward, removeOutward, updateQuantity, contactFormMessage,addParty} = require('../controllers/post')
-
+const {createUser , loginUser, updateUserRole, deleteUser,verifyUser, addHisab, upDateHisab, upDateInwardOutward, removeOutward, updateQuantity, contactFormMessage,addParty,addProductCategory} = require('../controllers/post')
+const upload = require("../middleware/upload");
+const { uploadImages } = require("../controllers/post");
 router.post('/createUser',[[
     body('email').isEmail(),
     body('name').isLength({min:5}),
@@ -24,6 +25,9 @@ router.post('/updatehisab/:id', upDateHisab)
 router.post('/deleteoutward/', removeOutward)
 router.post('/updatequantity/', updateQuantity)
 router.post('/contactForm/', contactFormMessage)
+router.post("/upload", upload.array("images",4), uploadImages);
+router.post('/addCategory', addProductCategory)
+
 
 
 
