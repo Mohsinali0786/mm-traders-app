@@ -45,7 +45,6 @@ app.use(cors({
 //   );
 //   next();
 // })
-app.options("*", cors(corsOptions));
 app.use(express.json())
 app.get("/", async (req, res) => {
   res.status(200).json({
