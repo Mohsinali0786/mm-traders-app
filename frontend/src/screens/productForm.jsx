@@ -228,7 +228,7 @@ function ProductForms() {
          headers: {
         "content-type": "application/json",
       },
-        body: JSON.stringify({ categoryName: productCat.CategoryName }),
+        body: JSON.stringify({ categoryName: productCat.categoryName }),
       });
       const json = await response.json();
       if (!json.success && json.errors && Array.isArray(json.errors)) {
@@ -308,9 +308,9 @@ function ProductForms() {
           <TextField
             id="outlined-number"
             onChange={(e) =>
-              setProductCat({ CategoryName: e.target.value.toLowerCase() })
+              setProductCat({ categoryName: e.target.value.toLowerCase() })
             }
-            value={productCat?.CategoryName}
+            value={productCat?.categoryName}
             label="Product Category Name"
             name="productCategory"
             type="text"
@@ -343,8 +343,8 @@ function ProductForms() {
                     // d-flex align-items-center justify-content-between maxWidthCat
                     <div>
                       <li className="list-group-item d-flex align-items-center justify-content-between">
-                        {category?.CategoryName.slice(0, 1).toUpperCase() +
-                          category?.CategoryName.slice(1)}
+                        {category?.categoryName.slice(0, 1).toUpperCase() +
+                          category?.categoryName.slice(1)}
                         <Button
                           onClick={() => {
                             deleteCategory(category?.id);
@@ -398,8 +398,8 @@ function ProductForms() {
                 >
                   {productCatArr.map((x) => {
                     return (
-                      <MenuItem value={x?.CategoryName}>
-                        {x?.CategoryName}
+                      <MenuItem value={x?.categoryName}>
+                        {x?.categoryName}
                       </MenuItem>
                     );
                   })}
