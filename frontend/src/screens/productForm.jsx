@@ -257,7 +257,9 @@ function ProductForms() {
     //     });
     //     setProductCatArr(productsCatArray);
     //   }
-    const backend_URL = "http://localhost:5000/api/getAllProductCategories";
+    // const backend_URL = "http://localhost:5000/api/getAllProductCategories";
+    const backend_URL = "https://mm-traders-backend-app.vercel.app/api/getAllProductCategories";
+
      setProductCatArr([]);
     try {
       const response = await fetch(`${backend_URL}`, {
