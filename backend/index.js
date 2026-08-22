@@ -1,11 +1,11 @@
 const express = require('express')
 var cors = require('cors')
+const mongoose = require('mongoose');
 const userRoutes = require('./routes/index')
+require('dotenv').config();
 const app = express()
 // const bodyParser = require('body-parser')
-const mongoose = require('mongoose');
 const port = 5000
-require('dotenv').config();
 
 // const uri = `mongodb+srv://mohsin00786:mohsin00786@cluster0.9pujbap.mongodb.net/mmGarments?retryWrites=true&w=majority&appName=Cluster0`
 
@@ -44,13 +44,13 @@ app.use(cors({
 //   );
 //   next();
 // })
+app.use(express.json())
 app.get("/", async (req, res) => {
   res.status(200).json({
     message: "Hello developers from GFG",
   });
 });
 // app.use(bodyParser.json())
-app.use(express.json())
 app.use("/api", userRoutes)
 console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
@@ -60,6 +60,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   console.log('Err===>', err)
 });
 
-app.listen(port,  () => {
-console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port,  () => {
+// console.log(`Example app listening on port ${port}`)
+// })
