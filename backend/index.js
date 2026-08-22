@@ -2,6 +2,7 @@ const express = require('express')
 var cors = require('cors')
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/index')
+const connectDB = require('./config/db')
 require('dotenv').config();
 const app = express()
 // const bodyParser = require('body-parser')
@@ -54,12 +55,13 @@ app.get("/", async (req, res) => {
 // app.use(bodyParser.json())
 app.use("/api", userRoutes)
 console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
-  console.log('Database Connected')
+// mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
+//   console.log('Database Connected')
 
-}).catch((err) => {
-  console.log('Err===>', err)
-});
+// }).catch((err) => {
+//   console.log('Err===>', err)
+// });
+connectDB();
 module.exports = app;
 // app.listen(port,  () => {
 // console.log(`Example app listening on port ${port}`)
