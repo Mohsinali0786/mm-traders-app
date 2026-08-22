@@ -28,7 +28,7 @@ import TableUnstyled from './components/tableWithPagination/table';
 import InwardData from './screens/inwardData/inwardData';
 import { ToastContainer, toast } from "react-toastify";
 import PartyForms from './screens/partyForm';
-import InternetStatus from './components/internet';
+// import InternetStatus from './components/internet';
 
 // const ProtectedRoute = ({
 //   user,
