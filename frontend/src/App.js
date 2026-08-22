@@ -27,6 +27,8 @@ import PaymentDetails from './components/paymentTable/paymentTable';
 import TableUnstyled from './components/tableWithPagination/table';
 import InwardData from './screens/inwardData/inwardData';
 import { ToastContainer, toast } from "react-toastify";
+import PartyForms from './screens/partyForm';
+import InternetStatus from './components/internet';
 
 // const ProtectedRoute = ({
 //   user,
@@ -45,6 +47,7 @@ function App() {
   // useEffect(()=>{},[])
   return (
     <Router>
+      {/* <InternetStatus/> */}
       <Navbar />
       <ToastContainer position="top-right"
         autoClose={5000}
@@ -63,6 +66,7 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="about" element={<About />} />
         <Route path="p-form" element={<ProductForms />} />
+        <Route path="party-form" element={<PartyForms />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/costings" element={<Costing />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
