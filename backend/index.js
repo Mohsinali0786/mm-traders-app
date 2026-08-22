@@ -53,6 +53,7 @@ app.get("/", async (req, res) => {
   });
 });
 // app.use(bodyParser.json())
+connectDB();
 app.use("/api", userRoutes)
 console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
 // mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then((client) => {
@@ -61,7 +62,6 @@ console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
 // }).catch((err) => {
 //   console.log('Err===>', err)
 // });
-connectDB();
 module.exports = app;
 // app.listen(port,  () => {
 // console.log(`Example app listening on port ${port}`)
