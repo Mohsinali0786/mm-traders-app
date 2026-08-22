@@ -132,47 +132,81 @@ const verifyUser = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
-// const loginUser = async (req, res) => {
-//   let email = req.body.email;
-
-//   const errors = validationResult(req);
-
-//   if (!errors.isEmpty()) {
-//     return res.status(400).json({ errors: errors.array() });
-//   }
-//   try {
-//     let userData = await User.findOne({ email });
-//     if (!userData) return res.status(400).json({ errors: "Email not exist" });
-//     if (!userData?.isVerified)
-//       return res.status(400).json({ errors: "Email Not verified" });
-//     const pwdCompare = await bcrypt.compare(
-//       req.body.password,
-//       userData.password,
-//     );
-//     if (!pwdCompare)
-//       return res.status(400).json({ errors: "Incorrect password" });
-//     const data = {
-//       user: {
-//         id: userData._id,
-//       },
-//     };
-//     const authToken = jsonWebToken.sign(data, jwtSecrete);
-//     return res.json({
-//       success: true,
-//       authToken: authToken,
-//       userLogin: userData,
-//     });
-//   } catch (err) {
-//     console.log("Err", err);
-//     res.send({ success: false });
-//   }
-// };
 const loginUser = async (req, res) => {
-  console.log("LOGIN API STARTED");
+  try {
+    console.log("1. LOGIN START");
 
-  return res.status(200).json({
-    message: "Login API is working"
-  });
+    const { email, password } = req.body;
+
+    console.log("2. BODY RECEIVED:", email);
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    console.log("3. BEFORE DATABASE QUERY");
+
+    const userData = await User.findOne({ email });
+
+    console.log("4. DATABASE QUERY COMPLETE");
+
+    if (!userData) {
+      return res.status(400).json({
+        errors: "Email not exist"
+      });
+    }
+
+    console.log("5. USER FOUND");
+
+    if (!userData.isVerified) {
+      return res.status(400).json({
+        errors: "Email Not verified"
+      });
+    }
+
+    console.log("6. BEFORE BCRYPT");
+
+    const pwdCompare = await bcrypt.compare(
+      password,
+      userData.password
+    );
+
+    console.log("7. BCRYPT COMPLETE");
+
+    if (!pwdCompare) {
+      return res.status(400).json({
+        errors: "Incorrect password"
+      });
+    }
+
+    console.log("8. BEFORE JWT");
+
+    const data = {
+      user: {
+        id: userData._id
+      }
+    };
+
+    const authToken = jsonWebToken.sign(data, jwtSecrete);
+
+    console.log("9. JWT COMPLETE");
+
+    return res.status(200).json({
+      success: true,
+      authToken,
+      userLogin: userData
+    });
+
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    });
+  }
 };
 const updateUserRole = async (req, res) => {
   console.log("Req.params", req.params);
