@@ -84,44 +84,54 @@ function ProductForms() {
     }
   };
   const onSelecteProduct = (e) => {
-    //   // console.log('Switch',productCatArr)
-    //   switch (e.target.value) {
-    //     case "bedsheet":
-    //       setselectedProduct({
-    //         ...selectedProduct,
-    //         sizes: ["king", "queen", "twin"],
-    //         type: e.target.value,
-    //       });
-    //       setunitType(['Kg','Pcs'])
-    //       break;
-    //     case "towel":
-    //       setselectedProduct({
-    //         ...selectedProduct,
-    //         sizes: ["sm", "md", "large"],
-    //         type: e.target.value,
-    //       });
-    //       setunitType(['Kg','Pcs'])
-    //       break;
-    //     case "garment":
-    //       setselectedProduct({
-    //         ...selectedProduct,
-    //         sizes: ["sm", "md", "large"],
-    //         type: e.target.value,
-    //       });
-    //       setunitType(['Kg','Pcs'])
-    //       break;
-    //     case "fabric":
-    //       setselectedProduct({
-    //         ...selectedProduct,
-    //         // sizes: ["sm", "md", "large"],
-    //         type: e.target.value,
-    //       });
-    //       setunitType(['Kg','Metre','Yard'])
-    //       break;
-    //   }
-    //   setHideSize(true);
+    console.log("Switch", productCatArr);
+    switch (e.target.value) {
+      case "bedsheet":
+        setselectedProduct({
+          ...selectedProduct,
+          sizes: ["king", "queen", "twin"],
+          type: e.target.value,
+        });
+        setunitType(["Kg", "Pcs"]);
+        break;
+      case "towel":
+        setselectedProduct({
+          ...selectedProduct,
+          sizes: ["sm", "md", "large"],
+          type: e.target.value,
+        });
+        setunitType(["Kg", "Pcs"]);
+        break;
+      case "garment":
+        setselectedProduct({
+          ...selectedProduct,
+          sizes: ["sm", "md", "large"],
+          type: e.target.value,
+        });
+        setunitType(["Kg", "Pcs"]);
+        break;
+      case "fabric":
+        setselectedProduct({
+          ...selectedProduct,
+          // sizes: ["sm", "md", "large"],
+          type: e.target.value,
+        });
+        setunitType(["Kg", "Metre", "Yard"]);
+        break;
+      default:
+        setselectedProduct({
+          ...selectedProduct,
+          type: "",
+          unit: "None",
+        });
+        setunitType(["None"]);
+        break;
+    }
+    setHideSize(true);
   };
-  console.log(imageUpload, "imageUpload");
+  // console.log(imageUpload, "imageUpload");
+  console.log("Default AFtr", selectedProduct);
+
   const uploadFile = async (e) => {
     e.preventDefault();
     if (imageUpload === null) {
@@ -146,7 +156,7 @@ function ProductForms() {
           console.log("=======", err);
           message = message + "\n" + err?.msg;
         });
-        setFileUpload(true)
+        setFileUpload(true);
       }
     } catch (error) {
       console.error("Error adding party:", error);
@@ -196,6 +206,9 @@ function ProductForms() {
         sizes: findProduct?.sizes,
       });
   }, []);
+  useEffect(() => {
+    console.log("selectedProduct UseEffect", selectedProduct);
+  }, [selectedProduct]);
   // useEffect(()=>{
   //   listAll(imagesListRef).then((response) => {
   //     response.items.forEach((item) => {
@@ -217,17 +230,18 @@ function ProductForms() {
     //   Navigate("/");
   };
   const addProductCat = async () => {
-      setLoading(true);
-      setDelLoading(true);
-      console.log("productCat", productCat);
+    setLoading(true);
+    setDelLoading(true);
+    console.log("productCat", productCat);
     // const backend_URL = "http://localhost:5000/api/addCategory";
-    const backend_URL = "https://mm-traders-backend-app.vercel.app/api/addCategory"
+    const backend_URL =
+      "https://mm-traders-backend-app.vercel.app/api/addCategory";
     try {
       const response = await fetch(`${backend_URL}`, {
         method: "POST",
-         headers: {
-        "content-type": "application/json",
-      },
+        headers: {
+          "content-type": "application/json",
+        },
         body: JSON.stringify({ categoryName: productCat.categoryName }),
       });
       const json = await response.json();
@@ -237,15 +251,15 @@ function ProductForms() {
           console.log("=======", err);
           message = message + "\n" + err?.msg;
         });
-        setFileUpload(true)
+        setFileUpload(true);
       }
     } catch (error) {
       console.error("Error adding party:", error);
     } finally {
       setLoading(false);
     }
-      setDelLoading(false);
-      setLoading(false);
+    setDelLoading(false);
+    setLoading(false);
   };
   const getProductCategory = async () => {
     //   setProductCatArr([]);
@@ -258,40 +272,40 @@ function ProductForms() {
     //     setProductCatArr(productsCatArray);
     //   }
     // const backend_URL = "http://localhost:5000/api/getAllProductCategories";
-    const backend_URL = "https://mm-traders-backend-app.vercel.app/api/getAllProductCategories";
+    const backend_URL =
+      "https://mm-traders-backend-app.vercel.app/api/getAllProductCategories";
 
-     setProductCatArr([]);
+    setProductCatArr([]);
     try {
       const response = await fetch(`${backend_URL}`, {
         method: "GET",
       });
       const json = await response.json();
       console.log(json, "json");
-      if(json.success && json.result && Array.isArray(json.result)){
-        setProductCatArr(json.result)
-      }
-      else if (!json.success && json.errors && Array.isArray(json.errors)) {
+      if (json.success && json.result && Array.isArray(json.result)) {
+        setProductCatArr(json.result);
+      } else if (!json.success && json.errors && Array.isArray(json.errors)) {
         let message = "";
         json.errors.map((err) => {
           console.log("=======", err);
           message = message + "\n" + err?.msg;
         });
-        setFileUpload(true)
+        setFileUpload(true);
       }
     } catch (error) {
       console.error("Error adding category:", error);
     } finally {
       setLoading(false);
     }
-      setDelLoading(false);
-      setLoading(false);
+    setDelLoading(false);
+    setLoading(false);
   };
   const deleteCategory = async (id) => {
     //   setDelLoading(true);
     //   await deleteDoc(doc(db, "productsCategory", JSON.stringify(id)));
     //   setIsAlert(true);
     //   setAlertMessage("Deleted Category Successfully");
-    //   await getProductCategory();
+    // await getProductCategory();
     //   console.log("productCatArr", productCatArr);
     //   // setProductCatArr(productCatArr.filter((obj)=>obj?.id != id))
     //   // alert("Deleted your selected Category");
@@ -448,7 +462,7 @@ function ProductForms() {
                   labelId="demo-simple-select-label"
                   disabled={!selectedProduct?.type}
                   id="demo-simple-select"
-                  // value={age}
+                  value={selectedProduct?.unit || ""}
                   label="Type"
                   fullWidth
                   // className="w-sm-100"
