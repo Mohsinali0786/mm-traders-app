@@ -53,6 +53,11 @@ app.get("/", async (req, res) => {
   });
 });
 // app.use(bodyParser.json())
+if (process.env.NODE_ENV !== "production") {
+  app.listen(5000, () => {
+    console.log("Local server running on port 5000");
+  });
+}
 connectDB();
 app.use("/api", userRoutes)
 console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
@@ -62,7 +67,7 @@ console.log('process.env.MONGO_URI===>', process.env.MONGO_URI)
 // }).catch((err) => {
 //   console.log('Err===>', err)
 // });
-module.exports = app;
 // app.listen(port,  () => {
 // console.log(`Example app listening on port ${port}`)
 // })
+module.exports = app;
