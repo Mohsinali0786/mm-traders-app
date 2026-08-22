@@ -55,7 +55,8 @@ function PartyForms() {
     }
   };
   const addParty = async () => {
-    const backend_URL = "http://localhost:5000/api/addParty";
+    // const backend_URL = "http://localhost:5000/api/addParty";
+    const backend_URL = "https://mm-traders-backend-app.vercel.app/api/addParty";
     console.log("partyData", partyData);
     setLoading(true);
     try {
