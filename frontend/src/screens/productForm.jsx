@@ -220,7 +220,8 @@ function ProductForms() {
       setLoading(true);
       setDelLoading(true);
       console.log("productCat", productCat);
-    const backend_URL = "http://localhost:5000/api/addCategory";
+    // const backend_URL = "http://localhost:5000/api/addCategory";
+    const backend_URL = "https://mm-traders-backend-app.vercel.app/api/addCategory"
     try {
       const response = await fetch(`${backend_URL}`, {
         method: "POST",
